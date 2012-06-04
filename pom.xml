@@ -15,7 +15,7 @@
         1. Stone wedge-shaped arch which maintains a vault [Architecture].
         2. A central element on which everything depends.
     </description>
-	<url>http://intelligents-ia.com</url>
+	<url>http://intelligents-ia.com/index.php/category/technique/keystone</url>
 	<inceptionYear>2010</inceptionYear>
 	<developers>
 		<developer>
@@ -111,32 +111,14 @@
 	</modules>
 	<distributionManagement>
 		<repository>
-			<id>intelligents-ia-releases</id>
-			<url>https://github.com/geronimo-iia/iia-mvn-repo/releases</url>
+			<id>keystone-intelligents-ia-releases</id>
+			<url>file:../repository/releases</url>
 		</repository>
 		<snapshotRepository>
-			<id>intelligents-ia-snapshot</id>
-			<url>https://github.com/geronimo-iia/iia-mvn-repo/snapshots</url>
+			<id>keystone-intelligents-ia-snapshot</id>
+			<url>file:../repository/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
-	<profiles>
-		<profile>
-			<id>local-deploy</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<distributionManagement>
-				<repository>
-					<id>intelligents-ia-releases</id>
-					<url>file:../iia-mvn-repo/releases</url>
-				</repository>
-				<snapshotRepository>
-					<id>intelligents-ia-snapshot</id>
-					<url>file:../iia-mvn-repo/snapshots</url>
-				</snapshotRepository>
-			</distributionManagement>
-		</profile>
-	</profiles>
 	<repositories>
 		<repository>
 			<id>intelligents-ia</id>
@@ -150,9 +132,9 @@
 			</snapshots>
 		</repository>
 		<repository>
-			<id>intelligents-ia-releases</id>
+			<id>keystone-intelligents-ia-releases</id>
 			<name>Intelligents-ia releases repository On github</name>
-			<url>https://github.com/geronimo-iia/iia-mvn-repo/releases</url>
+			<url>https://github.com/geronimo-iia/keystone/repository/releases</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -161,9 +143,9 @@
 			</snapshots>
 		</repository>
 		<repository>
-			<id>intelligents-ia-snapshot</id>
+			<id>keystone-intelligents-ia-snapshot</id>
 			<name>Intelligents-ia snapshot repository On github</name>
-			<url>https://github.com/geronimo-iia/iia-mvn-repo/snapshots</url>
+			<url>https://github.com/geronimo-iia/keystone/repository/snapshots</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
@@ -174,20 +156,9 @@
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
-			<id>intelligents-ia.plugin</id>
-			<name>Intelligents-ia Repository</name>
-			<url>http://intelligents-ia.com/maven2</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>intelligents-ia-releases</id>
+			<id>keystone-intelligents-ia-releases</id>
 			<name>Intelligents-ia releases repository On github</name>
-			<url>https://github.com/geronimo-iia/iia-mvn-repo/releases</url>
+			<url>https://github.com/geronimo-iia/keystone/repository/releases</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -196,9 +167,9 @@
 			</snapshots>
 		</pluginRepository>
 		<pluginRepository>
-			<id>intelligents-ia-snapshot</id>
+			<id>keystone-intelligents-ia-snapshot</id>
 			<name>Intelligents-ia snapshot repository On github</name>
-			<url>https://github.com/geronimo-iia/iia-mvn-repo/snapshots</url>
+			<url>https://github.com/geronimo-iia/keystone/repository/snapshots</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>

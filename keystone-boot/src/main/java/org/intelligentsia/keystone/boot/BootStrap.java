@@ -67,7 +67,10 @@ import java.util.jar.Attributes;
  * Class Path management
  * </p>
  * <ul>
- * <li>BootStrap.extraLibrariesFolderPath = folder path of external libraries , in order to include them on classpath. Even if keystone is used to pack all dependencies in a single archive, many project needs adding extra dependencies on their classpath as specific database driver etc...</li>
+ * <li>BootStrap.extraLibrariesFolderPath = folder path of external libraries ,
+ * in order to include them on classpath. Even if keystone is used to pack all
+ * dependencies in a single archive, many project needs adding extra
+ * dependencies on their classpath as specific database driver etc...</li>
  * <li>BootStrap.includeJavaHomeLib=true|false (default false) include java home
  * libraries</li>
  * <li>BootStrap.includeSystemClassLoader=true|false (default true) include
@@ -141,7 +144,7 @@ public final class BootStrap {
 
 		// code location
 		final String location = BootStrap.getCodeSourceLocation();
-		if (location == null || "".equals(location)) {
+		if ((location == null) || "".equals(location)) {
 			Console.WARNING("Cannot Find Code Source location");
 			return;
 		}
@@ -290,7 +293,7 @@ public final class BootStrap {
 		}
 
 		// adding external libraries Folder
-		String extraLibrariesFolderPath = Arguments.getStringArgument(arguments, "BootStrap.extraLibrariesFolderPath", null);
+		final String extraLibrariesFolderPath = Arguments.getStringArgument(arguments, "BootStrap.extraLibrariesFolderPath", null);
 		if (extraLibrariesFolderPath != null) {
 			try {
 				File extra = new File(extraLibrariesFolderPath);
@@ -298,7 +301,7 @@ public final class BootStrap {
 					extra = new File(home, extraLibrariesFolderPath);
 				}
 				urls.addAll(BootStrap.computeFromDirectory(extra));
-			} catch (MalformedURLException e) {
+			} catch (final MalformedURLException e) {
 				Console.WARNING("error when including '" + extraLibrariesFolderPath + "' :" + e.getMessage());
 				throw new IllegalStateException("error when including '" + extraLibrariesFolderPath + "'", e);
 			}

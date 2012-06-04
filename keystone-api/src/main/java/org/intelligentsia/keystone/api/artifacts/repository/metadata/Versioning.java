@@ -45,7 +45,7 @@ public class Versioning {
 		return this.latest;
 	}
 
-	public void setLatest(String latest) {
+	public void setLatest(final String latest) {
 		this.latest = latest;
 	}
 
@@ -57,7 +57,7 @@ public class Versioning {
 		return this.release;
 	}
 
-	public void setRelease(String release) {
+	public void setRelease(final String release) {
 		this.release = release;
 	}
 
@@ -69,7 +69,7 @@ public class Versioning {
 		return this.snapshot;
 	}
 
-	public void setSnapshot(Snapshot snapshot) {
+	public void setSnapshot(final Snapshot snapshot) {
 		this.snapshot = snapshot;
 	}
 
@@ -84,7 +84,7 @@ public class Versioning {
 		return this.versions;
 	}
 
-	public void setVersions(java.util.List<String> versions) {
+	public void setVersions(final java.util.List<String> versions) {
 		this.versions = versions;
 	}
 
@@ -96,7 +96,7 @@ public class Versioning {
 		return this.lastUpdated;
 	}
 
-	public void setLastUpdated(String lastUpdated) {
+	public void setLastUpdated(final String lastUpdated) {
 		this.lastUpdated = lastUpdated;
 	}
 
@@ -104,9 +104,9 @@ public class Versioning {
 		setLastUpdatedTimestamp(new java.util.Date());
 	}
 
-	public void setLastUpdatedTimestamp(java.util.Date date) {
-		java.util.TimeZone timezone = java.util.TimeZone.getTimeZone("UTC");
-		java.text.DateFormat fmt = new java.text.SimpleDateFormat("yyyyMMddHHmmss");
+	public void setLastUpdatedTimestamp(final java.util.Date date) {
+		final java.util.TimeZone timezone = java.util.TimeZone.getTimeZone("UTC");
+		final java.text.DateFormat fmt = new java.text.SimpleDateFormat("yyyyMMddHHmmss");
 		fmt.setTimeZone(timezone);
 		setLastUpdated(fmt.format(date));
 	}
@@ -118,11 +118,11 @@ public class Versioning {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((lastUpdated == null) ? 0 : lastUpdated.hashCode());
-		result = prime * result + ((latest == null) ? 0 : latest.hashCode());
-		result = prime * result + ((release == null) ? 0 : release.hashCode());
-		result = prime * result + ((snapshot == null) ? 0 : snapshot.hashCode());
-		result = prime * result + ((versions == null) ? 0 : versions.hashCode());
+		result = (prime * result) + ((lastUpdated == null) ? 0 : lastUpdated.hashCode());
+		result = (prime * result) + ((latest == null) ? 0 : latest.hashCode());
+		result = (prime * result) + ((release == null) ? 0 : release.hashCode());
+		result = (prime * result) + ((snapshot == null) ? 0 : snapshot.hashCode());
+		result = (prime * result) + ((versions == null) ? 0 : versions.hashCode());
 		return result;
 	}
 
@@ -130,39 +130,52 @@ public class Versioning {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		Versioning other = (Versioning) obj;
+		}
+		final Versioning other = (Versioning) obj;
 		if (lastUpdated == null) {
-			if (other.lastUpdated != null)
+			if (other.lastUpdated != null) {
 				return false;
-		} else if (!lastUpdated.equals(other.lastUpdated))
+			}
+		} else if (!lastUpdated.equals(other.lastUpdated)) {
 			return false;
+		}
 		if (latest == null) {
-			if (other.latest != null)
+			if (other.latest != null) {
 				return false;
-		} else if (!latest.equals(other.latest))
+			}
+		} else if (!latest.equals(other.latest)) {
 			return false;
+		}
 		if (release == null) {
-			if (other.release != null)
+			if (other.release != null) {
 				return false;
-		} else if (!release.equals(other.release))
+			}
+		} else if (!release.equals(other.release)) {
 			return false;
+		}
 		if (snapshot == null) {
-			if (other.snapshot != null)
+			if (other.snapshot != null) {
 				return false;
-		} else if (!snapshot.equals(other.snapshot))
+			}
+		} else if (!snapshot.equals(other.snapshot)) {
 			return false;
+		}
 		if (versions == null) {
-			if (other.versions != null)
+			if (other.versions != null) {
 				return false;
-		} else if (!versions.equals(other.versions))
+			}
+		} else if (!versions.equals(other.versions)) {
 			return false;
+		}
 		return true;
 	}
 

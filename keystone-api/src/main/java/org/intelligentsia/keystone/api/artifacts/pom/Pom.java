@@ -13,7 +13,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Pom implements Serializable {
 
 	private static final long serialVersionUID = 6397991212624047355L;

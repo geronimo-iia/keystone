@@ -10,7 +10,7 @@ package org.intelligentsia.keystone.api.artifacts;
  */
 public class TransferFailedException extends KeystoneRuntimeException {
 
-	private static final long	serialVersionUID	= -2783547055285702711L;
+	private static final long serialVersionUID = -2783547055285702711L;
 
 	/**
 	 * Build a new instance of <code>TransferFailedException</code>
@@ -25,7 +25,7 @@ public class TransferFailedException extends KeystoneRuntimeException {
 	 * @param message
 	 * @param cause
 	 */
-	public TransferFailedException(String message, Throwable cause) {
+	public TransferFailedException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
@@ -34,7 +34,7 @@ public class TransferFailedException extends KeystoneRuntimeException {
 	 * 
 	 * @param message
 	 */
-	public TransferFailedException(String message) {
+	public TransferFailedException(final String message) {
 		super(message);
 	}
 
@@ -43,7 +43,7 @@ public class TransferFailedException extends KeystoneRuntimeException {
 	 * 
 	 * @param cause
 	 */
-	public TransferFailedException(Throwable cause) {
+	public TransferFailedException(final Throwable cause) {
 		super(cause);
 	}
 

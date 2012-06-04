@@ -11,10 +11,10 @@ import java.util.StringTokenizer;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public final class PathResolver {
-	private static final transient String	DOT					= ".";
-	private static final transient String	POM					= ".pom";
-	private static final transient String	SEPARATOR			= "/";
-	private static final transient String	MAVEN_METADATA_XML	= "maven-metadata.xml";
+	private static final transient String DOT = ".";
+	private static final transient String POM = ".pom";
+	private static final transient String SEPARATOR = "/";
+	private static final transient String MAVEN_METADATA_XML = "maven-metadata.xml";
 
 	/**
 	 * @param identifier

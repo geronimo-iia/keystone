@@ -524,7 +524,7 @@ public class BootStrapMojo extends AbstractMojo {
 		getLog().info("package boot: " + archiveName);
 		final File custFile = new File(buildDirectory, archiveName);
 		// Configure archiver
-		//archive.setAddMavenDescriptor(false);
+		// archive.setAddMavenDescriptor(false);
 		final MavenArchiver archiver = new MavenArchiver();
 		archiver.setArchiver(jarArchiver);
 		archiver.setOutputFile(custFile);
@@ -544,7 +544,7 @@ public class BootStrapMojo extends AbstractMojo {
 				project.getArtifact().setFile(custFile);
 			} else {
 				// add an other artifact in current project
-				final Artifact artifact = artifactFactory.createProjectArtifact(project.getGroupId(), project.getArtifactId() + "-boot", project.getVersion());
+				final Artifact artifact = artifactFactory.createArtifact(project.getGroupId(), project.getArtifactId() + "-boot", project.getVersion(), Artifact.SCOPE_COMPILE, "jar");
 				artifact.setFile(custFile);
 				project.addAttachedArtifact(artifact);
 			}
@@ -564,7 +564,7 @@ public class BootStrapMojo extends AbstractMojo {
 	 *         by final name of project with '-boot' suffix.
 	 */
 	private String getFinalArchiveName() {
-		if (replaceProjectArtifact) { 
+		if (replaceProjectArtifact) {
 			return project.getArtifact().getFile().getName();
 		}
 		if (finalName != null && !"".equals(finalName)) {

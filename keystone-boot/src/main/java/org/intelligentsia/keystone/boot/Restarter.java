@@ -31,10 +31,10 @@ public class Restarter {
 	 * @throws IllegalStateException
 	 *             if cannot find 'start command'
 	 */
-	public static void autoRestart(Runnable runBeforeRestart) throws IllegalStateException {
+	public static void autoRestart(final Runnable runBeforeRestart) throws IllegalStateException {
 		if (System.getProperty(SUN_JAVA_COMMAND) != null) {
-			List<String> parameters = new ArrayList<String>();
-			String[] mainCommand = System.getProperty(SUN_JAVA_COMMAND).split(" ");
+			final List<String> parameters = new ArrayList<String>();
+			final String[] mainCommand = System.getProperty(SUN_JAVA_COMMAND).split(" ");
 			// program main is a jar
 			if (mainCommand[0].endsWith(".jar")) {
 				// if it's a jar, add -jar mainJar
@@ -64,18 +64,18 @@ public class Restarter {
 	 * 
 	 * @throws IOException
 	 */
-	public static void restartWith(Runnable runBeforeRestart, String... parameters) {
+	public static void restartWith(final Runnable runBeforeRestart, final String... parameters) {
 		// build command line
-		final List<String> commands = new ArrayList<String>(); 
+		final List<String> commands = new ArrayList<String>();
 		commands.add(getJavaCommand());
 		commands.addAll(getJVMArgument());
 		commands.addAll(Arrays.asList(parameters));
-		StringBuilder builder = new StringBuilder();
-		for(String command : commands) {
+		final StringBuilder builder = new StringBuilder();
+		for (final String command : commands) {
 			builder.append(command).append(' ');
 		}
 		final String cmd = builder.toString();
-		
+
 		// execute the command in a shutdown hook, to be sure that all the
 		// resources have been disposed before restarting the application
 		Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -83,7 +83,7 @@ public class Restarter {
 			public void run() {
 				try {
 					Runtime.getRuntime().exec(cmd);
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					e.printStackTrace();
 				}
 			}
@@ -102,18 +102,18 @@ public class Restarter {
 	 */
 	private static String getJavaCommand() {
 		if (OSDetector.isMac()) {
-			//is it working ?
+			// is it working ?
 			return "open";
 		}
 		// locate binary
 		String path = System.getProperty("sun.boot.library.path");
-		if (path == null || "".endsWith(path)) {
-			path = System.getProperty("java.home") + File.separator  + "bin";
+		if ((path == null) || "".endsWith(path)) {
+			path = System.getProperty("java.home") + File.separator + "bin";
 		}
 		// first check if 'javaw' is available, and java in second choice.
-		File root = new File(path);
-		for (String name : Arrays.asList((OSDetector.isLinux() ? "javaw" : "javaw.exe"), (OSDetector.isLinux() ? "java" : "java.exe"))) {
-			File java = new File(root, name);
+		final File root = new File(path);
+		for (final String name : Arrays.asList((OSDetector.isLinux() ? "javaw" : "javaw.exe"), (OSDetector.isLinux() ? "java" : "java.exe"))) {
+			final File java = new File(root, name);
 			if (java.exists()) {
 				return java.getAbsolutePath();
 			}
@@ -137,7 +137,7 @@ public class Restarter {
 		boolean useconc = false;
 		boolean minheap = false;
 		boolean maxheap = false;
-		boolean classpath = false;
+		final boolean classpath = false;
 		for (final String h : lst) {
 			// if it's the agent argument : we ignore it otherwise the
 			// address of the old application and the new one will be in
@@ -184,8 +184,8 @@ public class Restarter {
 			jvmArguments.add("-XX:MaxHeapFreeRatio=0");
 		}
 		if (!classpath) {
-			String cp = System.getProperty("java.class.path");
-			if (cp != null && !"".equals(cp)) {
+			final String cp = System.getProperty("java.class.path");
+			if ((cp != null) && !"".equals(cp)) {
 				jvmArguments.add("-cp \"" + System.getProperty("java.class.path") + "\"");
 			}
 		}

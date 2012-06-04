@@ -1,7 +1,4 @@
- 
 package org.intelligentsia.keystone.api.artifacts;
-
-import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -14,8 +11,8 @@ import junit.framework.TestCase;
 public class ArtifactsTest extends TestCase {
 
 	public void testEquals() {
-		ArtifactIdentifier identifier = new ArtifactIdentifier("g1", "a1", "v1");
-		ArtifactIdentifier identifier2 = new ArtifactIdentifier("g1:a1:v1");
+		final ArtifactIdentifier identifier = new ArtifactIdentifier("g1", "a1", "v1");
+		final ArtifactIdentifier identifier2 = new ArtifactIdentifier("g1:a1:v1");
 		Assert.assertEquals(identifier, identifier2);
 	}
 }

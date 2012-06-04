@@ -11,9 +11,6 @@ import java.util.List;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import org.intelligentsia.keystone.api.artifacts.repository.FileRepository;
-import org.intelligentsia.keystone.api.artifacts.repository.Repository;
-
 /**
  * FileRepository JSONTest.
  * 
@@ -21,8 +18,8 @@ import org.intelligentsia.keystone.api.artifacts.repository.Repository;
  */
 public class FileRepositoryTest extends TestCase {
 
-	private File			root;
-	private FileRepository	repository;
+	private File root;
+	private FileRepository repository;
 
 	/**
 	 * @see junit.framework.TestCase#setUp()
@@ -36,7 +33,7 @@ public class FileRepositoryTest extends TestCase {
 
 	public void testRootAccess() {
 		Assert.assertNotNull(repository);
-		File r = repository.get(".");
+		final File r = repository.get(".");
 		Assert.assertNotNull(r);
 		Assert.assertEquals(root.toURI().toString(), r.toURI().toString());
 	}
@@ -49,20 +46,20 @@ public class FileRepositoryTest extends TestCase {
 
 	public void testFolderAccess() {
 		Assert.assertNotNull(repository);
-		File r = repository.get("org/intelligents-ia/keystone");
+		final File r = repository.get("org/intelligents-ia/keystone");
 		Assert.assertNotNull(r);
 	}
 
 	public void testChildFolderAccess() {
 		Assert.assertNotNull(repository);
-		List<File> r = repository.list("org/intelligents-ia/keystone/keystone-api");
+		final List<File> r = repository.list("org/intelligents-ia/keystone/keystone-api");
 		Assert.assertNotNull(r);
 		Assert.assertFalse(r.isEmpty());
 		Assert.assertEquals(3, r.size());
 	}
 
 	public void testPutAndDeleteFile() throws URISyntaxException, IllegalArgumentException, IOException {
-		File source = new File(getClass().getResource("/test-put.txt").toURI());
+		final File source = new File(getClass().getResource("/test-put.txt").toURI());
 		Assert.assertNotNull(source);
 		repository.put("test.txt", source);
 		repository.put("test2/second.txt", source);

@@ -25,7 +25,7 @@ public class JacksonTest extends TestCase {
 	 * Basic test to verify Jackson serialization
 	 */
 	public void testHelloString() throws IOException {
-		String jsonResult = mapper.writeValueAsString("hello");
+		final String jsonResult = mapper.writeValueAsString("hello");
 		assertEquals(jsonResult, "\"hello\"");
 	}
 

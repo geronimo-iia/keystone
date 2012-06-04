@@ -10,8 +10,6 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.intelligentsia.keystone.api.artifacts.repository.metadata.Metadata;
-import org.intelligentsia.keystone.api.artifacts.repository.metadata.Snapshot;
 
 import com.fasterxml.jackson.xml.XmlMapper;
 
@@ -32,14 +30,14 @@ public class MetaDataJacksonTest extends TestCase {
 	}
 
 	public void testWrite() throws JsonGenerationException, JsonMappingException, IOException {
-		Metadata metadata = getMetadata();
-		StringWriter writer = new StringWriter();
+		final Metadata metadata = getMetadata();
+		final StringWriter writer = new StringWriter();
 		mapper.writeValue(writer, metadata);
 		Assert.assertNotNull(writer.toString());
 	}
 
 	public void testRead() throws JsonParseException, JsonMappingException, IOException {
-		Metadata metadata = mapper.readValue(JSON_DATA, Metadata.class);
+		final Metadata metadata = mapper.readValue(JSON_DATA, Metadata.class);
 		Assert.assertNotNull(metadata);
 		Assert.assertEquals("gid", metadata.getGroupId());
 		Assert.assertEquals("aid", metadata.getArtifactId());
@@ -49,16 +47,16 @@ public class MetaDataJacksonTest extends TestCase {
 	}
 
 	public void testXmlJacksonWrite() throws JsonGenerationException, JsonMappingException, IOException {
-		ObjectMapper mapper = new XmlMapper();
-		Metadata metadata = getMetadata();
-		StringWriter writer = new StringWriter();
+		final ObjectMapper mapper = new XmlMapper();
+		final Metadata metadata = getMetadata();
+		final StringWriter writer = new StringWriter();
 		mapper.writeValue(writer, metadata);
 		Assert.assertNotNull(writer.toString());
 	}
 
 	public void testXmlJacksonRead() throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper mapper = new XmlMapper();
-		Metadata metadata = mapper.readValue(XML_DATA, Metadata.class);
+		final ObjectMapper mapper = new XmlMapper();
+		final Metadata metadata = mapper.readValue(XML_DATA, Metadata.class);
 		Assert.assertNotNull(metadata);
 		Assert.assertEquals("org.intelligents-ia", metadata.getGroupId());
 		Assert.assertEquals("keystone", metadata.getArtifactId());
@@ -68,7 +66,7 @@ public class MetaDataJacksonTest extends TestCase {
 		Assert.assertEquals("1.1-SNAPSHOT", metadata.getVersioning().getVersions().get(0));
 		Assert.assertEquals("1.2-SNAPSHOT", metadata.getVersioning().getVersions().get(1));
 
-		Metadata metadata2 = getMetadata();
+		final Metadata metadata2 = getMetadata();
 		Assert.assertEquals(metadata2.getGroupId(), metadata.getGroupId());
 		Assert.assertEquals(metadata2.getArtifactId(), metadata.getArtifactId());
 		Assert.assertEquals(metadata2.getVersion(), metadata.getVersion());
@@ -79,7 +77,7 @@ public class MetaDataJacksonTest extends TestCase {
 	}
 
 	public Metadata getMetadata() {
-		Metadata metadata = new Metadata();
+		final Metadata metadata = new Metadata();
 		metadata.setGroupId("org.intelligents-ia");
 		metadata.setArtifactId("keystone");
 		metadata.setVersion("1.4-SNAPSHOT");

@@ -101,7 +101,7 @@ public class Arguments {
 	 */
 	public static Boolean getBooleanArgument(final Map<String, String> args, final String name, final Boolean defaultTrue) {
 		final String value = args.get(name);
-		if (defaultTrue != null && defaultTrue) {
+		if ((defaultTrue != null) && defaultTrue) {
 			return (value == null) || (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("yes"));
 		} else {
 			return (value != null) && (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("yes"));

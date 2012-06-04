@@ -16,7 +16,8 @@ public class CheckSum {
 	/**
 	 * @param path
 	 * @param checksum
-	 * @return true if computed checksum of targeted path and specified checksum are equals.
+	 * @return true if computed checksum of targeted path and specified checksum
+	 *         are equals.
 	 * @throws RuntimeException
 	 */
 	public static Boolean validate(final String path, final String checksum) throws RuntimeException {

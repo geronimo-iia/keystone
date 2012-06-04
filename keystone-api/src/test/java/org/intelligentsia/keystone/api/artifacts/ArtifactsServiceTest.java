@@ -8,12 +8,6 @@ import java.io.File;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
-import org.intelligentsia.keystone.api.artifacts.ArtifactsService;
-import org.intelligentsia.keystone.api.artifacts.DefaultArtifactsService;
-import org.intelligentsia.keystone.api.artifacts.Resource;
-import org.intelligentsia.keystone.api.artifacts.ResourceDoesNotExistException;
-import org.intelligentsia.keystone.api.artifacts.TransferFailedException;
 import org.intelligentsia.keystone.api.artifacts.repository.FileRepository;
 import org.intelligentsia.keystone.api.artifacts.repository.Repository;
 import org.intelligentsia.keystone.api.artifacts.repository.metadata.Metadata;
@@ -34,7 +28,7 @@ public class ArtifactsServiceTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		File root = new File("src/repository");
+		final File root = new File("src/repository");
 		repository = new FileRepository(new Repository("test-file", root.toURI().toString()));
 		service = new DefaultArtifactsService(repository);
 	}
@@ -42,8 +36,8 @@ public class ArtifactsServiceTest extends TestCase {
 	public void testMetadataExist() {
 		Assert.assertNotNull(repository);
 		Assert.assertNotNull(service);
-		ArtifactIdentifier keystoneApi = new ArtifactIdentifier("org.intelligents-ia.keystone:keystone-api");
-		Metadata metadata = service.getMetadata(keystoneApi);
+		final ArtifactIdentifier keystoneApi = new ArtifactIdentifier("org.intelligents-ia.keystone:keystone-api");
+		final Metadata metadata = service.getMetadata(keystoneApi);
 		Assert.assertNotNull(metadata);
 		Assert.assertEquals("org.intelligents-ia.keystone", metadata.getGroupId());
 		Assert.assertEquals("keystone-api", metadata.getArtifactId());
@@ -52,29 +46,29 @@ public class ArtifactsServiceTest extends TestCase {
 	public void testMetadataNotExist() {
 		Assert.assertNotNull(repository);
 		Assert.assertNotNull(service);
-		ArtifactIdentifier keystoneApi = new ArtifactIdentifier("org.intelligents-ia.keystone:keystonenotexists");
+		final ArtifactIdentifier keystoneApi = new ArtifactIdentifier("org.intelligents-ia.keystone:keystonenotexists");
 		try {
 			service.getMetadata(keystoneApi);
 			Assert.fail("metadata should not exists for org.intelligents-ia.keystone:keystonenotexists");
-		} catch (ResourceDoesNotExistException e) {
+		} catch (final ResourceDoesNotExistException e) {
 		}
 	}
 
 	public void testMetadataInvalid() {
 		Assert.assertNotNull(repository);
 		Assert.assertNotNull(service);
-		ArtifactIdentifier keystoneApi = new ArtifactIdentifier("org.intelligents-ia.keystone:keystoneinvalid");
+		final ArtifactIdentifier keystoneApi = new ArtifactIdentifier("org.intelligents-ia.keystone:keystoneinvalid");
 		try {
 			service.getMetadata(keystoneApi);
 			Assert.fail("metadata must be invalid for org.intelligents-ia.keystone:keystoneinvalid");
-		} catch (TransferFailedException e) {
+		} catch (final TransferFailedException e) {
 		}
 	}
 
 	public void testResolve() {
 		Assert.assertNotNull(repository);
 		Assert.assertNotNull(service);
-		ArtifactIdentifier keystoneApi = new ArtifactIdentifier("org.intelligents-ia.keystone:keystone-api:1.3");
+		final ArtifactIdentifier keystoneApi = new ArtifactIdentifier("org.intelligents-ia.keystone:keystone-api:1.3");
 		ArtifactIdentifier id = service.resolve("org.intelligents-ia.keystone", "keystone-api", false);
 		Assert.assertNotNull(id);
 		Assert.assertEquals(keystoneApi, id);
@@ -86,8 +80,8 @@ public class ArtifactsServiceTest extends TestCase {
 	public void testGetResource() {
 		Assert.assertNotNull(repository);
 		Assert.assertNotNull(service);
-		ArtifactIdentifier keystoneApi = new ArtifactIdentifier("org.intelligents-ia.keystone:keystone-api");
-		Resource resource = service.get(keystoneApi);
+		final ArtifactIdentifier keystoneApi = new ArtifactIdentifier("org.intelligents-ia.keystone:keystone-api");
+		final Resource resource = service.get(keystoneApi);
 		Assert.assertNotNull(resource);
 		Assert.assertNotNull(resource.getArtefactIdentifier());
 		Assert.assertNotNull(resource.getName());

@@ -23,8 +23,8 @@ public class JniLoader {
 	 *            libraries name comma separated
 	 * @return true if all libraries has been successfully loaded.
 	 */
-	public static Boolean loadLibraries(File directory, String libnames) {
-		StringTokenizer tokenizer = new StringTokenizer(libnames, ",");
+	public static Boolean loadLibraries(final File directory, final String libnames) {
+		final StringTokenizer tokenizer = new StringTokenizer(libnames, ",");
 		Boolean result = Boolean.TRUE;
 		while (tokenizer.hasMoreTokens() && result) {
 			result = loadLibrary(directory, tokenizer.nextToken());
@@ -41,19 +41,19 @@ public class JniLoader {
 	 *            library name
 	 * @return true if library has been successfully loaded.
 	 */
-	public static Boolean loadLibrary(File directory, String libname) {
-		String systemLibName = System.mapLibraryName(libname);
-		File lib = new File(directory, systemLibName);
+	public static Boolean loadLibrary(final File directory, final String libname) {
+		final String systemLibName = System.mapLibraryName(libname);
+		final File lib = new File(directory, systemLibName);
 		if (!lib.exists()) {
 			Console.WARNING("Library '" + libname + "' has not be found ('" + lib.getAbsolutePath() + "')");
 			return Boolean.FALSE;
 		}
 		try {
 			Runtime.getRuntime().load(lib.getAbsolutePath());
-		} catch (UnsatisfiedLinkError e) {
+		} catch (final UnsatisfiedLinkError e) {
 			Console.WARNING("Library '" + libname + "' not found ('" + lib.getAbsolutePath() + "') or her dependencies not ever loaded", e);
 			return Boolean.FALSE;
-		} catch (Throwable e) {
+		} catch (final Throwable e) {
 			Console.WARNING("Loading Library '" + libname + "'", e);
 			return Boolean.FALSE;
 		}

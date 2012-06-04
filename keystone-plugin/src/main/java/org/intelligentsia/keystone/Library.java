@@ -49,7 +49,7 @@ public class Library implements Serializable {
 	 * @param name
 	 *            the name to set
 	 */
-	public final void setName(String name) {
+	public final void setName(final String name) {
 		this.name = name;
 	}
 
@@ -64,7 +64,7 @@ public class Library implements Serializable {
 	 * @param path
 	 *            the path to set
 	 */
-	public final void setPath(String path) {
+	public final void setPath(final String path) {
 		this.path = path;
 	}
 

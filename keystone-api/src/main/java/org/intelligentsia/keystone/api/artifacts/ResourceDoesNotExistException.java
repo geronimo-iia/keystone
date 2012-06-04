@@ -10,7 +10,7 @@ package org.intelligentsia.keystone.api.artifacts;
  */
 public class ResourceDoesNotExistException extends KeystoneRuntimeException {
 
-	private static final long	serialVersionUID	= 402218340493598939L;
+	private static final long serialVersionUID = 402218340493598939L;
 
 	/**
 	 * Build a new instance of <code>ResourceDoesNotExistException</code>
@@ -25,7 +25,7 @@ public class ResourceDoesNotExistException extends KeystoneRuntimeException {
 	 * @param message
 	 * @param cause
 	 */
-	public ResourceDoesNotExistException(String message, Throwable cause) {
+	public ResourceDoesNotExistException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
@@ -34,7 +34,7 @@ public class ResourceDoesNotExistException extends KeystoneRuntimeException {
 	 * 
 	 * @param message
 	 */
-	public ResourceDoesNotExistException(String message) {
+	public ResourceDoesNotExistException(final String message) {
 		super(message);
 	}
 
@@ -43,7 +43,7 @@ public class ResourceDoesNotExistException extends KeystoneRuntimeException {
 	 * 
 	 * @param cause
 	 */
-	public ResourceDoesNotExistException(Throwable cause) {
+	public ResourceDoesNotExistException(final Throwable cause) {
 		super(cause);
 	}
 

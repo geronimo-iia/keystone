@@ -39,7 +39,7 @@ public class ClientHttpRepository implements RepositoryService {
 	/**
 	 * Inner locator.
 	 */
-	private Locator<String> locator;
+	private final Locator<String> locator;
 	/**
 	 * Async HTTP Client.
 	 */
@@ -62,11 +62,11 @@ public class ClientHttpRepository implements RepositoryService {
 	 * @param httpClient
 	 * @throws MalformedURLException
 	 */
-	public ClientHttpRepository(final Repository repository, AsyncHttpClient httpClient) {
+	public ClientHttpRepository(final Repository repository, final AsyncHttpClient httpClient) {
 		super();
 		locator = new URLLocator(AsyncHttpProviderUtils.createUri(repository.getUrl()).toString());
 		if (httpClient == null) {
-			Builder builder = new AsyncHttpClientConfig.Builder();
+			final Builder builder = new AsyncHttpClientConfig.Builder();
 			builder.setCompressionEnabled(true).setAllowPoolingConnection(true).setRequestTimeoutInMs(30000).build();
 			asyncHttpClient = new AsyncHttpClient(builder.build());
 		} else {
@@ -77,11 +77,12 @@ public class ClientHttpRepository implements RepositoryService {
 	/**
 	 * @see org.intelligentsia.keystone.api.artifacts.repository.RepositoryService#get(java.lang.String)
 	 */
-	public File get(String resource) throws ResourceDoesNotExistException, TransferFailedException {
+	@Override
+	public File get(final String resource) throws ResourceDoesNotExistException, TransferFailedException {
 		File destination = null;
 		try {
 			destination = File.createTempFile("repository", ".tmp");
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new TransferFailedException(StringUtils.format("(get %s) cannot create temp file", resource), e);
 		}
 		// use a resumable download
@@ -90,7 +91,7 @@ public class ClientHttpRepository implements RepositoryService {
 		final RandomAccessFile file;
 		try {
 			file = new RandomAccessFile(destination, "rw");
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			throw new TransferFailedException("cannot access on temp file", e);
 		}
 		final ResumableAsyncHandler<Response> handler = new ResumableAsyncHandler<Response>();
@@ -98,7 +99,8 @@ public class ClientHttpRepository implements RepositoryService {
 			/**
 			 * @see com.ning.http.client.resumable.ResumableListener#onBytesReceived(java.nio.ByteBuffer)
 			 */
-			public void onBytesReceived(ByteBuffer byteBuffer) throws IOException {
+			@Override
+			public void onBytesReceived(final ByteBuffer byteBuffer) throws IOException {
 				file.seek(file.length());
 				file.write(byteBuffer.array());
 			}
@@ -106,10 +108,11 @@ public class ClientHttpRepository implements RepositoryService {
 			/**
 			 * @see com.ning.http.client.resumable.ResumableListener#onAllBytesReceived()
 			 */
+			@Override
 			public void onAllBytesReceived() {
 				try {
 					file.close();
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					handler.onThrowable(e);
 				}
 			}
@@ -117,10 +120,11 @@ public class ClientHttpRepository implements RepositoryService {
 			/**
 			 * @see com.ning.http.client.resumable.ResumableListener#length()
 			 */
+			@Override
 			public long length() {
 				try {
 					return file.length();
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					handler.onThrowable(e);
 					return -1;
 				}
@@ -138,15 +142,16 @@ public class ClientHttpRepository implements RepositoryService {
 			} else {
 				throw new TransferFailedException(StringUtils.format("error %s when transferring %s", response.getStatusCode(), resource));
 			}
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			throw new TransferFailedException(StringUtils.format("(get %s)", resource), e);
-		} catch (ExecutionException e) {
+		} catch (final ExecutionException e) {
 			throw new TransferFailedException(StringUtils.format("(get %s)", resource), e);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new TransferFailedException(StringUtils.format("(get %s)", resource), e);
 		} finally {
-			if (cleanUp)
+			if (cleanUp) {
 				destination.delete();
+			}
 		}
 
 		return destination;
@@ -155,7 +160,8 @@ public class ClientHttpRepository implements RepositoryService {
 	/**
 	 * @see org.intelligentsia.keystone.api.artifacts.repository.RepositoryService#exists(java.lang.String)
 	 */
-	public boolean exists(String resource) throws TransferFailedException {
+	@Override
+	public boolean exists(final String resource) throws TransferFailedException {
 		Future<Boolean> f;
 		try {
 			f = asyncHttpClient.prepareGet(locator.resolve(resource)).execute(new AsyncHandler<Boolean>() {
@@ -164,21 +170,24 @@ public class ClientHttpRepository implements RepositoryService {
 				/**
 				 * @see com.ning.http.client.AsyncHandler#onThrowable(java.lang.Throwable)
 				 */
-				public void onThrowable(Throwable t) {
+				@Override
+				public void onThrowable(final Throwable t) {
 					result = Boolean.FALSE;
 				}
 
 				/**
 				 * @see com.ning.http.client.AsyncHandler#onBodyPartReceived(com.ning.http.client.HttpResponseBodyPart)
 				 */
-				public com.ning.http.client.AsyncHandler.STATE onBodyPartReceived(HttpResponseBodyPart bodyPart) throws Exception {
+				@Override
+				public com.ning.http.client.AsyncHandler.STATE onBodyPartReceived(final HttpResponseBodyPart bodyPart) throws Exception {
 					return STATE.ABORT;
 				}
 
 				/**
 				 * @see com.ning.http.client.AsyncHandler#onStatusReceived(com.ning.http.client.HttpResponseStatus)
 				 */
-				public com.ning.http.client.AsyncHandler.STATE onStatusReceived(HttpResponseStatus responseStatus) throws Exception {
+				@Override
+				public com.ning.http.client.AsyncHandler.STATE onStatusReceived(final HttpResponseStatus responseStatus) throws Exception {
 					result = (responseStatus.getStatusCode() == 200);
 					return STATE.ABORT;
 				}
@@ -186,25 +195,27 @@ public class ClientHttpRepository implements RepositoryService {
 				/**
 				 * @see com.ning.http.client.AsyncHandler#onHeadersReceived(com.ning.http.client.HttpResponseHeaders)
 				 */
-				public com.ning.http.client.AsyncHandler.STATE onHeadersReceived(HttpResponseHeaders headers) throws Exception {
+				@Override
+				public com.ning.http.client.AsyncHandler.STATE onHeadersReceived(final HttpResponseHeaders headers) throws Exception {
 					return STATE.ABORT;
 				}
 
 				/**
 				 * @see com.ning.http.client.AsyncHandler#onCompleted()
 				 */
+				@Override
 				public Boolean onCompleted() throws Exception {
 					return result;
 				}
 			});
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new TransferFailedException(StringUtils.format("(exists %s)", resource), e);
 		}
 		try {
 			return f.get();
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			throw new TransferFailedException(StringUtils.format("(exists %s)", resource), e);
-		} catch (ExecutionException e) {
+		} catch (final ExecutionException e) {
 			throw new TransferFailedException(StringUtils.format("(exists %s)", resource), e);
 		}
 	}
@@ -213,7 +224,8 @@ public class ClientHttpRepository implements RepositoryService {
 	 * @see org.intelligentsia.keystone.api.artifacts.repository.RepositoryService#put(java.lang.String,
 	 *      java.io.File)
 	 */
-	public void put(String resource, File source) throws ResourceDoesNotExistException, TransferFailedException {
+	@Override
+	public void put(final String resource, final File source) throws ResourceDoesNotExistException, TransferFailedException {
 		// RequestBuilder builder = new RequestBuilder("PUT");
 		// Request request =
 		// builder.setUrl(locator.resolve(resource)).addHeader("name",
@@ -233,11 +245,11 @@ public class ClientHttpRepository implements RepositoryService {
 			if (response.getStatusCode() != 200) {
 				throw new TransferFailedException(StringUtils.format("error %s when transferring %s ", response.getStatusCode(), resource));
 			}
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			throw new TransferFailedException(StringUtils.format("(put %s %s)", resource, source.getPath()), e);
-		} catch (ExecutionException e) {
+		} catch (final ExecutionException e) {
 			throw new TransferFailedException(StringUtils.format("(put %s %s)", resource, source.getPath()), e);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new TransferFailedException(StringUtils.format("(put %s %s)", resource, source.getPath()), e);
 		}
 	}
@@ -245,7 +257,8 @@ public class ClientHttpRepository implements RepositoryService {
 	/**
 	 * @see org.intelligentsia.keystone.api.artifacts.repository.RepositoryService#delete(java.lang.String)
 	 */
-	public boolean delete(String resource) throws ResourceDoesNotExistException {
+	@Override
+	public boolean delete(final String resource) throws ResourceDoesNotExistException {
 		throw new KeystoneRuntimeException("not supported");
 	}
 
@@ -264,7 +277,7 @@ public class ClientHttpRepository implements RepositoryService {
 		 * 
 		 * @param root
 		 */
-		public URLLocator(String root) {
+		public URLLocator(final String root) {
 			super();
 			this.root = root.endsWith("/") ? root : root + "/";
 		}
@@ -272,6 +285,7 @@ public class ClientHttpRepository implements RepositoryService {
 		/**
 		 * @see org.intelligentsia.keystone.api.artifacts.repository.Locator#getRoot()
 		 */
+		@Override
 		public String getRoot() {
 			return root;
 		}
@@ -279,7 +293,8 @@ public class ClientHttpRepository implements RepositoryService {
 		/**
 		 * @see org.intelligentsia.keystone.api.artifacts.repository.Locator#resolve(java.lang.String)
 		 */
-		public String resolve(String target) {
+		@Override
+		public String resolve(final String target) {
 			return new StringBuilder(root).append(target).toString();
 		}
 

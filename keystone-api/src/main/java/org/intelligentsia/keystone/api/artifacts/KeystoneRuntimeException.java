@@ -11,7 +11,7 @@ package org.intelligentsia.keystone.api.artifacts;
  */
 public class KeystoneRuntimeException extends RuntimeException {
 
-	private static final long	serialVersionUID	= 6954846105141143288L;
+	private static final long serialVersionUID = 6954846105141143288L;
 
 	/**
 	 * Build a new instance of <code>KeystoneRuntimeException</code>
@@ -26,7 +26,7 @@ public class KeystoneRuntimeException extends RuntimeException {
 	 * @param message
 	 * @param cause
 	 */
-	public KeystoneRuntimeException(String message, Throwable cause) {
+	public KeystoneRuntimeException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
@@ -35,7 +35,7 @@ public class KeystoneRuntimeException extends RuntimeException {
 	 * 
 	 * @param message
 	 */
-	public KeystoneRuntimeException(String message) {
+	public KeystoneRuntimeException(final String message) {
 		super(message);
 	}
 
@@ -44,7 +44,7 @@ public class KeystoneRuntimeException extends RuntimeException {
 	 * 
 	 * @param cause
 	 */
-	public KeystoneRuntimeException(Throwable cause) {
+	public KeystoneRuntimeException(final Throwable cause) {
 		super(cause);
 	}
 

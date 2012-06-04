@@ -11,7 +11,6 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.intelligentsia.keystone.api.artifacts.ResourceDoesNotExistException;
 import org.intelligentsia.keystone.api.artifacts.TransferFailedException;
-import org.intelligentsia.keystone.api.artifacts.pom.Pom;
 import org.intelligentsia.keystone.api.artifacts.repository.FileRepository;
 import org.intelligentsia.keystone.api.artifacts.repository.Repository;
 
@@ -30,13 +29,13 @@ public class PomJacksonTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		File root = new File("src/repository");
+		final File root = new File("src/repository");
 		repository = new FileRepository(new Repository("test-file", root.toURI().toString()));
 	}
 
 	public void testReadXmlPom() throws JsonParseException, JsonMappingException, ResourceDoesNotExistException, TransferFailedException, IOException {
-		ObjectMapper mapper = new XmlMapper();
-		Pom pom = mapper.readValue(repository.get("org/intelligents-ia/keystone/keystone-api/1.3/keystone-api-1.3.pom"), Pom.class);
+		final ObjectMapper mapper = new XmlMapper();
+		final Pom pom = mapper.readValue(repository.get("org/intelligents-ia/keystone/keystone-api/1.3/keystone-api-1.3.pom"), Pom.class);
 		Assert.assertNotNull(pom);
 		Assert.assertEquals(null, pom.getGroupId());
 		Assert.assertEquals("keystone-api", pom.getArtifactId());

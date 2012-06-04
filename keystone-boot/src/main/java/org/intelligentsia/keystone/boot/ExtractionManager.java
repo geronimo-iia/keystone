@@ -80,10 +80,10 @@ public class ExtractionManager {
 	 * @param force
 	 *            if true try to clean all sub directory.
 	 */
-	public static void cleanUp(File home, Boolean force) {
+	public static void cleanUp(final File home, final Boolean force) {
 		if (ExtractionManager.cleanUpLib || force) {
 			Console.VERBOSE("Clean up lib");
-			File lib = new File(home, "lib");
+			final File lib = new File(home, "lib");
 			if (lib.exists()) {
 				if (!ExtractionManager.delete(lib)) {
 					Console.WARNING("Unable to Clean up lib");
@@ -111,7 +111,7 @@ public class ExtractionManager {
 			if (attemptCount > maxAttempts) {
 				throw new IOException("The highly improbable has occurred! Failed to create a unique temporary directory after " + maxAttempts + " attempts.");
 			}
-			String dirName = UUID.randomUUID().toString();
+			final String dirName = UUID.randomUUID().toString();
 			newTempDir = new File(sysTempDir, dirName);
 		} while (newTempDir.exists());
 
@@ -170,7 +170,7 @@ public class ExtractionManager {
 	 */
 	private static void explode(final File home, final String fromPath, final String jarPath, final Boolean override) throws IOException, ZipException {
 		// check if jarPath if a jar file. With local test case, it's a folder.
-		File check = new File(jarPath);
+		final File check = new File(jarPath);
 		if (check.exists() && !check.isDirectory()) {
 			final JarFile jar = new JarFile(URLDecoder.decode(jarPath, "UTF-8"));
 			for (final JarEntry entry : Collections.list(jar.entries())) {

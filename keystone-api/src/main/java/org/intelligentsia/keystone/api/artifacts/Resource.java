@@ -11,11 +11,11 @@ import java.io.File;
  */
 public class Resource {
 
-	private ArtifactIdentifier	artefactIdentifier;
+	private ArtifactIdentifier artefactIdentifier;
 
-	private String				name;
+	private String name;
 
-	private File				localFile;
+	private File localFile;
 
 	/**
 	 * Build a new instance of <code>Resource</code>
@@ -28,7 +28,7 @@ public class Resource {
 		return this.artefactIdentifier;
 	}
 
-	public void setArtefactIdentifier(ArtifactIdentifier artefactIdentifier) {
+	public void setArtefactIdentifier(final ArtifactIdentifier artefactIdentifier) {
 		this.artefactIdentifier = artefactIdentifier;
 	}
 
@@ -36,7 +36,7 @@ public class Resource {
 		return this.name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -44,7 +44,7 @@ public class Resource {
 		return this.localFile;
 	}
 
-	public void setLocalFile(File localFile) {
+	public void setLocalFile(final File localFile) {
 		this.localFile = localFile;
 	}
 

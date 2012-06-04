@@ -52,7 +52,7 @@ public class KeystoneException extends RuntimeException {
 	 * @param message
 	 * @param cause
 	 */
-	public KeystoneException(final Operation operation, String message, Throwable cause) {
+	public KeystoneException(final Operation operation, final String message, final Throwable cause) {
 		super(message, cause);
 		this.operation = operation;
 	}
@@ -62,7 +62,7 @@ public class KeystoneException extends RuntimeException {
 	 * 
 	 * @param message
 	 */
-	public KeystoneException(final Operation operation, String message) {
+	public KeystoneException(final Operation operation, final String message) {
 		super(message);
 		this.operation = operation;
 	}
@@ -72,7 +72,7 @@ public class KeystoneException extends RuntimeException {
 	 * 
 	 * @param cause
 	 */
-	public KeystoneException(final Operation operation, Throwable cause) {
+	public KeystoneException(final Operation operation, final Throwable cause) {
 		super(cause);
 		this.operation = operation;
 	}

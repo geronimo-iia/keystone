@@ -36,7 +36,7 @@ public class Repository implements Serializable {
 	 * @param id
 	 * @param url
 	 */
-	public Repository(String id, String url) {
+	public Repository(final String id, final String url) {
 		super();
 		this.id = id;
 		this.url = url;
@@ -49,7 +49,7 @@ public class Repository implements Serializable {
 	/**
 	 * @param id
 	 */
-	public void setId(String id) {
+	public void setId(final String id) {
 		this.id = id;
 	}
 
@@ -57,7 +57,7 @@ public class Repository implements Serializable {
 		return this.url;
 	}
 
-	public void setUrl(String url) {
+	public void setUrl(final String url) {
 		this.url = url;
 	}
 
@@ -66,8 +66,7 @@ public class Repository implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Repository [" + (this.id != null ? "id=" + this.id + ", " : "")
-				+ (this.url != null ? "url=" + this.url : "") + "]";
+		return "Repository [" + (this.id != null ? "id=" + this.id + ", " : "") + (this.url != null ? "url=" + this.url : "") + "]";
 	}
 
 	/**
@@ -77,7 +76,7 @@ public class Repository implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+		result = (prime * result) + ((this.id == null) ? 0 : this.id.hashCode());
 		return result;
 	}
 
@@ -85,19 +84,24 @@ public class Repository implements Serializable {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		Repository other = (Repository) obj;
+		}
+		final Repository other = (Repository) obj;
 		if (this.id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
-		} else if (!this.id.equals(other.id))
+			}
+		} else if (!this.id.equals(other.id)) {
 			return false;
+		}
 		return true;
 	}
 

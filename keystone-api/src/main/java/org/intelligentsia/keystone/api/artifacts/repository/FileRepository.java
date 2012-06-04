@@ -62,8 +62,8 @@ public class FileRepository implements RepositoryService {
 	 * @throws TransferFailedException
 	 *             if error occurs when transferring data.
 	 */
-	public void put(final String resource, final File source) throws ResourceDoesNotExistException,
-			TransferFailedException {
+	@Override
+	public void put(final String resource, final File source) throws ResourceDoesNotExistException, TransferFailedException {
 		if (!source.exists()) {
 			throw new ResourceDoesNotExistException(source.getPath());
 		}
@@ -84,6 +84,7 @@ public class FileRepository implements RepositoryService {
 	 * @throws TransferFailedException
 	 *             if error occurs when transferring data.
 	 */
+	@Override
 	public File get(final String resource) throws ResourceDoesNotExistException, TransferFailedException {
 		final File result = locator.resolve(resource);
 		if (!result.exists()) {
@@ -96,6 +97,7 @@ public class FileRepository implements RepositoryService {
 	 * @param resource
 	 * @return true if resource exist.
 	 */
+	@Override
 	public boolean exists(final String resource) {
 		final File destination = locator.resolve(resource);
 		if (resource.endsWith("/")) {
@@ -114,8 +116,8 @@ public class FileRepository implements RepositoryService {
 		if (!destination.isDirectory()) {
 			return Collections.emptyList();
 		}
-		List<File> result = new ArrayList<File>();
-		for (File f : destination.listFiles()) {
+		final List<File> result = new ArrayList<File>();
+		for (final File f : destination.listFiles()) {
 			if (!f.getName().startsWith(".")) {
 				result.add(f);
 			}
@@ -132,6 +134,7 @@ public class FileRepository implements RepositoryService {
 	 *             if error occurs when transferring data.
 	 * @return true if delete is completed
 	 */
+	@Override
 	public boolean delete(final String resource) {
 		final File destination = locator.resolve(resource);
 		return FileUtils.delete(destination);
@@ -168,6 +171,7 @@ public class FileRepository implements RepositoryService {
 		/**
 		 * @see org.intelligentsia.keystone.api.artifacts.repository.Locator#getRoot()
 		 */
+		@Override
 		public File getRoot() {
 			return root;
 		}
@@ -175,6 +179,7 @@ public class FileRepository implements RepositoryService {
 		/**
 		 * @see org.intelligentsia.keystone.api.artifacts.repository.Locator#resolve(java.lang.String)
 		 */
+		@Override
 		public File resolve(final String target) {
 			// convert each / or \ to a file directory
 			String destination = StringUtils.replace(target, "\\", File.separator);

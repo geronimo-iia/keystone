@@ -5,7 +5,6 @@ package org.intelligentsia.keystone.api;
 
 import org.intelligentsia.keystone.boot.KeystoneException;
 
-
 /**
  * Updater sample.
  * 
@@ -20,7 +19,7 @@ public class Updater {
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		if (args.length == 0) {
 			System.out.println("Usage: Updater new-jar ");
 			return;

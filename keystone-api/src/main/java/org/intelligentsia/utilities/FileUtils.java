@@ -226,7 +226,7 @@ public class FileUtils {
 			if (attemptCount > maxAttempts) {
 				throw new IOException("The highly improbable has occurred! Failed to create a unique temporary directory after " + maxAttempts + " attempts.");
 			}
-			String dirName = UUID.randomUUID().toString();
+			final String dirName = UUID.randomUUID().toString();
 			newTempDir = new File(sysTempDir, dirName);
 		} while (newTempDir.exists());
 
@@ -244,16 +244,17 @@ public class FileUtils {
 	 * @return
 	 * @throws IOException
 	 */
-	public static String readAsString(File data) throws IOException {
-		StringBuilder builder = new StringBuilder();
+	public static String readAsString(final File data) throws IOException {
+		final StringBuilder builder = new StringBuilder();
 		FileReader reader = null;
 		try {
 			reader = new FileReader(data);
-			char[] buffer = new char[2048];
+			final char[] buffer = new char[2048];
 			int max = 0;
 			while ((max = reader.read(buffer, 0, 2048)) > 0) {
-				if (max > 0)
+				if (max > 0) {
 					builder.append(buffer, 0, max);
+				}
 			}
 		} finally {
 			reader.close();

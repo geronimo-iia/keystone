@@ -37,20 +37,32 @@ See more [doc][dc-wiki] on wiki.
 2. Add some repositories
 
 ```xml
-    <pluginRepositories>
-        <pluginRepository>
-            <id>intelligents-ia</id>
-            <name>Intelligents-ia Repository</name>
-            <url>http://intelligents-ia.com/maven2</url>
-        </pluginRepository>
-    </pluginRepositories>
-    <repositories>
-        <repository>
-            <id>intelligents-ia</id>
-            <name>Intelligents-ia Repository</name>
-            <url>http://intelligents-ia.com/maven2</url>
-        </repository>
-    </repositories>
+	<repositories>
+		<repository>
+			<id>keystone-intelligents-ia-releases</id>
+			<name>Intelligents-ia releases repository On github</name>
+			<url>https://github.com/geronimo-iia/keystone/repository/releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>keystone-intelligents-ia-releases</id>
+			<name>Intelligents-ia releases repository On github</name>
+			<url>https://github.com/geronimo-iia/keystone/repository/releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 ```
 
 

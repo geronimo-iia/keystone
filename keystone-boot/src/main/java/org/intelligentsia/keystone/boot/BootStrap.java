@@ -24,7 +24,8 @@ import java.util.jar.Attributes;
  * and option for restarting system... *_*
  * </p>
  * <p>
- * BASIC Structure: ${home}/lib all libraries contained in single jar file.
+ * BASIC Structure: ${home}/lib all libraries contained in single jar file
+ * (under META-INF/lib and/or /lib folder of this single jar)
  * </p>
  * <p>
  * if ${home} is not writable, system will use jvm.temp.dir\{} as home folder.

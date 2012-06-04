@@ -20,6 +20,13 @@ import java.util.zip.ZipException;
 /**
  * ExtractionManager class group all mechanism for extract and clean up system.
  * 
+ * Extract all things located in jar under:
+ * <ul>
+ * <li>META-INF/lib</li>
+ * <li>lib</li>
+ * </ul>
+ * To {home}/lib folder.
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class ExtractionManager {
@@ -51,6 +58,9 @@ public class ExtractionManager {
 			if (location != null) {
 				// WARN here it's "lib/" for all OS (we're looking inside a jar,
 				// not on file system).
+				// the good place
+				ExtractionManager.explode(new File(home, "lib"), "META-INF/lib/", location, Boolean.FALSE);
+				// the old bad place
 				ExtractionManager.explode(new File(home, "lib"), "lib/", location, Boolean.FALSE);
 			} else {
 				Console.WARNING("Error when exploding : Location is null");

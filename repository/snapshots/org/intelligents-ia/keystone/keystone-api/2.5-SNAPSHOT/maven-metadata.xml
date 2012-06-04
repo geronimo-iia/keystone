@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.intelligents-ia.keystone</groupId>
+  <artifactId>keystone-api</artifactId>
+  <version>2.5-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20120604.150411</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20120604150419</lastUpdated>
+  </versioning>
+</metadata>

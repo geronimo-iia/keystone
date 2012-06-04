@@ -316,7 +316,7 @@ public class BootStrapMojo extends AbstractMojo {
 	 */
 	private File copyDependencies(final File root) throws MojoExecutionException {
 		getLog().info("copy runtime dependencies");
-		final File libDirectory = new File(root, "lib");
+		final File libDirectory = new File(new File(root, "META-INF"), "lib");
 		if (!libDirectory.mkdirs()) {
 			throw new MojoExecutionException("Cannot create libraries directory " + libDirectory.getName());
 		}

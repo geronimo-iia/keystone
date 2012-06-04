@@ -1,0 +1,3 @@
+
+Sample to deploy on local
+mvn clean deploy -DaltDeploymentRepository=intelligents-ia-snapshot::default::file:../iia-mvn-repo/snapshots

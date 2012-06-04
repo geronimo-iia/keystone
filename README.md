@@ -56,3 +56,21 @@ See more [doc][dc-wiki] on wiki.
 
 [dc-wiki]: https://github.com/geronimo-iia/keystone/wiki
 
+
+## Use extra features: Restart your application when needed!
+
+1. Add a new dependency on your project
+```xml
+<dependency>
+	<groupId>org.intelligents-ia.keystone</groupId>
+	<artifactId>keystone-boot</artifactId>
+	<version>2.5</version>
+</dependency>
+```
+
+2. When you want to restart, simply throw this exception
+```java
+throw new KeystoneException(KeystoneException.Operation.RESTART);
+```
+
+

@@ -119,6 +119,24 @@
 			<url>https://github.com/geronimo-iia/iia-mvn-repo/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
+	<profiles>
+		<profile>
+			<id>local-deploy</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<distributionManagement>
+				<repository>
+					<id>intelligents-ia-releases</id>
+					<url>file:../iia-mvn-repo/releases</url>
+				</repository>
+				<snapshotRepository>
+					<id>intelligents-ia-snapshot</id>
+					<url>file:../iia-mvn-repo/snapshots</url>
+				</snapshotRepository>
+			</distributionManagement>
+		</profile>
+	</profiles>
 	<repositories>
 		<repository>
 			<id>intelligents-ia</id>

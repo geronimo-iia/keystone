@@ -1,10 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<parent>
-		<groupId>org.intelligents-ia</groupId>
-		<artifactId>intelligents-ia</artifactId>
-		<version>1.2</version>
-	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.intelligents-ia.keystone</groupId>
 	<artifactId>keystone</artifactId>
@@ -120,17 +115,6 @@
 		</snapshotRepository>
 	</distributionManagement>
 	<repositories>
-		<repository>
-			<id>intelligents-ia</id>
-			<name>Intelligents-ia Repository On Intelligents-ia Web Site</name>
-			<url>http://intelligents-ia.com/maven2</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
 		<repository>
 			<id>keystone-intelligents-ia-releases</id>
 			<name>Intelligents-ia releases repository On github</name>

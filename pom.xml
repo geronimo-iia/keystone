@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.intelligents-ia</groupId>
 		<artifactId>intelligents-ia</artifactId>
@@ -10,7 +9,7 @@
 	<artifactId>keystone</artifactId>
 	<packaging>pom</packaging>
 	<name>keystone</name>
-	<version>2.5-SNAPSHOT</version>
+	<version>2.5</version>
 	<description>
         1. Stone wedge-shaped arch which maintains a vault [Architecture].
         2. A central element on which everything depends.

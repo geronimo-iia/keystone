@@ -1,0 +1,71 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.intelligents-ia.keystone</groupId>
+		<artifactId>keystone</artifactId>
+		<version>2.5-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>keystone-api</artifactId>
+	<packaging>jar</packaging>
+	<name>keystone-api</name>
+	<description>
+      Utilities
+    </description>
+	<dependencies>
+		<dependency>
+			<groupId>org.intelligents-ia.keystone</groupId>
+			<artifactId>keystone-boot</artifactId>
+			<version>2.5-SNAPSHOT</version>
+		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- ASYNC HTTP -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>com.ning</groupId>
+			<artifactId>async-http-client</artifactId>
+			<version>${com.ning.version}</version>
+			<optional>true</optional>
+		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- JACKSON -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>${org.codehaus.jackson.version}</version>
+			<optional>true</optional>
+		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- FASTER XML -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>com.fasterxml</groupId>
+			<artifactId>jackson-xml-databind</artifactId>
+			<version>${com.fasterxml.version}</version>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+	<!-- ******************************************************************* -->
+	<!-- BUILD -->
+	<!-- ******************************************************************* -->
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<configuration>
+					<header>${basedir}/../header.txt</header>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.intelligents-ia.keystone</groupId>
+		<artifactId>keystone</artifactId>
+		<version>2.5-SNAPSHOT</version>
+	</parent>
+	<artifactId>keystone-plugin</artifactId>
+	<packaging>maven-plugin</packaging>
+	<name>keystone-plugin</name>
+	<dependencies>
+		<dependency>
+			<groupId>org.intelligents-ia.keystone</groupId>
+			<artifactId>keystone-boot</artifactId>
+			<version>2.5-SNAPSHOT</version>
+		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- MAVEN DEPENDENCIES -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-plugin-api</artifactId>
+			<version>${maven-plugin-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-archiver</artifactId>
+			<version>${maven-archiver.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-project</artifactId>
+			<version>${maven-project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.shared</groupId>
+			<artifactId>maven-dependency-tree</artifactId>
+			<version>${maven-dependency-tree.version}</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<configuration>
+					<header>${basedir}/../header.txt</header>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<properties>
+		<maven-plugin-api.version>2.0</maven-plugin-api.version>
+		<maven-archiver.version>2.2</maven-archiver.version>
+		<maven-project.version>2.0</maven-project.version>
+		<maven-dependency-tree.version>1.2</maven-dependency-tree.version>
+	</properties>
+</project>

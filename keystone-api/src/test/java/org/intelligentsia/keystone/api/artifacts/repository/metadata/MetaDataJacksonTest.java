@@ -1,15 +1,35 @@
+/**
+ *        Licensed to the Apache Software Foundation (ASF) under one
+ *        or more contributor license agreements.  See the NOTICE file
+ *        distributed with this work for additional information
+ *        regarding copyright ownership.  The ASF licenses this file
+ *        to you under the Apache License, Version 2.0 (the
+ *        "License"); you may not use this file except in compliance
+ *        with the License.  You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *        Unless required by applicable law or agreed to in writing,
+ *        software distributed under the License is distributed on an
+ *        "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *        KIND, either express or implied.  See the License for the
+ *        specific language governing permissions and limitations
+ *        under the License.
+ *
+ */
 package org.intelligentsia.keystone.api.artifacts.repository.metadata;
 
 import java.io.IOException;
 import java.io.StringWriter;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.fasterxml.jackson.xml.XmlMapper;
 
@@ -18,17 +38,17 @@ import com.fasterxml.jackson.xml.XmlMapper;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class MetaDataJacksonTest extends TestCase {
+public class MetaDataJacksonTest {
 	private static final String JSON_DATA = "{\"groupId\":\"gid\",\"artifactId\":\"aid\",\"version\":\"1.4-SNAPSHOT\",\"versioning\":{\"latest\":\"1.4-SNAPSHOT\",\"release\":null,\"snapshot\":{\"timestamp\":\"20111002.162808\",\"buildNumber\":1,\"localCopy\":false},\"versions\":[],\"lastUpdated\":\"20111008133412\"},\"plugins\":[]}\r\n";
 	public String XML_DATA = "<metadata><groupId>org.intelligents-ia</groupId><artifactId>keystone</artifactId><versioning><versions><version>1.1-SNAPSHOT</version><version>1.2-SNAPSHOT</version></versions><lastUpdated>20111008133412</lastUpdated></versioning><version>1.4-SNAPSHOT</version></metadata>";
 	private ObjectMapper mapper;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before
+	public void setUp() throws Exception {
 		mapper = new ObjectMapper();
 	}
 
+	@Test
 	public void testWrite() throws JsonGenerationException, JsonMappingException, IOException {
 		final Metadata metadata = getMetadata();
 		final StringWriter writer = new StringWriter();
@@ -36,6 +56,7 @@ public class MetaDataJacksonTest extends TestCase {
 		Assert.assertNotNull(writer.toString());
 	}
 
+	@Test
 	public void testRead() throws JsonParseException, JsonMappingException, IOException {
 		final Metadata metadata = mapper.readValue(JSON_DATA, Metadata.class);
 		Assert.assertNotNull(metadata);
@@ -46,6 +67,7 @@ public class MetaDataJacksonTest extends TestCase {
 		Assert.assertEquals(0, metadata.getVersioning().getVersions().size());
 	}
 
+	@Test
 	public void testXmlJacksonWrite() throws JsonGenerationException, JsonMappingException, IOException {
 		final ObjectMapper mapper = new XmlMapper();
 		final Metadata metadata = getMetadata();
@@ -54,6 +76,7 @@ public class MetaDataJacksonTest extends TestCase {
 		Assert.assertNotNull(writer.toString());
 	}
 
+	@Test
 	public void testXmlJacksonRead() throws JsonParseException, JsonMappingException, IOException {
 		final ObjectMapper mapper = new XmlMapper();
 		final Metadata metadata = mapper.readValue(XML_DATA, Metadata.class);

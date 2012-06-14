@@ -1,5 +1,4 @@
-<!--
-
+====
            Licensed to the Apache Software Foundation (ASF) under one
            or more contributor license agreements.  See the NOTICE file
            distributed with this work for additional information
@@ -17,26 +16,19 @@
            specific language governing permissions and limitations
            under the License.
 
+====
 
--->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<parent>
-		<groupId>org.intelligents-ia.keystone</groupId>
-		<artifactId>keystone</artifactId>
-		<version>1.3</version>
-	</parent>
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>keystone-api</artifactId>
-	<packaging>jar</packaging>
-	<name>keystone-api</name>
-	<description>
-      Utilities
-    </description>
-	<dependencies>
-		<dependency>
-			<groupId>com.ning</groupId>
-			<artifactId>async-http-client</artifactId>
-			<version>1.6.5</version>
-		</dependency>
-	</dependencies>
-</project>
+   =========================================================================
+   ==  Example NOTICE file for use with the Apache License, Version 2.0,  ==
+   ==  in this case for the intelligents-ia dowsers project.              ==
+   =========================================================================
+
+
+   Keystone
+   Copyright 2012 Guibert Jerome
+
+
+
+
+
+ 

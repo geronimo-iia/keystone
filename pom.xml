@@ -22,8 +22,8 @@
 	</developers>
 	<licenses>
 		<license>
-			<name>GNU Lesser General Public License version 2.1</name>
-			<url>http://www.gnu.org/licenses/lgpl.html</url>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 		</license>
 	</licenses>
 	<scm>
@@ -34,17 +34,26 @@
 		<name>Intelligents-ia</name>
 		<url>http://intelligents-ia.com</url>
 	</organization>
+	<!-- ******************************************************************* -->
+	<!-- DEPENDENCIES -->
+	<!-- ******************************************************************* -->
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<version>4.10</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<!-- ******************************************************************* -->
+	<!-- BUILD -->
+	<!-- ******************************************************************* -->
 	<build>
 		<pluginManagement>
 			<plugins>
+				<!-- ******************************************************************* -->
+				<!-- JDK 1.5 -->
+				<!-- ******************************************************************* -->
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>2.3.2</version>
@@ -96,14 +105,61 @@
 						</execution>
 					</executions>
 				</plugin>
+				<!-- ******************************************************************* -->
+				<!-- LICENCE CHECK -->
+				<!-- ******************************************************************* -->
+				<plugin>
+					<groupId>com.mycila.maven-license-plugin</groupId>
+					<artifactId>maven-license-plugin</artifactId>
+					<version>1.9.0</version>
+					<configuration>
+						<header>${basedir}/header.txt</header>
+						<failIfMissing>true</failIfMissing>
+						<aggregate>true</aggregate>
+						<encoding>UTF-8</encoding>
+						<excludes>
+							<exclude>LICENSE.txt</exclude>
+							<exclude>README.md</exclude>
+							<exclude>**/NOTES</exclude>
+							<exclude>**/src/test/resources/**</exclude>
+							<exclude>**/src/repository/**</exclude>
+							<exclude>**/src/test/data/**</exclude>
+							<exclude>**/.gitattributes</exclude>
+							<exclude>**/.gitignore</exclude>
+							<exclude>repository/**</exclude>
+						</excludes>
+						<strictCheck>true</strictCheck>
+					</configuration>
+					<executions>
+						<execution>
+							<id>check-headers</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>check</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+			</plugin>
+		</plugins>
 	</build>
+	<!-- ******************************************************************* -->
+	<!-- MODULE LIST -->
+	<!-- ******************************************************************* -->
 	<modules>
 		<module>keystone-boot</module>
 		<module>keystone-api</module>
 		<module>keystone-plugin</module>
 	</modules>
+	<!-- ******************************************************************* -->
+	<!-- DISTRIBUTION -->
+	<!-- ******************************************************************* -->
 	<distributionManagement>
 		<repository>
 			<id>keystone-intelligents-ia-releases</id>
@@ -162,7 +218,13 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
+	<!-- ******************************************************************* -->
+	<!-- PROPERTIES -->
+	<!-- ******************************************************************* -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<com.ning.version>1.6.5</com.ning.version>
+		<org.codehaus.jackson.version>1.9.0</org.codehaus.jackson.version>
+		<com.fasterxml.version>0.6.1</com.fasterxml.version>
 	</properties>
 </project>

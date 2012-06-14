@@ -1,12 +1,33 @@
 /**
+ *        Licensed to the Apache Software Foundation (ASF) under one
+ *        or more contributor license agreements.  See the NOTICE file
+ *        distributed with this work for additional information
+ *        regarding copyright ownership.  The ASF licenses this file
+ *        to you under the Apache License, Version 2.0 (the
+ *        "License"); you may not use this file except in compliance
+ *        with the License.  You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *        Unless required by applicable law or agreed to in writing,
+ *        software distributed under the License is distributed on an
+ *        "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *        KIND, either express or implied.  See the License for the
+ *        specific language governing permissions and limitations
+ *        under the License.
+ *
+ */
+/**
  * 
  */
 package org.intelligentsia.keystone.boot;
 
+import java.io.IOException;
 import java.util.Map;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
+
+import org.junit.Test;
 
 /**
  * ArgumentsTest.
@@ -14,27 +35,38 @@ import junit.framework.TestCase;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public class ArgumentsTest extends TestCase {
+public class ArgumentsTest {
 
 	private static String[] STRINGS = new String[] { "--name", "--name2=false", "--name3=yes", "--titi=tutu", "single", "-dummy", "-other=value", "--i=123" };
 
+	@Test
 	public void testLoadArgument() {
 		Map<String, String> arguments = Arguments.loadArguments(STRINGS);
 		Assert.assertNotNull(arguments);
 	}
 
+	@Test
+	public void loadFromProperties() throws IOException {
+		Map<String, String> arguments =  Arguments.loadArguments(STRINGS, "keystone.properties");
+		Assert.assertNotNull("Expected 'Main-Class' key", arguments.get("Main-Class"));
+		Assert.assertEquals("Expected 'tutu'", arguments.get("Main-Class"), "org.intelligentsia.keystone.boot.Main");
+	}
+	
+	@Test
 	public void testLoadArgumentSingleValue() {
 		Map<String, String> arguments = Arguments.loadArguments(STRINGS);
 		Assert.assertNotNull("Expected 'name' key", arguments.get("name"));
 		Assert.assertTrue("Expected 'false'", Boolean.parseBoolean(arguments.get("name")));
 	}
 
+	@Test
 	public void testLoadArgumentKeyValue() {
 		Map<String, String> arguments = Arguments.loadArguments(STRINGS);
 		Assert.assertNotNull("Expected 'name' titi", arguments.get("titi"));
 		Assert.assertEquals("Expected 'tutu'", arguments.get("titi"), "tutu");
 	}
 
+	@Test
 	public void testLoadArgumentOther() {
 		Map<String, String> arguments = Arguments.loadArguments(STRINGS);
 
@@ -51,6 +83,7 @@ public class ArgumentsTest extends TestCase {
 
 	}
 
+	@Test
 	public void testArgumentToArray() {
 		Map<String, String> arguments = Arguments.loadArguments(STRINGS);
 		Assert.assertNotNull(arguments);
@@ -72,6 +105,7 @@ public class ArgumentsTest extends TestCase {
 		return Boolean.FALSE;
 	}
 
+	@Test
 	public void testGetBoolean() {
 		Map<String, String> arguments = Arguments.loadArguments(STRINGS);
 		Assert.assertTrue(Arguments.getBooleanArgument(arguments, "name", null));
@@ -86,6 +120,7 @@ public class ArgumentsTest extends TestCase {
 		Assert.assertTrue(Arguments.getBooleanArgument(arguments, "name3", Boolean.FALSE));
 	}
 
+	@Test
 	public void testGetInteger() {
 		Map<String, String> arguments = Arguments.loadArguments(STRINGS);
 		Assert.assertEquals(Integer.valueOf(1), Arguments.getIntegerArgument(arguments, "integer-that-not-exist", 1));
@@ -93,6 +128,7 @@ public class ArgumentsTest extends TestCase {
 		Assert.assertEquals(Integer.valueOf(123), Arguments.getIntegerArgument(arguments, "i", 1));
 	}
 
+	@Test
 	public void testGetString() {
 		Map<String, String> arguments = Arguments.loadArguments(STRINGS);
 		Assert.assertNotNull("Expected 'name' titi", arguments.get("titi"));

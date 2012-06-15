@@ -38,6 +38,9 @@ public class GroupRepositoryService implements RepositoryService, Iterable<Repos
 
 	private final List<RepositoryService> repositoryServices = new ArrayList<RepositoryService>();
 
+	/**
+	 * Build a new instance of GroupRepositoryService.java.
+	 */
 	public GroupRepositoryService() {
 		super();
 	}
@@ -56,7 +59,19 @@ public class GroupRepositoryService implements RepositoryService, Iterable<Repos
 
 	@Override
 	public void put(String resource, File source) throws ResourceDoesNotExistException, TransferFailedException {
-		throw new IllegalAccessError("RepositoryService#put is not allowed on a group of RepositoryService");
+		boolean done = Boolean.FALSE;
+		Iterator<RepositoryService> iterator = repositoryServices.iterator();
+		while (!done && iterator.hasNext()) {
+			try {
+				iterator.next().put(resource, source);
+				done = Boolean.TRUE;
+			} catch (TransferFailedException e) {
+			} catch (ResourceDoesNotExistException e) {
+			}
+		}
+		if (!done) {
+			throw new TransferFailedException();
+		}
 	}
 
 	@Override
@@ -88,7 +103,15 @@ public class GroupRepositoryService implements RepositoryService, Iterable<Repos
 
 	@Override
 	public boolean delete(String resource) throws ResourceDoesNotExistException {
-		throw new IllegalAccessError("RepositoryService#delete is not allowed on a group of RepositoryService");
+		boolean done = Boolean.FALSE;
+		Iterator<RepositoryService> iterator = repositoryServices.iterator();
+		while (!done && iterator.hasNext()) {
+			try {
+				done = iterator.next().delete(resource);
+			} catch (ResourceDoesNotExistException e) { 
+			}
+		}
+		return done;
 	}
 
 	/**

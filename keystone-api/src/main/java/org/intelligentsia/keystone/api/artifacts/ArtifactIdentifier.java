@@ -83,6 +83,12 @@ public class ArtifactIdentifier implements Serializable {
 		return groupId + ":" + artifactId + ":" + version;
 	}
 
+	/**
+	 * Parse specified string.
+	 * 
+	 * @param value
+	 * @return an ArtifactIdentifier instance.
+	 */
 	public static final ArtifactIdentifier parse(final String value) {
 		final StringTokenizer tokenizer = new StringTokenizer(value, ":");
 		final String g = tokenizer.nextToken();

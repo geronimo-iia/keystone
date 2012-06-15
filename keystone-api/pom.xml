@@ -45,6 +45,15 @@
 			<version>${com.fasterxml.version}</version>
 			<optional>true</optional>
 		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- JCL -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>org.xeustechnologies</groupId>
+			<artifactId>jcl-core</artifactId> 
+			<version>${jcl.version}</version>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 	<!-- ******************************************************************* -->
 	<!-- BUILD -->

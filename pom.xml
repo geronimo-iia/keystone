@@ -226,5 +226,6 @@
 		<com.ning.version>1.6.5</com.ning.version>
 		<org.codehaus.jackson.version>1.9.0</org.codehaus.jackson.version>
 		<com.fasterxml.version>0.6.1</com.fasterxml.version>
+		<jcl.version>2.3</jcl.version>
 	</properties>
 </project>

@@ -1,17 +1,69 @@
-
+---------------------------------------------------------------------------------
 KeyStone API Notes
+---------------------------------------------------------------------------------
 
 
 
 http://blogs.sun.com/nickstephen/entry/java_redirecting_system_out_and
 
+---------------------------------------------------------------------------------
 Upgrade file copy
+---------------------------------------------------------------------------------
 http://www.baptiste-wicht.com/2010/08/file-copy-in-java-benchmark/4/
 
 
+---------------------------------------------------------------------------------
 Java Class loader
+---------------------------------------------------------------------------------
 https://github.com/kamranzafar/JCL
 
 <groupId>org.xeustechnologies</groupId>
 <artifactId>jcl</artifactId>
 <version>2.3</version>
+
+
+---------------------------------------------------------------------------------
+Timer and Scheduler:
+---------------------------------------------------------------------------------
+http://stackoverflow.com/questions/409932/java-timer-vs-executorservice
+=> use executor service
+
+
+---------------------------------------------------------------------------------
+Kernel Study
+---------------------------------------------------------------------------------
+
+Kernel:
+- life cycle: initialize/dispose
+- registry of service
+- context initial de JCL
+
+ Service / Module:
+- all basic method to declare a service into kernel
+- defined by maven triplet g:a:v:c
+- life cycle: initialize/dispose
+
+Internal Service (aka Static Linked Module):
+In same Class loader as kernel
+Sample:
+ - Inner event bus
+ - Timer and scheduler task
+ - JNDI + Provider (URl, DataSource, Mail, etc)
+ 
+
+External Service (aka Dynamic Module):
+In separate class loader
+
+
+Component JAR model:
+ - list of artefact dependencies (pom.xml)
+ - librairies check under META-INF/lib
+ - Manifest declaration: 
+   - Main-class
+   - Service-classes: comma separated
+
+We have :
+- a Kernel which load Module (Static/Dynamic classloader). 
+- Module expose Service (or not)
+	
+

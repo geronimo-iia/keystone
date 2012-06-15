@@ -70,6 +70,19 @@ public class FileRepository implements RepositoryService {
 	}
 
 	/**
+	 * Build a new instance of <code>FileRepository</code>
+	 * 
+	 * @param rootStorage
+	 *            file root storage
+	 */
+	public FileRepository(final File rootStorage) {
+		if (!rootStorage.exists()) {
+			rootStorage.mkdirs();
+		}
+		locator = new FileLocator(rootStorage);
+	}
+
+	/**
 	 * Put a new resource.
 	 * 
 	 * @param resource

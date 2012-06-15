@@ -52,6 +52,7 @@ public class JclStudy {
 		jcl.getCurrentLoader().setOrder(5); // if not found look in current
 											// class loader
 
+	 
 		// Create default factory
 		JclObjectFactory factory = JclObjectFactory.getInstance();
 

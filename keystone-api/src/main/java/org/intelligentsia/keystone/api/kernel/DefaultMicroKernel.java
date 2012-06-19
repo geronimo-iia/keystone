@@ -64,6 +64,11 @@ public class DefaultMicroKernel implements Microkernel, Initializable, Disposabl
 	private Set<ArtifactIdentifier> artifactIdentifiers;
 
 	/**
+	 * ArtefactLoaderHandler instance
+	 */
+	private ArtefactLoaderHandler artefactLoaderHandler;
+
+	/**
 	 * Build a new instance of DefaultMicroKernel.java.
 	 */
 	public DefaultMicroKernel() {
@@ -81,6 +86,8 @@ public class DefaultMicroKernel implements Microkernel, Initializable, Disposabl
 		// repository management
 		repositoryService = new GroupRepositoryService();
 		artifactsService = new DefaultArtifactsService(repositoryService);
+		// handler
+		artefactLoaderHandler = null;
 	}
 
 	/**
@@ -93,6 +100,7 @@ public class DefaultMicroKernel implements Microkernel, Initializable, Disposabl
 		artifactsService = null;
 		jarClassLoader = null;
 		repositoryService = null;
+		artefactLoaderHandler = null;
 	}
 
 	/**
@@ -132,8 +140,18 @@ public class DefaultMicroKernel implements Microkernel, Initializable, Disposabl
 			final Resource resource = artifactsService.get(artifactIdentifier);
 			jarClassLoader.add(resource.getLocalFile().toURI().toURL());
 			artifactIdentifiers.add(artifactIdentifier);
+			if (artefactLoaderHandler != null) {
+				artefactLoaderHandler.handle(resource);
+			}
 			return Boolean.TRUE;
 		}
 		return Boolean.FALSE;
+	}
+	
+	/**
+	 * @param artefactLoaderHandler
+	 */
+	public void setArtefactLoaderHandler(ArtefactLoaderHandler artefactLoaderHandler) {
+		this.artefactLoaderHandler = artefactLoaderHandler;
 	}
 }

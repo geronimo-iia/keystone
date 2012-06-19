@@ -73,6 +73,7 @@ public class DefaultMicroKernel implements Microkernel, Initializable, Disposabl
 	/**
 	 * Initialize instance.
 	 */
+	@Override
 	@PostConstruct
 	public void initialize() {
 		artifactIdentifiers = new HashSet<ArtifactIdentifier>();
@@ -85,6 +86,7 @@ public class DefaultMicroKernel implements Microkernel, Initializable, Disposabl
 	/**
 	 * Free resource.
 	 */
+	@Override
 	@PreDestroy
 	public void dispose() {
 		artifactIdentifiers = null;
@@ -96,6 +98,7 @@ public class DefaultMicroKernel implements Microkernel, Initializable, Disposabl
 	/**
 	 * @return an unmodifiable set of loaded artifact identifier.
 	 */
+	@Override
 	public Set<ArtifactIdentifier> list() {
 		return Collections.unmodifiableSet(artifactIdentifiers);
 	}
@@ -106,7 +109,8 @@ public class DefaultMicroKernel implements Microkernel, Initializable, Disposabl
 	 * @return true if specified artifact Identifier is managed by this kernel
 	 *         instance.
 	 */
-	public boolean contains(ArtifactIdentifier artifactIdentifier) {
+	@Override
+	public boolean contains(final ArtifactIdentifier artifactIdentifier) {
 		return artifactIdentifiers.contains(artifactIdentifier);
 	}
 
@@ -122,9 +126,10 @@ public class DefaultMicroKernel implements Microkernel, Initializable, Disposabl
 	 *             if error occurs when transferring data.
 	 * @return true if loaded, false if it was previously loaded.
 	 */
-	public boolean load(ArtifactIdentifier artifactIdentifier) throws ResourceDoesNotExistException, TransferFailedException, MalformedURLException {
+	@Override
+	public boolean load(final ArtifactIdentifier artifactIdentifier) throws ResourceDoesNotExistException, TransferFailedException, MalformedURLException {
 		if (!artifactIdentifiers.contains(artifactIdentifier)) {
-			Resource resource = artifactsService.get(artifactIdentifier);
+			final Resource resource = artifactsService.get(artifactIdentifier);
 			jarClassLoader.add(resource.getLocalFile().toURI().toURL());
 			artifactIdentifiers.add(artifactIdentifier);
 			return Boolean.TRUE;

@@ -19,6 +19,8 @@
  */
 package org.intelligentsia.keystone.api.kernel;
 
+import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
+
 /**
  * Service declare methods to manage a 'service' in our system.
  * 
@@ -27,5 +29,22 @@ package org.intelligentsia.keystone.api.kernel;
  */
 public interface Service {
 
-	
+	/**
+	 * @return artifact identifier instance which define this service.
+	 */
+	public ArtifactIdentifier getArtifactIdentifier();
+
+	/**
+	 * Register this service instance on specified kernel.
+	 * 
+	 * @param microkernel
+	 */
+	public void register(Microkernel microkernel);
+
+	/**
+	 * Un Register this service instance on specified kernel.
+	 * 
+	 * @param microkernel
+	 */
+	public void unregister(Microkernel microkernel);
 }

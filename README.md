@@ -38,6 +38,17 @@ See more [doc][dc-wiki] on wiki.
 
 ```xml
 	<repositories>
+	    <repository>
+          <id>intelligents-ia</id>
+          <name>Intelligents-ia Repository</name>
+          <url>http://intelligents-ia.com/maven2</url>
+          <releases>
+			<enabled>true</enabled>
+		  </releases>
+		  <snapshots>
+			<enabled>false</enabled>
+		  </snapshots>
+        </repository>
 		<repository>
 			<id>keystone-intelligents-ia-releases</id>
 			<name>Intelligents-ia releases repository On github</name>
@@ -62,9 +73,21 @@ See more [doc][dc-wiki] on wiki.
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
+		<pluginRepository>
+			<id>intelligents-ia</id>
+          	<name>Intelligents-ia Repository</name>
+          	<url>http://intelligents-ia.com/maven2</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
 	</pluginRepositories>
 ```
 
+For now, internal github maven repository is just for testing.
 
 [dc-wiki]: https://github.com/geronimo-iia/keystone/wiki
 
@@ -76,9 +99,10 @@ See more [doc][dc-wiki] on wiki.
 <dependency>
 	<groupId>org.intelligents-ia.keystone</groupId>
 	<artifactId>keystone-boot</artifactId>
-	<version>2.5</version>
+	<version>2.4</version>
 </dependency>
 ```
+Version 2.5 comming soon!!
 
 2. When you want to restart, simply throw this exception
 ```java

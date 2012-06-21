@@ -235,6 +235,6 @@
 		<org.codehaus.jackson.version>1.9.0</org.codehaus.jackson.version>
 		<com.fasterxml.version>0.6.1</com.fasterxml.version>
 		<jcl.version>2.3</jcl.version>
-		<org.intelligents-ia.event-bus.version>1.1-SNAPSHOT</org.intelligents-ia.event-bus.version>
+		<org.intelligents-ia.event-bus.version>1.2</org.intelligents-ia.event-bus.version>
 	</properties>
 </project>

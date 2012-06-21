@@ -27,6 +27,7 @@ import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.api.artifacts.Resource;
 import org.intelligentsia.keystone.kernel.jcl.CompositeProxyClassLoader;
 import org.intelligentsia.keystone.kernel.jcl.DelegateProxyClassLoader;
+import org.intelligentsia.keystone.kernel.jcl.JarClassLoaderFactory;
 import org.xeustechnologies.jcl.JarClassLoader;
 
 /**
@@ -63,7 +64,7 @@ public class DefaultArtifactLoader implements ArtifactLoader {
 			throw new NullPointerException("artifactsService is null");
 		}
 		this.artifactsService = artifactsService;
-		this.parent = initialize(new JarClassLoader());
+		this.parent = JarClassLoaderFactory.initialize();
 		compositeProxyClassLoader = new CompositeProxyClassLoader();
 		compositeProxyClassLoader.setOrder(15);
 		parent.addLoader(compositeProxyClassLoader);
@@ -92,7 +93,7 @@ public class DefaultArtifactLoader implements ArtifactLoader {
 	 * @return a new instance of JarClassLoader.
 	 */
 	public JarClassLoader newInstanceOfJarClassLoader(final IsolationLevel isolationLevel) {
-		final JarClassLoader classLoader = initialize(new JarClassLoader());
+		final JarClassLoader classLoader = JarClassLoaderFactory.initialize(new JarClassLoader());
 		classLoader.getSystemLoader().setEnabled(false);
 		classLoader.getThreadLoader().setEnabled(false);
 		classLoader.getParentLoader().setEnabled(false);
@@ -106,24 +107,6 @@ public class DefaultArtifactLoader implements ArtifactLoader {
 			// link back to kernel on local proxy
 			compositeProxyClassLoader.add(classLoader.getLocalLoader());
 		}
-		return classLoader;
-	}
-
-	/**
-	 * Initialize internal priority of proxy loader.
-	 * 
-	 * @param classLoader
-	 *            classLoader to initialize
-	 * @return initialized classLoader
-	 */
-	public JarClassLoader initialize(final JarClassLoader classLoader) {
-		classLoader.getSystemLoader().setOrder(50);
-		classLoader.getThreadLoader().setOrder(40);
-		classLoader.getParentLoader().setOrder(30);
-		classLoader.getCurrentLoader().setOrder(20);
-		classLoader.getLocalLoader().setOrder(10);
-		classLoader.getOsgiBootLoader().setOrder(0);
-		classLoader.getOsgiBootLoader().setEnabled(false);
 		return classLoader;
 	}
 

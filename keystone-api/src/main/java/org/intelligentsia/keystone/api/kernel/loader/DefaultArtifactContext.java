@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel;
+package org.intelligentsia.keystone.api.kernel.loader;
 
 import java.net.URL;
 

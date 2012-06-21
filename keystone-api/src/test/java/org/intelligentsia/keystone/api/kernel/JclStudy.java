@@ -36,9 +36,9 @@ public class JclStudy {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 
-		JarClassLoader jcl = new JarClassLoader();
+		final JarClassLoader jcl = new JarClassLoader();
 		// Loading classes from different sources
 		jcl.add("target/classes/");
 
@@ -52,23 +52,24 @@ public class JclStudy {
 		jcl.getCurrentLoader().setOrder(5); // if not found look in current
 											// class loader
 
-	 
 		// Create default factory
-		JclObjectFactory factory = JclObjectFactory.getInstance();
+		final JclObjectFactory factory = JclObjectFactory.getInstance();
 
 		// Create object of loaded class
-		Object obj = factory.create(jcl, "org.intelligentsia.keystone.api.artifacts.pom.Pom");
+		final Object obj = factory.create(jcl, "org.intelligentsia.keystone.api.artifacts.pom.Pom");
 		System.err.println(obj);
 
-		DefaultContextLoader context = new DefaultContextLoader(jcl);
+		final DefaultContextLoader context = new DefaultContextLoader(jcl);
 		context.loadContext();
 
 		// Now “jcl” can be accessed from anywhere in the application as
 		// follows.
-		JarClassLoader jarClassLoader = JclContext.get(); // returns the Default
-															// JCL instance
-		if (jarClassLoader == null)
+		final JarClassLoader jarClassLoader = JclContext.get(); // returns the
+																// Default
+		// JCL instance
+		if (jarClassLoader == null) {
 			throw new IllegalStateException("No jcl with Default JCL instance");
+		}
 
 		// unload default context
 		context.unloadContext();

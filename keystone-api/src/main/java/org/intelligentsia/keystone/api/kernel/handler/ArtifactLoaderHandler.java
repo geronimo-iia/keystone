@@ -19,7 +19,7 @@
  */
 package org.intelligentsia.keystone.api.kernel.handler;
 
-import org.intelligentsia.keystone.api.kernel.ArtifactContext;
+import org.intelligentsia.keystone.api.kernel.loader.ArtifactContext;
 
 /**
  * 

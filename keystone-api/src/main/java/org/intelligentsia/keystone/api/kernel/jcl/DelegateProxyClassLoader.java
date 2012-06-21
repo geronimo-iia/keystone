@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel;
+package org.intelligentsia.keystone.api.kernel.jcl;
 
 import java.io.InputStream;
 
@@ -26,8 +26,8 @@ import org.xeustechnologies.jcl.ProxyClassLoader;
 
 /**
  * 
- * DelegateProxyClassLoader implements a ProxyClassLoader which delegate loading to a
- * specific AbstractClassLoader loader instance..
+ * DelegateProxyClassLoader implements a ProxyClassLoader which delegate loading
+ * to a specific AbstractClassLoader loader instance..
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
@@ -44,27 +44,28 @@ public class DelegateProxyClassLoader extends ProxyClassLoader {
 	 * @throws NullPointerException
 	 *             if delegate is null
 	 */
-	public DelegateProxyClassLoader(AbstractClassLoader delegate) throws NullPointerException {
+	public DelegateProxyClassLoader(final AbstractClassLoader delegate) throws NullPointerException {
 		super();
-		if (delegate == null)
+		if (delegate == null) {
 			throw new NullPointerException("delegate can't be null");
+		}
 		this.delegate = delegate;
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Class loadClass(String className, boolean resolveIt) {
+	public Class loadClass(final String className, final boolean resolveIt) {
 		Class result;
 		try {
 			result = delegate.loadClass(className, resolveIt);
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			return null;
 		}
 		return result;
 	}
 
 	@Override
-	public InputStream loadResource(String name) {
+	public InputStream loadResource(final String name) {
 		return delegate.getResourceAsStream(name);
 	}
 

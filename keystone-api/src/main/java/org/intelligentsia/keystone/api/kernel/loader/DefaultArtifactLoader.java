@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel;
+package org.intelligentsia.keystone.api.kernel.loader;
 
 import java.net.MalformedURLException;
 
@@ -25,6 +25,8 @@ import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.api.artifacts.ArtifactsService;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.api.artifacts.Resource;
+import org.intelligentsia.keystone.api.kernel.jcl.CompositeProxyClassLoader;
+import org.intelligentsia.keystone.api.kernel.jcl.DelegateProxyClassLoader;
 import org.xeustechnologies.jcl.JarClassLoader;
 
 /**
@@ -42,7 +44,9 @@ public class DefaultArtifactLoader implements ArtifactLoader {
 	 * Parent JarClassLoader instance.
 	 */
 	private final JarClassLoader parent;
-
+	/**
+	 * CompositeProxyClassLoader instance.
+	 */
 	private final CompositeProxyClassLoader compositeProxyClassLoader;
 
 	/**

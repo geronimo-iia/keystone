@@ -17,29 +17,37 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel;
+package org.intelligentsia.keystone.api.kernel.loader;
+
+import java.net.URL;
 
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
-import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 
 /**
- * 
- * ArtifactLoader declare method to load an artifact.
+ * ArtifactContext declare all attribut member.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
  */
-public interface ArtifactLoader {
+public interface ArtifactContext {
 
 	/**
-	 * Load specified artefact.
-	 * 
-	 * @param artifactIdentifier
-	 *            artifact Identifier
-	 * @param isolationLevel
-	 *            isolation level
-	 * @throws KeystoneRuntimeException
-	 *             if error occurs
-	 * @return an ArtifactContext instance.
+	 * @return the artifactIdentifier
 	 */
-	public ArtifactContext load(ArtifactIdentifier artifactIdentifier, IsolationLevel isolationLevel) throws KeystoneRuntimeException;
+	public ArtifactIdentifier getArtifactIdentifier();
+
+	/**
+	 * @return the localResource
+	 */
+	public URL getLocalResource();
+
+	/**
+	 * @return the classLoader
+	 */
+	public ClassLoader getClassLoader();
+
+	/**
+	 * @return the isolationLevel
+	 */
+	public IsolationLevel getIsolationLevel();
 }

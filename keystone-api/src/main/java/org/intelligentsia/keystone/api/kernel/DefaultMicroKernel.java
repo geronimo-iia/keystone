@@ -32,6 +32,10 @@ import org.intelligentsia.keystone.api.artifacts.DefaultArtifactsService;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.api.artifacts.repository.GroupRepositoryService;
 import org.intelligentsia.keystone.api.kernel.handler.CompositeArtifactLoaderHandler;
+import org.intelligentsia.keystone.api.kernel.loader.ArtifactContext;
+import org.intelligentsia.keystone.api.kernel.loader.ArtifactLoader;
+import org.intelligentsia.keystone.api.kernel.loader.DefaultArtifactLoader;
+import org.intelligentsia.keystone.api.kernel.loader.IsolationLevel;
 
 /**
  * 
@@ -50,7 +54,7 @@ public class DefaultMicroKernel implements Microkernel, Initializable, Disposabl
 	 * ArtifactLoader instance.
 	 */
 	private ArtifactLoader artifactLoader;
- 
+
 	/**
 	 * Map of ArtifactIdentifier and ArtifactContext.
 	 */
@@ -73,10 +77,10 @@ public class DefaultMicroKernel implements Microkernel, Initializable, Disposabl
 	 */
 	@Override
 	@PostConstruct
-	public void initialize() {  
+	public void initialize() {
 		// initialize internal service: repository service
 		repositoryService = new GroupRepositoryService();
-		
+
 		// initialize internal service: artifact loader
 		artifactLoader = new DefaultArtifactLoader(new DefaultArtifactsService(repositoryService));
 	}
@@ -115,12 +119,11 @@ public class DefaultMicroKernel implements Microkernel, Initializable, Disposabl
 	}
 
 	@Override
-	public  ArtifactContext load(ArtifactIdentifier artifactIdentifier, IsolationLevel isolationLevel) throws KeystoneRuntimeException{
-		ArtifactContext  context = artifactLoader.load(artifactIdentifier, isolationLevel);
-		artifacts.put(context.getArtifactIdentifier(),context);
+	public ArtifactContext load(final ArtifactIdentifier artifactIdentifier, final IsolationLevel isolationLevel) throws KeystoneRuntimeException {
+		final ArtifactContext context = artifactLoader.load(artifactIdentifier, isolationLevel);
+		artifacts.put(context.getArtifactIdentifier(), context);
 		artifactLoaderHandler.handle(context);
 		return context;
 	}
 
-	 
 }

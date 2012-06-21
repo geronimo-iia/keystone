@@ -22,6 +22,7 @@ package org.intelligentsia.keystone.api.kernel;
 import java.util.Set;
 
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
+import org.intelligentsia.keystone.api.kernel.loader.ArtifactLoader;
 
 /**
  * <p>

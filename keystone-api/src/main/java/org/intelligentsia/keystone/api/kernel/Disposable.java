@@ -21,10 +21,10 @@ package org.intelligentsia.keystone.api.kernel;
 
 /**
  * 
- * Disposable declare method to dispose resource. 
- *
- *  @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- *
+ * Disposable declare method to dispose resource.
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
  */
 public interface Disposable {
 	/**

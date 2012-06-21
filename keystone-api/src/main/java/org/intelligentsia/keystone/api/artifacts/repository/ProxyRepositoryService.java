@@ -69,39 +69,39 @@ public class ProxyRepositoryService implements RepositoryService {
 	 * @param local
 	 * @param target
 	 */
-	public ProxyRepositoryService(FileRepository local, ClientHttpRepository target) {
+	public ProxyRepositoryService(final FileRepository local, final ClientHttpRepository target) {
 		super();
 		this.local = local;
 		this.target = target;
 	}
 
 	@Override
-	public void put(String resource, File source) throws ResourceDoesNotExistException, TransferFailedException {
+	public void put(final String resource, final File source) throws ResourceDoesNotExistException, TransferFailedException {
 		try {
 			local.put(resource, source);
-		} catch (KeystoneRuntimeException e) {
+		} catch (final KeystoneRuntimeException e) {
 		}
 		target.put(resource, source);
 	}
 
 	@Override
-	public File get(String resource) throws ResourceDoesNotExistException, TransferFailedException {
+	public File get(final String resource) throws ResourceDoesNotExistException, TransferFailedException {
 		try {
 			return local.get(resource);
-		} catch (KeystoneRuntimeException e) {
+		} catch (final KeystoneRuntimeException e) {
 			// get it and put in cache
-			File result = target.get(resource);
+			final File result = target.get(resource);
 			local.put(resource, result);
 			return result;
 		}
 	}
 
 	@Override
-	public boolean exists(String resource) throws TransferFailedException {
+	public boolean exists(final String resource) throws TransferFailedException {
 		boolean result = false;
 		try {
 			result = local.exists(resource);
-		} catch (TransferFailedException e) {
+		} catch (final TransferFailedException e) {
 		}
 		if (!result) {
 			result = target.exists(resource);
@@ -110,10 +110,10 @@ public class ProxyRepositoryService implements RepositoryService {
 	}
 
 	@Override
-	public boolean delete(String resource) throws ResourceDoesNotExistException {
+	public boolean delete(final String resource) throws ResourceDoesNotExistException {
 		try {
 			local.delete(resource);
-		} catch (ResourceDoesNotExistException e) {
+		} catch (final ResourceDoesNotExistException e) {
 		}
 		return target.delete(resource);
 	}

@@ -50,7 +50,7 @@ public class GroupRepositoryService implements RepositoryService, Iterable<Repos
 	 * 
 	 * @param repositoryServices
 	 */
-	public GroupRepositoryService(List<RepositoryService> repositoryServices) {
+	public GroupRepositoryService(final List<RepositoryService> repositoryServices) {
 		super();
 		if (repositoryServices != null) {
 			this.repositoryServices.addAll(repositoryServices);
@@ -58,15 +58,15 @@ public class GroupRepositoryService implements RepositoryService, Iterable<Repos
 	}
 
 	@Override
-	public void put(String resource, File source) throws ResourceDoesNotExistException, TransferFailedException {
+	public void put(final String resource, final File source) throws ResourceDoesNotExistException, TransferFailedException {
 		boolean done = Boolean.FALSE;
-		Iterator<RepositoryService> iterator = repositoryServices.iterator();
+		final Iterator<RepositoryService> iterator = repositoryServices.iterator();
 		while (!done && iterator.hasNext()) {
 			try {
 				iterator.next().put(resource, source);
 				done = Boolean.TRUE;
-			} catch (TransferFailedException e) {
-			} catch (ResourceDoesNotExistException e) {
+			} catch (final TransferFailedException e) {
+			} catch (final ResourceDoesNotExistException e) {
 			}
 		}
 		if (!done) {
@@ -75,40 +75,40 @@ public class GroupRepositoryService implements RepositoryService, Iterable<Repos
 	}
 
 	@Override
-	public File get(String resource) throws ResourceDoesNotExistException, TransferFailedException {
+	public File get(final String resource) throws ResourceDoesNotExistException, TransferFailedException {
 		File result = null;
-		Iterator<RepositoryService> iterator = repositoryServices.iterator();
-		while (result == null && iterator.hasNext()) {
+		final Iterator<RepositoryService> iterator = repositoryServices.iterator();
+		while ((result == null) && iterator.hasNext()) {
 			try {
 				result = iterator.next().get(resource);
-			} catch (TransferFailedException e) {
-			} catch (ResourceDoesNotExistException e) {
+			} catch (final TransferFailedException e) {
+			} catch (final ResourceDoesNotExistException e) {
 			}
 		}
 		return result;
 	}
 
 	@Override
-	public boolean exists(String resource) throws TransferFailedException {
+	public boolean exists(final String resource) throws TransferFailedException {
 		boolean result = Boolean.FALSE;
-		Iterator<RepositoryService> iterator = repositoryServices.iterator();
+		final Iterator<RepositoryService> iterator = repositoryServices.iterator();
 		while (!result && iterator.hasNext()) {
 			try {
 				result = iterator.next().exists(resource);
-			} catch (TransferFailedException e) {
+			} catch (final TransferFailedException e) {
 			}
 		}
 		return result;
 	}
 
 	@Override
-	public boolean delete(String resource) throws ResourceDoesNotExistException {
+	public boolean delete(final String resource) throws ResourceDoesNotExistException {
 		boolean done = Boolean.FALSE;
-		Iterator<RepositoryService> iterator = repositoryServices.iterator();
+		final Iterator<RepositoryService> iterator = repositoryServices.iterator();
 		while (!done && iterator.hasNext()) {
 			try {
 				done = iterator.next().delete(resource);
-			} catch (ResourceDoesNotExistException e) { 
+			} catch (final ResourceDoesNotExistException e) {
 			}
 		}
 		return done;
@@ -127,7 +127,7 @@ public class GroupRepositoryService implements RepositoryService, Iterable<Repos
 	 * @return
 	 * @see java.util.List#contains(java.lang.Object)
 	 */
-	public boolean contains(RepositoryService o) {
+	public boolean contains(final RepositoryService o) {
 		return repositoryServices.contains(o);
 	}
 
@@ -136,7 +136,7 @@ public class GroupRepositoryService implements RepositoryService, Iterable<Repos
 	 * @return
 	 * @see java.util.List#add(java.lang.Object)
 	 */
-	public boolean add(RepositoryService e) {
+	public boolean add(final RepositoryService e) {
 		return repositoryServices.add(e);
 	}
 
@@ -145,7 +145,7 @@ public class GroupRepositoryService implements RepositoryService, Iterable<Repos
 	 * @return
 	 * @see java.util.List#remove(java.lang.Object)
 	 */
-	public boolean remove(RepositoryService o) {
+	public boolean remove(final RepositoryService o) {
 		return repositoryServices.remove(o);
 	}
 

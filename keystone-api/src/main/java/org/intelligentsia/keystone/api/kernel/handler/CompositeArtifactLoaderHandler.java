@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.intelligentsia.keystone.api.kernel.ArtifactContext;
+import org.intelligentsia.keystone.api.kernel.loader.ArtifactContext;
 
 /**
  * 
@@ -58,8 +58,8 @@ public class CompositeArtifactLoaderHandler implements ArtifactLoaderHandler, It
 	}
 
 	@Override
-	public void handle(ArtifactContext context) {
-		for (ArtifactLoaderHandler handler : artifactLoaderHandlers) {
+	public void handle(final ArtifactContext context) {
+		for (final ArtifactLoaderHandler handler : artifactLoaderHandlers) {
 			handler.handle(context);
 		}
 	}
@@ -68,15 +68,16 @@ public class CompositeArtifactLoaderHandler implements ArtifactLoaderHandler, It
 		return artifactLoaderHandlers.isEmpty();
 	}
 
+	@Override
 	public Iterator<ArtifactLoaderHandler> iterator() {
 		return artifactLoaderHandlers.iterator();
 	}
 
-	public boolean add(ArtifactLoaderHandler handler) {
+	public boolean add(final ArtifactLoaderHandler handler) {
 		return artifactLoaderHandlers.add(handler);
 	}
 
-	public boolean remove(ArtifactLoaderHandler handler) {
+	public boolean remove(final ArtifactLoaderHandler handler) {
 		return artifactLoaderHandlers.remove(handler);
 	}
 

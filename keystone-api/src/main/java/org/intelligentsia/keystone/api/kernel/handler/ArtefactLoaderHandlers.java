@@ -17,33 +17,14 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel.study;
+package org.intelligentsia.keystone.api.kernel.handler;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
+/**
+ * 
+ * ArtefactLoaderHandlers.
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ */
+public enum ArtefactLoaderHandlers {
 
-public class CallContext {
-    protected ExecutorService executor;
-    
-    public void test() {
-        Future<Object> future = executor.submit(new Callable<Object>() {
-
-            public Object call() throws Exception {
-                return null;
-            }
-            
-        }) ;
-        
-        try {
-            Object object = future.get();
-            if (object!=null) {
-                object.toString();
-            }
-            
-        } catch (InterruptedException e) {
-        } catch (ExecutionException e) {
-        }
-    }
 }

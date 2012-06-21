@@ -21,7 +21,9 @@ package org.intelligentsia.keystone.api.kernel;
 
 import java.net.MalformedURLException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -30,10 +32,10 @@ import javax.annotation.PreDestroy;
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.api.artifacts.ArtifactsService;
 import org.intelligentsia.keystone.api.artifacts.DefaultArtifactsService;
+import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.api.artifacts.Resource;
-import org.intelligentsia.keystone.api.artifacts.ResourceDoesNotExistException;
-import org.intelligentsia.keystone.api.artifacts.TransferFailedException;
 import org.intelligentsia.keystone.api.artifacts.repository.GroupRepositoryService;
+import org.intelligentsia.keystone.api.kernel.handler.CompositeArtifactLoaderHandler;
 import org.xeustechnologies.jcl.JarClassLoader;
 
 /**
@@ -43,7 +45,7 @@ import org.xeustechnologies.jcl.JarClassLoader;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public class DefaultMicroKernel implements Microkernel, Initializable, Disposable {
+public class DefaultMicroKernel implements Microkernel, Initializable, Disposable, ArtifactLoader {
 
 	/**
 	 * GroupRepositoryService instance.
@@ -59,14 +61,14 @@ public class DefaultMicroKernel implements Microkernel, Initializable, Disposabl
 	private JarClassLoader jarClassLoader;
 
 	/**
-	 * Set of loaded ArtifactIdentifier.
+	 * Map of ArtifactIdentifier and ArtifactContext.
 	 */
-	private Set<ArtifactIdentifier> artifactIdentifiers;
+	private final Map<ArtifactIdentifier, DefaultArtifactContext> artifacts = new HashMap<ArtifactIdentifier, DefaultArtifactContext>();
 
 	/**
-	 * ArtefactLoaderHandler instance
+	 * CompositeArtifactLoaderHandler instance.
 	 */
-	private ArtefactLoaderHandler artefactLoaderHandler;
+	private final CompositeArtifactLoaderHandler artifactLoaderHandler = new CompositeArtifactLoaderHandler();
 
 	/**
 	 * Build a new instance of DefaultMicroKernel.java.
@@ -81,13 +83,10 @@ public class DefaultMicroKernel implements Microkernel, Initializable, Disposabl
 	@Override
 	@PostConstruct
 	public void initialize() {
-		artifactIdentifiers = new HashSet<ArtifactIdentifier>();
 		jarClassLoader = new JarClassLoader();
 		// repository management
 		repositoryService = new GroupRepositoryService();
 		artifactsService = new DefaultArtifactsService(repositoryService);
-		// handler
-		artefactLoaderHandler = null;
 	}
 
 	/**
@@ -96,11 +95,14 @@ public class DefaultMicroKernel implements Microkernel, Initializable, Disposabl
 	@Override
 	@PreDestroy
 	public void dispose() {
-		artifactIdentifiers = null;
+
 		artifactsService = null;
 		jarClassLoader = null;
 		repositoryService = null;
-		artefactLoaderHandler = null;
+		// clear all context
+		artifacts.clear();
+		// clear all artifact loader handler.
+		artifactLoaderHandler.clear();
 	}
 
 	/**
@@ -108,7 +110,7 @@ public class DefaultMicroKernel implements Microkernel, Initializable, Disposabl
 	 */
 	@Override
 	public Set<ArtifactIdentifier> list() {
-		return Collections.unmodifiableSet(artifactIdentifiers);
+		return Collections.unmodifiableSet(artifacts.keySet());
 	}
 
 	/**
@@ -119,7 +121,12 @@ public class DefaultMicroKernel implements Microkernel, Initializable, Disposabl
 	 */
 	@Override
 	public boolean contains(final ArtifactIdentifier artifactIdentifier) {
-		return artifactIdentifiers.contains(artifactIdentifier);
+		return artifacts.containsKey(artifactIdentifier);
+	}
+
+	@Override
+	public DefaultArtifactContext load(ArtifactIdentifier artifactIdentifier, IsolationLevel isolationLevel) throws KeystoneRuntimeException{
+		return null;
 	}
 
 	/**
@@ -127,31 +134,34 @@ public class DefaultMicroKernel implements Microkernel, Initializable, Disposabl
 	 * 
 	 * @param artifactIdentifier
 	 *            artifact Identifier
-	 * @throws MalformedURLException
-	 * @throws ResourceDoesNotExistException
-	 *             if source does not exists
-	 * @throws TransferFailedException
-	 *             if error occurs when transferring data.
+	 * @throws KeystoneRuntimeException
+	 *             if error occurs
 	 * @return true if loaded, false if it was previously loaded.
 	 */
 	@Override
-	public boolean load(final ArtifactIdentifier artifactIdentifier) throws ResourceDoesNotExistException, TransferFailedException, MalformedURLException {
-		if (!artifactIdentifiers.contains(artifactIdentifier)) {
+	public boolean load(final ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException {
+		if (!contains(artifactIdentifier)) {
+			DefaultArtifactContext defaultArtifactContext = new DefaultArtifactContext(artifactIdentifier);
 			final Resource resource = artifactsService.get(artifactIdentifier);
-			jarClassLoader.add(resource.getLocalFile().toURI().toURL());
-			artifactIdentifiers.add(artifactIdentifier);
-			if (artefactLoaderHandler != null) {
-				artefactLoaderHandler.handle(resource);
+			try {
+				// set local resource
+				defaultArtifactContext.setLocalResource(resource.getLocalFile().toURI().toURL());
+				// initialize classpath
+				jarClassLoader.add(resource.getLocalFile().toURI().toURL());
+
+				JarClassLoader classLoader = new JarClassLoader();
+				classLoader.getParentLoader().setEnabled(false);
+
+				defaultArtifactContext.setClassLoader(jarClassLoader);
+				defaultArtifactContext.setIsolationLevel(IsolationLevel.NONE);
+			} catch (MalformedURLException e) {
+				throw new KeystoneRuntimeException(e);
 			}
+			artifacts.put(defaultArtifactContext.getArtifactIdentifier(), defaultArtifactContext);
+			artifactLoaderHandler.handle(resource);
 			return Boolean.TRUE;
 		}
 		return Boolean.FALSE;
 	}
-	
-	/**
-	 * @param artefactLoaderHandler
-	 */
-	public void setArtefactLoaderHandler(ArtefactLoaderHandler artefactLoaderHandler) {
-		this.artefactLoaderHandler = artefactLoaderHandler;
-	}
+
 }

@@ -19,12 +19,10 @@
  */
 package org.intelligentsia.keystone.api.kernel;
 
-import java.net.MalformedURLException;
 import java.util.Set;
 
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
-import org.intelligentsia.keystone.api.artifacts.ResourceDoesNotExistException;
-import org.intelligentsia.keystone.api.artifacts.TransferFailedException;
+import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 
 /**
  * <p>
@@ -35,12 +33,6 @@ import org.intelligentsia.keystone.api.artifacts.TransferFailedException;
  * <li>Offers communication facilities</li>
  * <li>Encapsulates system dependencies</li>
  * <li>Manages and controls resources</li>
- * </ul>
- * <p>
- * Collaborators
- * </p>
- * <ul>
- * <li>Internal Server</li>
  * </ul>
  * 
  * <p>
@@ -71,12 +63,9 @@ public interface Microkernel {
 	 * 
 	 * @param artifactIdentifier
 	 *            artifact Identifier
-	 * @throws MalformedURLException
-	 * @throws ResourceDoesNotExistException
-	 *             if source does not exists
-	 * @throws TransferFailedException
-	 *             if error occurs when transferring data.
+	 * @throws KeystoneRuntimeException
+	 *             if error occurs
 	 * @return true if loaded, false if it was previously loaded.
 	 */
-	public boolean load(ArtifactIdentifier artifactIdentifier) throws ResourceDoesNotExistException, TransferFailedException, MalformedURLException;
+	public boolean load(ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException;
 }

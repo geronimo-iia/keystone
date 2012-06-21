@@ -17,18 +17,18 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel;
+package org.intelligentsia.keystone.api.kernel.handler;
 
 import org.intelligentsia.keystone.api.artifacts.Resource;
 
 /**
  * 
- * ArtefactLoaderHandler declare method to handler artifact load event.
+ * ArtifactLoaderHandler declare method to handle artifact load event.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public interface ArtefactLoaderHandler {
+public interface ArtifactLoaderHandler {
 
 	/**
 	 * Do some processing on loading.

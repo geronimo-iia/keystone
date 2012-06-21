@@ -24,6 +24,12 @@ import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 /**
  * Service declare methods to manage a 'service' in our system.
  * 
+ * <p>
+ * A service —also known as a subsystem, extends the functionality provided by
+ * the microkernel. It represents a separate component that offers additional
+ * functionality.
+ * </p>
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */

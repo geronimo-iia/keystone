@@ -17,26 +17,29 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel.study;
+package org.intelligentsia.keystone.api.kernel;
+
+import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
+import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 
 /**
- * A client is an application that is associated with exactly one external server. It only accesses the programming interfaces provided by
- * the external server.
  * 
- * @author jguibert
+ * ArtifactLoader declare method to load an artifact.
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class Client {
-    private Adapter adapter = null;
-    
-    public Adapter getAdapter() {
-        return adapter;
-    }
-    
-    public void setAdapter(Adapter adapter) {
-        this.adapter = adapter;
-    }
-    
-    public void doTask() {
-        adapter.callService();
-    }
+public interface ArtifactLoader {
+
+	/**
+	 * Load specified artefact.
+	 * 
+	 * @param artifactIdentifier
+	 *            artifact Identifier
+	 * @param isolationLevel
+	 *            isolation level
+	 * @throws KeystoneRuntimeException
+	 *             if error occurs
+	 * @return an ArtifactContext instance.
+	 */
+	public ArtifactContext load(ArtifactIdentifier artifactIdentifier, IsolationLevel isolationLevel) throws KeystoneRuntimeException;
 }

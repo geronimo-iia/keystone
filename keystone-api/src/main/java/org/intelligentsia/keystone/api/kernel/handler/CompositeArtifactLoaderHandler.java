@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel;
+package org.intelligentsia.keystone.api.kernel.handler;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,45 +27,61 @@ import org.intelligentsia.keystone.api.artifacts.Resource;
 
 /**
  * 
- * CompositeArtefactLoaderHandler implement a composite handler.
+ * CompositeArtifactLoaderHandler implement a composite handler.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public class CompositeArtefactLoaderHandler implements ArtefactLoaderHandler, Iterable<ArtefactLoaderHandler> {
+public class CompositeArtifactLoaderHandler implements ArtifactLoaderHandler, Iterable<ArtifactLoaderHandler> {
 
-	private final List<ArtefactLoaderHandler> artefactLoaderHandlers = new ArrayList<ArtefactLoaderHandler>();
+	private final List<ArtifactLoaderHandler> artifactLoaderHandlers = new ArrayList<ArtifactLoaderHandler>();
 
 	/**
-	 * Build a new instance of CompositeArtefactLoaderHandler.java.
+	 * Build a new instance of CompositeArtifactLoaderHandler.java.
 	 */
-	public CompositeArtefactLoaderHandler(final List<ArtefactLoaderHandler> artefactLoaderHandlers) {
+	public CompositeArtifactLoaderHandler() {
+		this(null);
+	}
+
+	/**
+	 * 
+	 * Build a new instance of CompositeArtefactLoaderHandler.java.
+	 * 
+	 * @param artifactLoaderHandlers
+	 *            a list of ArtefactLoaderHandler instance.
+	 */
+	public CompositeArtifactLoaderHandler(final List<ArtifactLoaderHandler> artifactLoaderHandlers) {
 		super();
-		if (artefactLoaderHandlers != null)
-			this.artefactLoaderHandlers.addAll(artefactLoaderHandlers);
+		if (artifactLoaderHandlers != null) {
+			this.artifactLoaderHandlers.addAll(artifactLoaderHandlers);
+		}
 	}
 
 	@Override
 	public void handle(Resource resource) {
-		for (ArtefactLoaderHandler handler : artefactLoaderHandlers) {
+		for (ArtifactLoaderHandler handler : artifactLoaderHandlers) {
 			handler.handle(resource);
 		}
 	}
 
 	public boolean isEmpty() {
-		return artefactLoaderHandlers.isEmpty();
+		return artifactLoaderHandlers.isEmpty();
 	}
 
-	public Iterator<ArtefactLoaderHandler> iterator() {
-		return artefactLoaderHandlers.iterator();
+	public Iterator<ArtifactLoaderHandler> iterator() {
+		return artifactLoaderHandlers.iterator();
 	}
 
-	public boolean add(ArtefactLoaderHandler handler) {
-		return artefactLoaderHandlers.add(handler);
+	public boolean add(ArtifactLoaderHandler handler) {
+		return artifactLoaderHandlers.add(handler);
 	}
 
-	public boolean remove(ArtefactLoaderHandler handler) {
-		return artefactLoaderHandlers.remove(handler);
+	public boolean remove(ArtifactLoaderHandler handler) {
+		return artifactLoaderHandlers.remove(handler);
+	}
+
+	public void clear() {
+		artifactLoaderHandlers.clear();
 	}
 
 }

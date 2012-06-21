@@ -17,21 +17,28 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel.study;
+package org.intelligentsia.keystone.api.kernel;
 
 /**
- * Common interface for component life cycle methods.
  * 
- * @author Jerome Guibert
+ * IsolationLevel enumeration define supported isolation level : *
+ * <ul>
+ * <li>NONE: This artifact will be loaded in Kernel classloader</li>
+ * <li>ISOLATED: This artifact will be loaded in a dedicated class loader.
+ * Kernel classloader will be his parent.</li>
+ * </ul>
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
  */
-public interface LifeCycle {
-    /**
-     * Component instance initialization.
-     */
-    public void initialize();
-    
-    /**
-     * Component instance disposal.
-     */
-    public void dispose();
+public enum IsolationLevel {
+	/**
+	 * No isolation: This artifact will be loaded in Kernel classloader.
+	 */
+	NONE,
+	/**
+	 * This artifact will be loaded in a dedicated class loader. Kernel
+	 * classloader will be his parent.
+	 */
+	ISOLATED;
 }

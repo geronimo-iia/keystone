@@ -17,41 +17,37 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel.study;
+package org.intelligentsia.keystone.api.kernel;
 
-public class Adapter {
-    private ExternalServer server = null;
-    private Microkernel kernel = null;
-    
-    public ExternalServer getServer() {
-        return server;
-    }
-    
-    public void setServer(ExternalServer server) {
-        this.server = server;
-    }
-    
-    public Microkernel getKernel() {
-        return kernel;
-    }
-    
-    public void setKernel(Microkernel kernel) {
-        this.kernel = kernel;
-    }
-    
-    /** called by client */
-    public void callService() {
-        createRequest();
-        kernel.initCommunication(this);
-        server.receiveRequest(null, null);
-    }
-    
-    public void createRequest() {
-        
-    }
-    
-    public void sendRequest() {
-        server.dispatchRequest(null, null);
-    }
-    
+import java.net.URL;
+
+import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
+
+/**
+ * ArtifactContext declare all attribut member.
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
+ */
+public interface ArtifactContext {
+
+	/**
+	 * @return the artifactIdentifier
+	 */
+	public ArtifactIdentifier getArtifactIdentifier();
+
+	/**
+	 * @return the localResource
+	 */
+	public URL getLocalResource();
+
+	/**
+	 * @return the classLoader
+	 */
+	public ClassLoader getClassLoader();
+
+	/**
+	 * @return the isolationLevel
+	 */
+	public IsolationLevel getIsolationLevel();
 }

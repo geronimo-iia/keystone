@@ -193,6 +193,28 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
+		<repository>
+			<id>event-bus-intelligents-ia-releases</id>
+			<name>Intelligents-ia releases repository On github</name>
+			<url>https://github.com/geronimo-iia/event-bus/repository/releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>event-bus-intelligents-ia-snapshot</id>
+			<name>Intelligents-ia snapshot repository On github</name>
+			<url>https://github.com/geronimo-iia/event-bus/repository/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
@@ -227,5 +249,6 @@
 		<org.codehaus.jackson.version>1.9.0</org.codehaus.jackson.version>
 		<com.fasterxml.version>0.6.1</com.fasterxml.version>
 		<jcl.version>2.3</jcl.version>
+		<org.intelligents-ia.event-bus.version>1.1-SNAPSHOT</org.intelligents-ia.event-bus.version>
 	</properties>
 </project>

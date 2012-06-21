@@ -50,9 +50,17 @@
 		<!-- ******************************************************************* -->
 		<dependency>
 			<groupId>org.xeustechnologies</groupId>
-			<artifactId>jcl-core</artifactId> 
+			<artifactId>jcl-core</artifactId>
 			<version>${jcl.version}</version>
 			<optional>true</optional>
+		</dependency>
+		<!-- ******************************************************************* -->
+		<!-- JCL -->
+		<!-- ******************************************************************* -->
+		<dependency>
+			<groupId>org.intelligents-ia</groupId>
+			<artifactId>event-bus</artifactId>
+			<version>${org.intelligents-ia.event-bus.version}</version>
 		</dependency>
 	</dependencies>
 	<!-- ******************************************************************* -->

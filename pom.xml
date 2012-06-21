@@ -148,6 +148,13 @@
 				<artifactId>maven-license-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ftp</artifactId>
+				<version>1.0</version>
+			</extension>
+		</extensions>
 	</build>
 	<!-- ******************************************************************* -->
 	<!-- MODULE LIST -->
@@ -163,19 +170,19 @@
 	<!-- ******************************************************************* -->
 	<distributionManagement>
 		<repository>
-			<id>keystone-intelligents-ia-releases</id>
-			<url>file:./repository/releases</url>
+			<id>intelligents-ia-releases</id>
+			<url>ftp://ftp.lost-oasis.net/web-mvn.intelligents-ia.com/htdocs/releases</url>
 		</repository>
 		<snapshotRepository>
-			<id>keystone-intelligents-ia-snapshot</id>
-			<url>file:./repository/snapshots</url>
+			<id>intelligents-ia-snapshot</id>
+			<url>ftp://ftp.lost-oasis.net/web-mvn.intelligents-ia.com/htdocs/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
 	<repositories>
 		<repository>
-			<id>keystone-intelligents-ia-releases</id>
-			<name>Intelligents-ia releases repository On github</name>
-			<url>https://github.com/geronimo-iia/keystone/repository/releases</url>
+			<id>intelligents-ia-releases</id>
+			<name>Intelligents-ia releases repository</name>
+			<url>http://mvn.intelligents-ia.com/releases</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -184,31 +191,9 @@
 			</snapshots>
 		</repository>
 		<repository>
-			<id>keystone-intelligents-ia-snapshot</id>
-			<name>Intelligents-ia snapshot repository On github</name>
-			<url>https://github.com/geronimo-iia/keystone/repository/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>event-bus-intelligents-ia-releases</id>
-			<name>Intelligents-ia releases repository On github</name>
-			<url>https://github.com/geronimo-iia/event-bus/repository/releases</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>event-bus-intelligents-ia-snapshot</id>
-			<name>Intelligents-ia snapshot repository On github</name>
-			<url>https://github.com/geronimo-iia/event-bus/repository/snapshots</url>
+			<id>intelligents-ia-snapshot</id>
+			<name>Intelligents-ia snapshot repository</name>
+			<url>http://mvn.intelligents-ia.com/snapshots</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
@@ -219,9 +204,9 @@
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
-			<id>keystone-intelligents-ia-releases</id>
-			<name>Intelligents-ia releases repository On github</name>
-			<url>https://github.com/geronimo-iia/keystone/repository/releases</url>
+			<id>intelligents-ia-releases</id>
+			<name>Intelligents-ia releases repository</name>
+			<url>http://mvn.intelligents-ia.com/releases</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -230,9 +215,9 @@
 			</snapshots>
 		</pluginRepository>
 		<pluginRepository>
-			<id>keystone-intelligents-ia-snapshot</id>
-			<name>Intelligents-ia snapshot repository On github</name>
-			<url>https://github.com/geronimo-iia/keystone/repository/snapshots</url>
+			<id>intelligents-ia-snapshot</id>
+			<name>Intelligents-ia snapshot repository</name>
+			<url>http://mvn.intelligents-ia.com/snapshots</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>

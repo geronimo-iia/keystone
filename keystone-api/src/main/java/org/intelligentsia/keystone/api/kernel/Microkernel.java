@@ -22,7 +22,6 @@ package org.intelligentsia.keystone.api.kernel;
 import java.util.Set;
 
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
-import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 
 /**
  * <p>
@@ -44,7 +43,7 @@ import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface Microkernel {
+public interface Microkernel extends ArtifactLoader {
 	/**
 	 * @return an unmodifiable set of loaded artifact identifier.
 	 */
@@ -58,14 +57,4 @@ public interface Microkernel {
 	 */
 	public boolean contains(ArtifactIdentifier artifactIdentifier);
 
-	/**
-	 * Load specified artefact.
-	 * 
-	 * @param artifactIdentifier
-	 *            artifact Identifier
-	 * @throws KeystoneRuntimeException
-	 *             if error occurs
-	 * @return true if loaded, false if it was previously loaded.
-	 */
-	public boolean load(ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException;
 }

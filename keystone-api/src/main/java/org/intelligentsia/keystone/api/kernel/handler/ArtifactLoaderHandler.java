@@ -19,7 +19,7 @@
  */
 package org.intelligentsia.keystone.api.kernel.handler;
 
-import org.intelligentsia.keystone.api.artifacts.Resource;
+import org.intelligentsia.keystone.api.kernel.ArtifactContext;
 
 /**
  * 
@@ -33,8 +33,8 @@ public interface ArtifactLoaderHandler {
 	/**
 	 * Do some processing on loading.
 	 * 
-	 * @param resource
+	 * @param context
 	 */
-	public void handle(Resource resource);
+	public void handle(ArtifactContext context);
 
 }

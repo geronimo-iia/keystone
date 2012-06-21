@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.intelligentsia.keystone.api.artifacts.Resource;
+import org.intelligentsia.keystone.api.kernel.ArtifactContext;
 
 /**
  * 
@@ -58,9 +58,9 @@ public class CompositeArtifactLoaderHandler implements ArtifactLoaderHandler, It
 	}
 
 	@Override
-	public void handle(Resource resource) {
+	public void handle(ArtifactContext context) {
 		for (ArtifactLoaderHandler handler : artifactLoaderHandlers) {
-			handler.handle(resource);
+			handler.handle(context);
 		}
 	}
 

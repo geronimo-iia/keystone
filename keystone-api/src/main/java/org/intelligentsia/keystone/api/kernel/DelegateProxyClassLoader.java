@@ -26,25 +26,25 @@ import org.xeustechnologies.jcl.ProxyClassLoader;
 
 /**
  * 
- * DelegateClassLoader implements a ProxyClassLoader which delegate loading to a
+ * DelegateProxyClassLoader implements a ProxyClassLoader which delegate loading to a
  * specific AbstractClassLoader loader instance..
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public class DelegateClassLoader extends ProxyClassLoader {
+public class DelegateProxyClassLoader extends ProxyClassLoader {
 
 	private final AbstractClassLoader delegate;
 
 	/**
-	 * Build a new instance of DelegateClassLoader.java.
+	 * Build a new instance of DelegateProxyClassLoader.java.
 	 * 
 	 * @param delegate
 	 *            instance of AbstractClassLoader where to delegate
 	 * @throws NullPointerException
 	 *             if delegate is null
 	 */
-	public DelegateClassLoader(AbstractClassLoader delegate) throws NullPointerException {
+	public DelegateProxyClassLoader(AbstractClassLoader delegate) throws NullPointerException {
 		super();
 		if (delegate == null)
 			throw new NullPointerException("delegate can't be null");

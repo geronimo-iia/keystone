@@ -20,7 +20,7 @@
 
    =========================================================================
    ==  Example NOTICE file for use with the Apache License, Version 2.0,  ==
-   ==  in this case for the intelligents-ia dowsers project.              ==
+   ==  in this case for the intelligents-ia Keystone project.             ==
    =========================================================================
 
 

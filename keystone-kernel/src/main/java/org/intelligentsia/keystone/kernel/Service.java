@@ -17,18 +17,40 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel;
+package org.intelligentsia.keystone.kernel;
+
+import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 
 /**
+ * Service declare methods to manage a 'service' in our system.
  * 
- * Disposable declare method to dispose resource.
+ * <p>
+ * A service —also known as a subsystem, extends the functionality provided by
+ * the microkernel. It represents a separate component that offers additional
+ * functionality.
+ * </p>
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public interface Disposable {
+public interface Service {
+
 	/**
-	 * Free all resource.
+	 * @return artifact identifier instance which define this service.
 	 */
-	public void dispose();
+	public ArtifactIdentifier getArtifactIdentifier();
+
+	/**
+	 * Register this service instance on specified kernel.
+	 * 
+	 * @param microkernel
+	 */
+	public void register(Microkernel microkernel);
+
+	/**
+	 * Un Register this service instance on specified kernel.
+	 * 
+	 * @param microkernel
+	 */
+	public void unregister(Microkernel microkernel);
 }

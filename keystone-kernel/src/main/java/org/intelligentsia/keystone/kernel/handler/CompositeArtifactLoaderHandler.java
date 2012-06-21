@@ -17,13 +17,13 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel.handler;
+package org.intelligentsia.keystone.kernel.handler;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.intelligentsia.keystone.api.kernel.loader.ArtifactContext;
+import org.intelligentsia.keystone.kernel.loader.ArtifactContext;
 
 /**
  * 

@@ -17,9 +17,9 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel.handler;
+package org.intelligentsia.keystone.kernel.handler;
 
-import org.intelligentsia.keystone.api.kernel.loader.ArtifactContext;
+import org.intelligentsia.keystone.kernel.loader.ArtifactContext;
 
 /**
  * 

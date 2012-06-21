@@ -17,29 +17,18 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel.loader;
-
-import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
-import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
+package org.intelligentsia.keystone.kernel;
 
 /**
  * 
- * ArtifactLoader declare method to load an artifact.
+ * Initializable declare method to initialize instance.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
  */
-public interface ArtifactLoader {
-
+public interface Initializable {
 	/**
-	 * Load specified artefact.
-	 * 
-	 * @param artifactIdentifier
-	 *            artifact Identifier
-	 * @param isolationLevel
-	 *            isolation level
-	 * @throws KeystoneRuntimeException
-	 *             if error occurs
-	 * @return an ArtifactContext instance.
+	 * Initialize instance.
 	 */
-	public ArtifactContext load(ArtifactIdentifier artifactIdentifier, IsolationLevel isolationLevel) throws KeystoneRuntimeException;
+	public void initialize();
 }

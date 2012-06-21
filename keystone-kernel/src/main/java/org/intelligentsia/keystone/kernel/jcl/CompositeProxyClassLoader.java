@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel.jcl;
+package org.intelligentsia.keystone.kernel.jcl;
 
 import java.io.InputStream;
 import java.util.ArrayList;

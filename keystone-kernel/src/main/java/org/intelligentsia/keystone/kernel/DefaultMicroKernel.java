@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel;
+package org.intelligentsia.keystone.kernel;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,11 +31,11 @@ import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.api.artifacts.DefaultArtifactsService;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.api.artifacts.repository.GroupRepositoryService;
-import org.intelligentsia.keystone.api.kernel.handler.CompositeArtifactLoaderHandler;
-import org.intelligentsia.keystone.api.kernel.loader.ArtifactContext;
-import org.intelligentsia.keystone.api.kernel.loader.ArtifactLoader;
-import org.intelligentsia.keystone.api.kernel.loader.DefaultArtifactLoader;
-import org.intelligentsia.keystone.api.kernel.loader.IsolationLevel;
+import org.intelligentsia.keystone.kernel.handler.CompositeArtifactLoaderHandler;
+import org.intelligentsia.keystone.kernel.loader.ArtifactContext;
+import org.intelligentsia.keystone.kernel.loader.ArtifactLoader;
+import org.intelligentsia.keystone.kernel.loader.DefaultArtifactLoader;
+import org.intelligentsia.keystone.kernel.loader.IsolationLevel;
 
 /**
  * 

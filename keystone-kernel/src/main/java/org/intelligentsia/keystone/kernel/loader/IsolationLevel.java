@@ -17,18 +17,28 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel;
+package org.intelligentsia.keystone.kernel.loader;
 
 /**
  * 
- * Initializable declare method to initialize instance.
+ * IsolationLevel enumeration define supported isolation level : *
+ * <ul>
+ * <li>NONE: This artifact will be loaded in Kernel classloader</li>
+ * <li>ISOLATED: This artifact will be loaded in a dedicated class loader.
+ * Kernel classloader will be his parent.</li>
+ * </ul>
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public interface Initializable {
+public enum IsolationLevel {
 	/**
-	 * Initialize instance.
+	 * No isolation: This artifact will be loaded in Kernel classloader.
 	 */
-	public void initialize();
+	NONE,
+	/**
+	 * This artifact will be loaded in a dedicated class loader. Kernel
+	 * classloader will be his parent.
+	 */
+	ISOLATED;
 }

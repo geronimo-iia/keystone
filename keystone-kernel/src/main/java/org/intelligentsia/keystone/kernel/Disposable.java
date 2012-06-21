@@ -17,37 +17,18 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel.loader;
-
-import java.net.URL;
-
-import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
+package org.intelligentsia.keystone.kernel;
 
 /**
- * ArtifactContext declare all attribut member.
+ * 
+ * Disposable declare method to dispose resource.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public interface ArtifactContext {
-
+public interface Disposable {
 	/**
-	 * @return the artifactIdentifier
+	 * Free all resource.
 	 */
-	public ArtifactIdentifier getArtifactIdentifier();
-
-	/**
-	 * @return the localResource
-	 */
-	public URL getLocalResource();
-
-	/**
-	 * @return the classLoader
-	 */
-	public ClassLoader getClassLoader();
-
-	/**
-	 * @return the isolationLevel
-	 */
-	public IsolationLevel getIsolationLevel();
+	public void dispose();
 }

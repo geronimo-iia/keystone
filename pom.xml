@@ -154,8 +154,9 @@
 	<!-- ******************************************************************* -->
 	<modules>
 		<module>keystone-boot</module>
-		<module>keystone-api</module>
 		<module>keystone-plugin</module>
+		<module>keystone-api</module>
+		<module>keystone-kernel</module>
 	</modules>
 	<!-- ******************************************************************* -->
 	<!-- DISTRIBUTION -->

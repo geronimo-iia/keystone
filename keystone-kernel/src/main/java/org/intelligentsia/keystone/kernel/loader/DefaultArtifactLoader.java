@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel.loader;
+package org.intelligentsia.keystone.kernel.loader;
 
 import java.net.MalformedURLException;
 
@@ -25,8 +25,8 @@ import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.api.artifacts.ArtifactsService;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.api.artifacts.Resource;
-import org.intelligentsia.keystone.api.kernel.jcl.CompositeProxyClassLoader;
-import org.intelligentsia.keystone.api.kernel.jcl.DelegateProxyClassLoader;
+import org.intelligentsia.keystone.kernel.jcl.CompositeProxyClassLoader;
+import org.intelligentsia.keystone.kernel.jcl.DelegateProxyClassLoader;
 import org.xeustechnologies.jcl.JarClassLoader;
 
 /**

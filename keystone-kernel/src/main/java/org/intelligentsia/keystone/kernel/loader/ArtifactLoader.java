@@ -17,40 +17,29 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel;
+package org.intelligentsia.keystone.kernel.loader;
 
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
+import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 
 /**
- * Service declare methods to manage a 'service' in our system.
  * 
- * <p>
- * A service —also known as a subsystem, extends the functionality provided by
- * the microkernel. It represents a separate component that offers additional
- * functionality.
- * </p>
+ * ArtifactLoader declare method to load an artifact.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
-public interface Service {
+public interface ArtifactLoader {
 
 	/**
-	 * @return artifact identifier instance which define this service.
-	 */
-	public ArtifactIdentifier getArtifactIdentifier();
-
-	/**
-	 * Register this service instance on specified kernel.
+	 * Load specified artefact.
 	 * 
-	 * @param microkernel
+	 * @param artifactIdentifier
+	 *            artifact Identifier
+	 * @param isolationLevel
+	 *            isolation level
+	 * @throws KeystoneRuntimeException
+	 *             if error occurs
+	 * @return an ArtifactContext instance.
 	 */
-	public void register(Microkernel microkernel);
-
-	/**
-	 * Un Register this service instance on specified kernel.
-	 * 
-	 * @param microkernel
-	 */
-	public void unregister(Microkernel microkernel);
+	public ArtifactContext load(ArtifactIdentifier artifactIdentifier, IsolationLevel isolationLevel) throws KeystoneRuntimeException;
 }

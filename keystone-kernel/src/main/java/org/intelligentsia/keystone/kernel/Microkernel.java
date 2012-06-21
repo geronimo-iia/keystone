@@ -17,12 +17,12 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.api.kernel;
+package org.intelligentsia.keystone.kernel;
 
 import java.util.Set;
 
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
-import org.intelligentsia.keystone.api.kernel.loader.ArtifactLoader;
+import org.intelligentsia.keystone.kernel.loader.ArtifactLoader;
 
 /**
  * <p>

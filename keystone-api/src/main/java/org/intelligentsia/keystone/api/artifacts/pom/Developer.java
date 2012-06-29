@@ -26,20 +26,46 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class Developer implements Serializable {
 
 	private static final long serialVersionUID = 6116571393616243845L;
+	/**
+	 * @uml.property name="id"
+	 */
 	private String id;
+	/**
+	 * @uml.property name="name"
+	 */
 	private String name;
+	/**
+	 * @uml.property name="email"
+	 */
 	private String email;
+	/**
+	 * @uml.property name="url"
+	 */
 	private String url;
+	/**
+	 * @uml.property name="organization"
+	 */
 	private String organization;
+	/**
+	 * @uml.property name="organizationUrl"
+	 */
 	private String organizationUrl;
+	/**
+	 * @uml.property name="roles"
+	 */
 	private String roles;
+	/**
+	 * @uml.property name="timezone"
+	 */
 	private String timezone;
+	/**
+	 * @uml.property name="properties"
+	 */
 	private Map<String, String> properties;
 
 	public Developer() {
@@ -48,6 +74,7 @@ public class Developer implements Serializable {
 
 	/**
 	 * @return the id
+	 * @uml.property name="id"
 	 */
 	public final String getId() {
 		return id;
@@ -56,6 +83,7 @@ public class Developer implements Serializable {
 	/**
 	 * @param id
 	 *            the id to set
+	 * @uml.property name="id"
 	 */
 	public final void setId(final String id) {
 		this.id = id;
@@ -63,6 +91,7 @@ public class Developer implements Serializable {
 
 	/**
 	 * @return the name
+	 * @uml.property name="name"
 	 */
 	public final String getName() {
 		return name;
@@ -71,6 +100,7 @@ public class Developer implements Serializable {
 	/**
 	 * @param name
 	 *            the name to set
+	 * @uml.property name="name"
 	 */
 	public final void setName(final String name) {
 		this.name = name;
@@ -78,6 +108,7 @@ public class Developer implements Serializable {
 
 	/**
 	 * @return the email
+	 * @uml.property name="email"
 	 */
 	public final String getEmail() {
 		return email;
@@ -86,6 +117,7 @@ public class Developer implements Serializable {
 	/**
 	 * @param email
 	 *            the email to set
+	 * @uml.property name="email"
 	 */
 	public final void setEmail(final String email) {
 		this.email = email;
@@ -93,6 +125,7 @@ public class Developer implements Serializable {
 
 	/**
 	 * @return the url
+	 * @uml.property name="url"
 	 */
 	public final String getUrl() {
 		return url;
@@ -101,6 +134,7 @@ public class Developer implements Serializable {
 	/**
 	 * @param url
 	 *            the url to set
+	 * @uml.property name="url"
 	 */
 	public final void setUrl(final String url) {
 		this.url = url;
@@ -108,6 +142,7 @@ public class Developer implements Serializable {
 
 	/**
 	 * @return the organization
+	 * @uml.property name="organization"
 	 */
 	public final String getOrganization() {
 		return organization;
@@ -116,6 +151,7 @@ public class Developer implements Serializable {
 	/**
 	 * @param organization
 	 *            the organization to set
+	 * @uml.property name="organization"
 	 */
 	public final void setOrganization(final String organization) {
 		this.organization = organization;
@@ -123,6 +159,7 @@ public class Developer implements Serializable {
 
 	/**
 	 * @return the organizationUrl
+	 * @uml.property name="organizationUrl"
 	 */
 	public final String getOrganizationUrl() {
 		return organizationUrl;
@@ -131,6 +168,7 @@ public class Developer implements Serializable {
 	/**
 	 * @param organizationUrl
 	 *            the organizationUrl to set
+	 * @uml.property name="organizationUrl"
 	 */
 	public final void setOrganizationUrl(final String organizationUrl) {
 		this.organizationUrl = organizationUrl;
@@ -138,6 +176,7 @@ public class Developer implements Serializable {
 
 	/**
 	 * @return the roles
+	 * @uml.property name="roles"
 	 */
 	public final String getRoles() {
 		return roles;
@@ -146,6 +185,7 @@ public class Developer implements Serializable {
 	/**
 	 * @param roles
 	 *            the roles to set
+	 * @uml.property name="roles"
 	 */
 	public final void setRoles(final String roles) {
 		this.roles = roles;
@@ -153,6 +193,7 @@ public class Developer implements Serializable {
 
 	/**
 	 * @return the timezone
+	 * @uml.property name="timezone"
 	 */
 	public final String getTimezone() {
 		return timezone;
@@ -161,6 +202,7 @@ public class Developer implements Serializable {
 	/**
 	 * @param timezone
 	 *            the timezone to set
+	 * @uml.property name="timezone"
 	 */
 	public final void setTimezone(final String timezone) {
 		this.timezone = timezone;
@@ -168,6 +210,7 @@ public class Developer implements Serializable {
 
 	/**
 	 * @return the properties
+	 * @uml.property name="properties"
 	 */
 	public final Map<String, String> getProperties() {
 		return properties;
@@ -176,6 +219,7 @@ public class Developer implements Serializable {
 	/**
 	 * @param properties
 	 *            the properties to set
+	 * @uml.property name="properties"
 	 */
 	public final void setProperties(final Map<String, String> properties) {
 		this.properties = properties;

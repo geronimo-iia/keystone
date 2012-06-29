@@ -27,11 +27,13 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
 public class DependencyManagement implements Serializable {
 
 	private static final long serialVersionUID = -36118210357022081L;
+	/**
+	 * @uml.property name="dependencies"
+	 */
 	private List<Dependency> dependencies;
 
 	public DependencyManagement() {
@@ -40,6 +42,7 @@ public class DependencyManagement implements Serializable {
 
 	/**
 	 * @return the dependencies
+	 * @uml.property name="dependencies"
 	 */
 	public final List<Dependency> getDependencies() {
 		return dependencies;
@@ -48,6 +51,7 @@ public class DependencyManagement implements Serializable {
 	/**
 	 * @param dependencies
 	 *            the dependencies to set
+	 * @uml.property name="dependencies"
 	 */
 	public final void setDependencies(final List<Dependency> dependencies) {
 		this.dependencies = dependencies;

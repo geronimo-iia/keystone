@@ -28,13 +28,14 @@ import java.util.List;
 import org.xeustechnologies.jcl.ProxyClassLoader;
 
 /**
- * 
  * CompositeProxyClassLoader implement a composite of delegate class loader.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
 public class CompositeProxyClassLoader extends ProxyClassLoader {
+	/**
+	 * @uml.property name="proxyClassLoaders"
+	 */
 	private final List<ProxyClassLoader> proxyClassLoaders = new ArrayList<ProxyClassLoader>();
 
 	/**
@@ -89,6 +90,10 @@ public class CompositeProxyClassLoader extends ProxyClassLoader {
 		return proxyClassLoaders.addAll(c);
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="proxyClassLoaders"
+	 */
 	public List<ProxyClassLoader> getProxyClassLoaders() {
 		return proxyClassLoaders;
 	}

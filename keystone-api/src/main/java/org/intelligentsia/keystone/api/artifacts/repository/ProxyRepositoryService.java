@@ -28,16 +28,22 @@ import org.intelligentsia.keystone.api.artifacts.TransferFailedException;
 import com.ning.http.client.AsyncHttpClient;
 
 /**
- * 
  * ProxyRepositoryService.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
 public class ProxyRepositoryService implements RepositoryService {
 
+	/**
+	 * @uml.property name="local"
+	 * @uml.associationEnd
+	 */
 	private final FileRepository local;
 
+	/**
+	 * @uml.property name="target"
+	 * @uml.associationEnd
+	 */
 	private final ClientHttpRepository target;
 
 	/**

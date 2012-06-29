@@ -27,19 +27,45 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
 public class Dependency implements Serializable {
 
 	private static final long serialVersionUID = -7672589090039674061L;
+	/**
+	 * @uml.property name="groupId"
+	 */
 	private String groupId;
+	/**
+	 * @uml.property name="artifactId"
+	 */
 	private String artifactId;
+	/**
+	 * @uml.property name="version"
+	 */
 	private String version;
+	/**
+	 * @uml.property name="type"
+	 */
 	private String type;
+	/**
+	 * @uml.property name="classifier"
+	 */
 	private String classifier;
+	/**
+	 * @uml.property name="scope"
+	 */
 	private String scope;
+	/**
+	 * @uml.property name="systemPath"
+	 */
 	private String systemPath;
+	/**
+	 * @uml.property name="exclusions"
+	 */
 	private List<Exclusion> exclusions;
+	/**
+	 * @uml.property name="optional"
+	 */
 	private String optional;
 
 	public Dependency() {
@@ -48,6 +74,7 @@ public class Dependency implements Serializable {
 
 	/**
 	 * @return the groupId
+	 * @uml.property name="groupId"
 	 */
 	public final String getGroupId() {
 		return groupId;
@@ -56,6 +83,7 @@ public class Dependency implements Serializable {
 	/**
 	 * @param groupId
 	 *            the groupId to set
+	 * @uml.property name="groupId"
 	 */
 	public final void setGroupId(final String groupId) {
 		this.groupId = groupId;
@@ -63,6 +91,7 @@ public class Dependency implements Serializable {
 
 	/**
 	 * @return the artifactId
+	 * @uml.property name="artifactId"
 	 */
 	public final String getArtifactId() {
 		return artifactId;
@@ -71,6 +100,7 @@ public class Dependency implements Serializable {
 	/**
 	 * @param artifactId
 	 *            the artifactId to set
+	 * @uml.property name="artifactId"
 	 */
 	public final void setArtifactId(final String artifactId) {
 		this.artifactId = artifactId;
@@ -78,6 +108,7 @@ public class Dependency implements Serializable {
 
 	/**
 	 * @return the version
+	 * @uml.property name="version"
 	 */
 	public final String getVersion() {
 		return version;
@@ -86,6 +117,7 @@ public class Dependency implements Serializable {
 	/**
 	 * @param version
 	 *            the version to set
+	 * @uml.property name="version"
 	 */
 	public final void setVersion(final String version) {
 		this.version = version;
@@ -93,6 +125,7 @@ public class Dependency implements Serializable {
 
 	/**
 	 * @return the type
+	 * @uml.property name="type"
 	 */
 	public final String getType() {
 		return type;
@@ -101,6 +134,7 @@ public class Dependency implements Serializable {
 	/**
 	 * @param type
 	 *            the type to set
+	 * @uml.property name="type"
 	 */
 	public final void setType(final String type) {
 		this.type = type;
@@ -108,6 +142,7 @@ public class Dependency implements Serializable {
 
 	/**
 	 * @return the classifier
+	 * @uml.property name="classifier"
 	 */
 	public final String getClassifier() {
 		return classifier;
@@ -116,6 +151,7 @@ public class Dependency implements Serializable {
 	/**
 	 * @param classifier
 	 *            the classifier to set
+	 * @uml.property name="classifier"
 	 */
 	public final void setClassifier(final String classifier) {
 		this.classifier = classifier;
@@ -123,6 +159,7 @@ public class Dependency implements Serializable {
 
 	/**
 	 * @return the scope
+	 * @uml.property name="scope"
 	 */
 	public final String getScope() {
 		return scope;
@@ -131,6 +168,7 @@ public class Dependency implements Serializable {
 	/**
 	 * @param scope
 	 *            the scope to set
+	 * @uml.property name="scope"
 	 */
 	public final void setScope(final String scope) {
 		this.scope = scope;
@@ -138,6 +176,7 @@ public class Dependency implements Serializable {
 
 	/**
 	 * @return the systemPath
+	 * @uml.property name="systemPath"
 	 */
 	public final String getSystemPath() {
 		return systemPath;
@@ -146,6 +185,7 @@ public class Dependency implements Serializable {
 	/**
 	 * @param systemPath
 	 *            the systemPath to set
+	 * @uml.property name="systemPath"
 	 */
 	public final void setSystemPath(final String systemPath) {
 		this.systemPath = systemPath;
@@ -153,6 +193,7 @@ public class Dependency implements Serializable {
 
 	/**
 	 * @return the exclusions
+	 * @uml.property name="exclusions"
 	 */
 	public final List<Exclusion> getExclusions() {
 		return exclusions;
@@ -161,6 +202,7 @@ public class Dependency implements Serializable {
 	/**
 	 * @param exclusions
 	 *            the exclusions to set
+	 * @uml.property name="exclusions"
 	 */
 	public final void setExclusions(final List<Exclusion> exclusions) {
 		this.exclusions = exclusions;
@@ -168,6 +210,7 @@ public class Dependency implements Serializable {
 
 	/**
 	 * @return the optional
+	 * @uml.property name="optional"
 	 */
 	public final String getOptional() {
 		return optional;
@@ -176,6 +219,7 @@ public class Dependency implements Serializable {
 	/**
 	 * @param optional
 	 *            the optional to set
+	 * @uml.property name="optional"
 	 */
 	public final void setOptional(final String optional) {
 		this.optional = optional;

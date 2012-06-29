@@ -20,8 +20,7 @@
 package org.intelligentsia.keystone.kernel.loader;
 
 /**
- * 
- * IsolationLevel enumeration define supported isolation level : *
+ * IsolationLevel enumeration define supported isolation level :
  * <ul>
  * <li>NONE: This artifact will be loaded in Kernel classloader</li>
  * <li>ISOLATED: This artifact will be loaded in a dedicated class loader.
@@ -29,16 +28,16 @@ package org.intelligentsia.keystone.kernel.loader;
  * </ul>
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
 public enum IsolationLevel {
 	/**
-	 * No isolation: This artifact will be loaded in Kernel classloader.
+	 * @uml.property name="nONE"
+	 * @uml.associationEnd
 	 */
 	NONE,
 	/**
-	 * This artifact will be loaded in a dedicated class loader. Kernel
-	 * classloader will be his parent.
+	 * @uml.property name="iSOLATED"
+	 * @uml.associationEnd
 	 */
 	ISOLATED;
 }

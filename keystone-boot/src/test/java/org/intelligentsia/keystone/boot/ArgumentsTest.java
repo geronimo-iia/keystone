@@ -41,34 +41,34 @@ public class ArgumentsTest {
 
 	@Test
 	public void testLoadArgument() {
-		Map<String, String> arguments = Arguments.loadArguments(STRINGS);
+		final Map<String, String> arguments = Arguments.loadArguments(STRINGS);
 		Assert.assertNotNull(arguments);
 	}
 
 	@Test
 	public void loadFromProperties() throws IOException {
-		Map<String, String> arguments =  Arguments.loadArguments(STRINGS, "keystone.properties");
+		final Map<String, String> arguments = Arguments.loadArguments(STRINGS, "keystone.properties");
 		Assert.assertNotNull("Expected 'Main-Class' key", arguments.get("Main-Class"));
 		Assert.assertEquals("Expected 'tutu'", arguments.get("Main-Class"), "org.intelligentsia.keystone.boot.Main");
 	}
-	
+
 	@Test
 	public void testLoadArgumentSingleValue() {
-		Map<String, String> arguments = Arguments.loadArguments(STRINGS);
+		final Map<String, String> arguments = Arguments.loadArguments(STRINGS);
 		Assert.assertNotNull("Expected 'name' key", arguments.get("name"));
 		Assert.assertTrue("Expected 'false'", Boolean.parseBoolean(arguments.get("name")));
 	}
 
 	@Test
 	public void testLoadArgumentKeyValue() {
-		Map<String, String> arguments = Arguments.loadArguments(STRINGS);
+		final Map<String, String> arguments = Arguments.loadArguments(STRINGS);
 		Assert.assertNotNull("Expected 'name' titi", arguments.get("titi"));
 		Assert.assertEquals("Expected 'tutu'", arguments.get("titi"), "tutu");
 	}
 
 	@Test
 	public void testLoadArgumentOther() {
-		Map<String, String> arguments = Arguments.loadArguments(STRINGS);
+		final Map<String, String> arguments = Arguments.loadArguments(STRINGS);
 
 		Assert.assertNotNull("Expected 'single' key", arguments.get("single"));
 		Assert.assertEquals("Expected 'single'", arguments.get("single"), "single");
@@ -85,9 +85,9 @@ public class ArgumentsTest {
 
 	@Test
 	public void testArgumentToArray() {
-		Map<String, String> arguments = Arguments.loadArguments(STRINGS);
+		final Map<String, String> arguments = Arguments.loadArguments(STRINGS);
 		Assert.assertNotNull(arguments);
-		String[] result = Arguments.argumentToArray(arguments);
+		final String[] result = Arguments.argumentToArray(arguments);
 		Assert.assertNotNull(result);
 
 		Assert.assertTrue("Array must be equals", result.length == STRINGS.length);
@@ -96,8 +96,8 @@ public class ArgumentsTest {
 		}
 	}
 
-	private Boolean lookup(String[] result, String item) {
-		for (String string : result) {
+	private Boolean lookup(final String[] result, final String item) {
+		for (final String string : result) {
 			if (item.equals(string)) {
 				return Boolean.TRUE;
 			}
@@ -107,7 +107,7 @@ public class ArgumentsTest {
 
 	@Test
 	public void testGetBoolean() {
-		Map<String, String> arguments = Arguments.loadArguments(STRINGS);
+		final Map<String, String> arguments = Arguments.loadArguments(STRINGS);
 		Assert.assertTrue(Arguments.getBooleanArgument(arguments, "name", null));
 
 		// default not valued
@@ -122,7 +122,7 @@ public class ArgumentsTest {
 
 	@Test
 	public void testGetInteger() {
-		Map<String, String> arguments = Arguments.loadArguments(STRINGS);
+		final Map<String, String> arguments = Arguments.loadArguments(STRINGS);
 		Assert.assertEquals(Integer.valueOf(1), Arguments.getIntegerArgument(arguments, "integer-that-not-exist", 1));
 		Assert.assertNotSame(Integer.valueOf(-1), Arguments.getIntegerArgument(arguments, "i", -1));
 		Assert.assertEquals(Integer.valueOf(123), Arguments.getIntegerArgument(arguments, "i", 1));
@@ -130,7 +130,7 @@ public class ArgumentsTest {
 
 	@Test
 	public void testGetString() {
-		Map<String, String> arguments = Arguments.loadArguments(STRINGS);
+		final Map<String, String> arguments = Arguments.loadArguments(STRINGS);
 		Assert.assertNotNull("Expected 'name' titi", arguments.get("titi"));
 		Assert.assertEquals("Expected 'tutu'", arguments.get("titi"), "tutu");
 	}

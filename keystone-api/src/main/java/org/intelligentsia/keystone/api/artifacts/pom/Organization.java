@@ -30,7 +30,13 @@ import java.io.Serializable;
 public class Organization implements Serializable {
 
 	private static final long serialVersionUID = 3380219238275732511L;
+	/**
+	 * @uml.property name="name"
+	 */
 	private String name;
+	/**
+	 * @uml.property name="url"
+	 */
 	private String url;
 
 	public Organization() {
@@ -39,6 +45,7 @@ public class Organization implements Serializable {
 
 	/**
 	 * @return the name
+	 * @uml.property name="name"
 	 */
 	public final String getName() {
 		return name;
@@ -47,6 +54,7 @@ public class Organization implements Serializable {
 	/**
 	 * @param name
 	 *            the name to set
+	 * @uml.property name="name"
 	 */
 	public final void setName(final String name) {
 		this.name = name;
@@ -54,6 +62,7 @@ public class Organization implements Serializable {
 
 	/**
 	 * @return the url
+	 * @uml.property name="url"
 	 */
 	public final String getUrl() {
 		return url;
@@ -62,6 +71,7 @@ public class Organization implements Serializable {
 	/**
 	 * @param url
 	 *            the url to set
+	 * @uml.property name="url"
 	 */
 	public final void setUrl(final String url) {
 		this.url = url;

@@ -28,26 +28,35 @@ import org.xeustechnologies.jcl.JarClassLoader;
  * DefaultArtifactContext act as a context to a loaded artifact.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
 public class DefaultArtifactContext implements ArtifactContext {
 
 	/**
 	 * Artifact identifier.
+	 * 
+	 * @uml.property name="artifactIdentifier"
+	 * @uml.associationEnd
 	 */
 	private final ArtifactIdentifier artifactIdentifier;
 	/**
 	 * Local URL resource.
+	 * 
+	 * @uml.property name="localResource"
 	 */
 	private URL localResource;
 
 	/**
 	 * Classloader instance used to load this artifact.
+	 * 
+	 * @uml.property name="classLoader"
 	 */
 	private JarClassLoader classLoader;
 
 	/**
 	 * Isolation Level used.
+	 * 
+	 * @uml.property name="isolationLevel"
+	 * @uml.associationEnd
 	 */
 	private IsolationLevel isolationLevel;
 
@@ -69,6 +78,7 @@ public class DefaultArtifactContext implements ArtifactContext {
 
 	/**
 	 * @return the localResource
+	 * @uml.property name="localResource"
 	 */
 	@Override
 	public URL getLocalResource() {
@@ -78,6 +88,7 @@ public class DefaultArtifactContext implements ArtifactContext {
 	/**
 	 * @param localResource
 	 *            the localResource to set
+	 * @uml.property name="localResource"
 	 */
 	public void setLocalResource(final URL localResource) {
 		this.localResource = localResource;
@@ -85,6 +96,7 @@ public class DefaultArtifactContext implements ArtifactContext {
 
 	/**
 	 * @return the classLoader
+	 * @uml.property name="classLoader"
 	 */
 	@Override
 	public ClassLoader getClassLoader() {
@@ -94,6 +106,7 @@ public class DefaultArtifactContext implements ArtifactContext {
 	/**
 	 * @param classLoader
 	 *            the classLoader to set
+	 * @uml.property name="classLoader"
 	 */
 	public void setClassLoader(final JarClassLoader classLoader) {
 		this.classLoader = classLoader;
@@ -101,6 +114,7 @@ public class DefaultArtifactContext implements ArtifactContext {
 
 	/**
 	 * @return the isolationLevel
+	 * @uml.property name="isolationLevel"
 	 */
 	@Override
 	public IsolationLevel getIsolationLevel() {
@@ -110,6 +124,7 @@ public class DefaultArtifactContext implements ArtifactContext {
 	/**
 	 * @param isolationLevel
 	 *            the isolationLevel to set
+	 * @uml.property name="isolationLevel"
 	 */
 	public void setIsolationLevel(final IsolationLevel isolationLevel) {
 		this.isolationLevel = isolationLevel;
@@ -117,6 +132,7 @@ public class DefaultArtifactContext implements ArtifactContext {
 
 	/**
 	 * @return the artifactIdentifier
+	 * @uml.property name="artifactIdentifier"
 	 */
 	@Override
 	public ArtifactIdentifier getArtifactIdentifier() {

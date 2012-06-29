@@ -28,73 +28,95 @@ import java.util.ArrayList;
  * Versioning class Definition.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
 public class Versioning {
 	/**
 	 * What the latest version in the directory is, including snapshots.
+	 * 
+	 * @uml.property name="latest"
 	 */
 	private String latest;
 
 	/**
 	 * What the latest version in the directory is, of the releases.
+	 * 
+	 * @uml.property name="release"
 	 */
 	private String release;
 
 	/**
 	 * The current snapshot data in use for this version.
+	 * 
+	 * @uml.property name="snapshot"
+	 * @uml.associationEnd
 	 */
 	private Snapshot snapshot;
 
 	/**
 	 * Versions available for the artifact.
+	 * 
+	 * @uml.property name="versions"
 	 */
 	private java.util.List<String> versions;
 
 	/**
 	 * When the metadata was last updated.
+	 * 
+	 * @uml.property name="lastUpdated"
 	 */
 	private String lastUpdated;
 
 	/**
-	 * 
 	 * @return What the latest version in the directory is, including snapshots.
+	 * @uml.property name="latest"
 	 */
 	public String getLatest() {
 		return this.latest;
 	}
 
+	/**
+	 * @param latest
+	 * @uml.property name="latest"
+	 */
 	public void setLatest(final String latest) {
 		this.latest = latest;
 	}
 
 	/**
-	 * 
 	 * @return What the latest version in the directory is, of the releases.
+	 * @uml.property name="release"
 	 */
 	public String getRelease() {
 		return this.release;
 	}
 
+	/**
+	 * @param release
+	 * @uml.property name="release"
+	 */
 	public void setRelease(final String release) {
 		this.release = release;
 	}
 
 	/**
-	 * 
 	 * @return The current snapshot data in use for this version.
+	 * @uml.property name="snapshot"
 	 */
 	public Snapshot getSnapshot() {
 		return this.snapshot;
 	}
 
+	/**
+	 * @param snapshot
+	 * @uml.property name="snapshot"
+	 */
 	public void setSnapshot(final Snapshot snapshot) {
 		this.snapshot = snapshot;
 	}
 
 	/**
-	 * 
 	 * @return Versions available for the artifact.
+	 * @uml.property name="versions"
 	 */
 	public java.util.List<String> getVersions() {
 		if (versions == null) {
@@ -103,18 +125,26 @@ public class Versioning {
 		return this.versions;
 	}
 
+	/**
+	 * @param versions
+	 * @uml.property name="versions"
+	 */
 	public void setVersions(final java.util.List<String> versions) {
 		this.versions = versions;
 	}
 
 	/**
-	 * 
 	 * @return When the metadata was last updated.
+	 * @uml.property name="lastUpdated"
 	 */
 	public String getLastUpdated() {
 		return this.lastUpdated;
 	}
 
+	/**
+	 * @param lastUpdated
+	 * @uml.property name="lastUpdated"
+	 */
 	public void setLastUpdated(final String lastUpdated) {
 		this.lastUpdated = lastUpdated;
 	}

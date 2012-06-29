@@ -41,10 +41,14 @@ import com.fasterxml.jackson.xml.XmlMapper;
  * DefaultArtifactsService implements ArtifactsService API.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
 public class DefaultArtifactsService implements ArtifactsService {
-	/** inner repository */
+	/**
+	 * inner repository
+	 * 
+	 * @uml.property name="service"
+	 * @uml.associationEnd
+	 */
 	private final RepositoryService service;
 	/**
 	 * Jackson Object XML Mapper.

@@ -30,9 +30,21 @@ import java.io.Serializable;
 public class Parent implements Serializable {
 
 	private static final long serialVersionUID = -6053043371284615084L;
+	/**
+	 * @uml.property name="artifactId"
+	 */
 	private String artifactId;
+	/**
+	 * @uml.property name="groupId"
+	 */
 	private String groupId;
+	/**
+	 * @uml.property name="version"
+	 */
 	private String version;
+	/**
+	 * @uml.property name="relativePath"
+	 */
 	private String relativePath;
 
 	public Parent() {
@@ -41,6 +53,7 @@ public class Parent implements Serializable {
 
 	/**
 	 * @return the artifactId
+	 * @uml.property name="artifactId"
 	 */
 	public final String getArtifactId() {
 		return artifactId;
@@ -49,6 +62,7 @@ public class Parent implements Serializable {
 	/**
 	 * @param artifactId
 	 *            the artifactId to set
+	 * @uml.property name="artifactId"
 	 */
 	public final void setArtifactId(final String artifactId) {
 		this.artifactId = artifactId;
@@ -56,6 +70,7 @@ public class Parent implements Serializable {
 
 	/**
 	 * @return the groupId
+	 * @uml.property name="groupId"
 	 */
 	public final String getGroupId() {
 		return groupId;
@@ -64,6 +79,7 @@ public class Parent implements Serializable {
 	/**
 	 * @param groupId
 	 *            the groupId to set
+	 * @uml.property name="groupId"
 	 */
 	public final void setGroupId(final String groupId) {
 		this.groupId = groupId;
@@ -71,6 +87,7 @@ public class Parent implements Serializable {
 
 	/**
 	 * @return the version
+	 * @uml.property name="version"
 	 */
 	public final String getVersion() {
 		return version;
@@ -79,6 +96,7 @@ public class Parent implements Serializable {
 	/**
 	 * @param version
 	 *            the version to set
+	 * @uml.property name="version"
 	 */
 	public final void setVersion(final String version) {
 		this.version = version;
@@ -86,6 +104,7 @@ public class Parent implements Serializable {
 
 	/**
 	 * @return the relativePath
+	 * @uml.property name="relativePath"
 	 */
 	public final String getRelativePath() {
 		return relativePath;
@@ -94,6 +113,7 @@ public class Parent implements Serializable {
 	/**
 	 * @param relativePath
 	 *            the relativePath to set
+	 * @uml.property name="relativePath"
 	 */
 	public final void setRelativePath(final String relativePath) {
 		this.relativePath = relativePath;

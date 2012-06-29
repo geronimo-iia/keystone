@@ -26,14 +26,23 @@ import java.io.File;
 
 /**
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
 public class Resource {
 
+	/**
+	 * @uml.property name="artefactIdentifier"
+	 * @uml.associationEnd
+	 */
 	private ArtifactIdentifier artefactIdentifier;
 
+	/**
+	 * @uml.property name="name"
+	 */
 	private String name;
 
+	/**
+	 * @uml.property name="localFile"
+	 */
 	private File localFile;
 
 	/**
@@ -43,26 +52,50 @@ public class Resource {
 		super();
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="artefactIdentifier"
+	 */
 	public ArtifactIdentifier getArtefactIdentifier() {
 		return this.artefactIdentifier;
 	}
 
+	/**
+	 * @param artefactIdentifier
+	 * @uml.property name="artefactIdentifier"
+	 */
 	public void setArtefactIdentifier(final ArtifactIdentifier artefactIdentifier) {
 		this.artefactIdentifier = artefactIdentifier;
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="name"
+	 */
 	public String getName() {
 		return this.name;
 	}
 
+	/**
+	 * @param name
+	 * @uml.property name="name"
+	 */
 	public void setName(final String name) {
 		this.name = name;
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="localFile"
+	 */
 	public File getLocalFile() {
 		return this.localFile;
 	}
 
+	/**
+	 * @param localFile
+	 * @uml.property name="localFile"
+	 */
 	public void setLocalFile(final File localFile) {
 		this.localFile = localFile;
 	}

@@ -23,15 +23,26 @@
 package org.intelligentsia.keystone.api.artifacts.repository.metadata;
 
 /**
- * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class Plugin {
-	/** Display name for the plugin. */
+	/**
+	 * Display name for the plugin.
+	 * 
+	 * @uml.property name="name"
+	 */
 	private String name;
-	/** The plugin invocation prefix (i.e. eclipse for eclipse:eclipse). */
+	/**
+	 * The plugin invocation prefix (i.e. eclipse for eclipse:eclipse).
+	 * 
+	 * @uml.property name="prefix"
+	 */
 	private String prefix;
-	/** The plugin artifactId. */
+	/**
+	 * The plugin artifactId.
+	 * 
+	 * @uml.property name="artifactId"
+	 */
 	private String artifactId;
 
 	/**
@@ -55,26 +66,50 @@ public class Plugin {
 		this.artifactId = artifactId;
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="name"
+	 */
 	public String getName() {
 		return this.name;
 	}
 
+	/**
+	 * @param name
+	 * @uml.property name="name"
+	 */
 	public void setName(final String name) {
 		this.name = name;
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="prefix"
+	 */
 	public String getPrefix() {
 		return this.prefix;
 	}
 
+	/**
+	 * @param prefix
+	 * @uml.property name="prefix"
+	 */
 	public void setPrefix(final String prefix) {
 		this.prefix = prefix;
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="artifactId"
+	 */
 	public String getArtifactId() {
 		return this.artifactId;
 	}
 
+	/**
+	 * @param artifactId
+	 * @uml.property name="artifactId"
+	 */
 	public void setArtifactId(final String artifactId) {
 		this.artifactId = artifactId;
 	}

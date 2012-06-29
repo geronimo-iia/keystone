@@ -29,13 +29,21 @@ import java.util.StringTokenizer;
  * ArtifactIdentifier manage the 2B3...
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
 public class ArtifactIdentifier implements Serializable {
 
 	private static final long serialVersionUID = 4702119966025396690L;
+	/**
+	 * @uml.property name="groupId"
+	 */
 	private final String groupId;
+	/**
+	 * @uml.property name="artifactId"
+	 */
 	private final String artifactId;
+	/**
+	 * @uml.property name="version"
+	 */
 	private final String version;
 
 	/**
@@ -62,14 +70,26 @@ public class ArtifactIdentifier implements Serializable {
 		this(ArtifactIdentifier.parse(artefact));
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="groupId"
+	 */
 	public String getGroupId() {
 		return groupId;
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="artifactId"
+	 */
 	public String getArtifactId() {
 		return artifactId;
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="version"
+	 */
 	public String getVersion() {
 		return version;
 	}

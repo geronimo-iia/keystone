@@ -32,7 +32,7 @@ public class Main {
 		// Console.setLogFile(new File("./test.log"));
 		System.out.println("In Main: ");
 
-		Scanner sc = new Scanner(System.in);
+		final Scanner sc = new Scanner(System.in);
 
 		if (sc.nextInt() == 0) {
 			System.out.println("Call autoRestart");
@@ -43,7 +43,7 @@ public class Main {
 						System.out.println("Run before auto restart");
 					}
 				});
-			} catch (IllegalStateException e) {
+			} catch (final IllegalStateException e) {
 				System.out.println(e.getMessage());
 			}
 			System.out.println("Call restartWith");
@@ -54,7 +54,7 @@ public class Main {
 						System.out.println("Run before restart with");
 					}
 				}, "org.intelligentsia.keystone.boot.Main");
-			} catch (IllegalStateException e) {
+			} catch (final IllegalStateException e) {
 				System.out.println(e.getMessage());
 			}
 		}

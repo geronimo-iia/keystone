@@ -25,15 +25,16 @@ import org.xeustechnologies.jcl.AbstractClassLoader;
 import org.xeustechnologies.jcl.ProxyClassLoader;
 
 /**
- * 
  * DelegateProxyClassLoader implements a ProxyClassLoader which delegate loading
  * to a specific AbstractClassLoader loader instance..
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
 public class DelegateProxyClassLoader extends ProxyClassLoader {
 
+	/**
+	 * @uml.property name="delegate"
+	 */
 	private final AbstractClassLoader delegate;
 
 	/**
@@ -69,6 +70,10 @@ public class DelegateProxyClassLoader extends ProxyClassLoader {
 		return delegate.getResourceAsStream(name);
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="delegate"
+	 */
 	public AbstractClassLoader getDelegate() {
 		return delegate;
 	}

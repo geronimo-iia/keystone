@@ -38,20 +38,24 @@ import org.intelligentsia.keystone.kernel.loader.DefaultArtifactLoader;
 import org.intelligentsia.keystone.kernel.loader.IsolationLevel;
 
 /**
- * 
  * DefaultMicroKernel.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
 public class DefaultMicroKernel implements Microkernel, Initializable, Disposable {
 
 	/**
 	 * GroupRepositoryService instance.
+	 * 
+	 * @uml.property name="repositoryService"
+	 * @uml.associationEnd
 	 */
 	private GroupRepositoryService repositoryService;
 	/**
 	 * ArtifactLoader instance.
+	 * 
+	 * @uml.property name="artifactLoader"
+	 * @uml.associationEnd
 	 */
 	private ArtifactLoader artifactLoader;
 
@@ -62,6 +66,9 @@ public class DefaultMicroKernel implements Microkernel, Initializable, Disposabl
 
 	/**
 	 * CompositeArtifactLoaderHandler instance.
+	 * 
+	 * @uml.property name="artifactLoaderHandler"
+	 * @uml.associationEnd
 	 */
 	private final CompositeArtifactLoaderHandler artifactLoaderHandler = new CompositeArtifactLoaderHandler();
 

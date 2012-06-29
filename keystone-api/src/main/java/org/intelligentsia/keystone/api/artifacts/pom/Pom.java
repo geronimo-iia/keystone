@@ -36,25 +36,79 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 public class Pom implements Serializable {
 
 	private static final long serialVersionUID = 6397991212624047355L;
+	/**
+	 * @uml.property name="modelVersion"
+	 */
 	private String modelVersion;
+	/**
+	 * @uml.property name="parent"
+	 * @uml.associationEnd
+	 */
 	private Parent parent;
+	/**
+	 * @uml.property name="groupId"
+	 */
 	private String groupId;
+	/**
+	 * @uml.property name="artifactId"
+	 */
 	private String artifactId;
+	/**
+	 * @uml.property name="version"
+	 */
 	private String version;
+	/**
+	 * @uml.property name="packaging"
+	 */
 	private String packaging;
 
+	/**
+	 * @uml.property name="name"
+	 */
 	private String name;
+	/**
+	 * @uml.property name="description"
+	 */
 	private String description;
+	/**
+	 * @uml.property name="url"
+	 */
 	private String url;
+	/**
+	 * @uml.property name="inceptionYear"
+	 */
 	private String inceptionYear;
 
+	/**
+	 * @uml.property name="organization"
+	 * @uml.associationEnd
+	 */
 	private Organization organization;
+	/**
+	 * @uml.property name="licenses"
+	 */
 	private List<Licence> licenses;
+	/**
+	 * @uml.property name="developers"
+	 */
 	private List<Developer> developers;
+	/**
+	 * @uml.property name="contributors"
+	 */
 	private List<Contributor> contributors;
 
+	/**
+	 * @uml.property name="modules"
+	 */
 	private List<String> modules;
+	/**
+	 * @uml.property name="dependencyManagement"
+	 * @uml.associationEnd
+	 */
 	private DependencyManagement dependencyManagement;
+	/**
+	 * @uml.property name="dependencies"
+	 */
 	private List<Dependency> dependencies;
 
 	public Pom() {
@@ -63,6 +117,7 @@ public class Pom implements Serializable {
 
 	/**
 	 * @return the modelVersion
+	 * @uml.property name="modelVersion"
 	 */
 	public final String getModelVersion() {
 		return modelVersion;
@@ -71,6 +126,7 @@ public class Pom implements Serializable {
 	/**
 	 * @param modelVersion
 	 *            the modelVersion to set
+	 * @uml.property name="modelVersion"
 	 */
 	public final void setModelVersion(final String modelVersion) {
 		this.modelVersion = modelVersion;
@@ -78,6 +134,7 @@ public class Pom implements Serializable {
 
 	/**
 	 * @return the parent
+	 * @uml.property name="parent"
 	 */
 	public final Parent getParent() {
 		return parent;
@@ -86,6 +143,7 @@ public class Pom implements Serializable {
 	/**
 	 * @param parent
 	 *            the parent to set
+	 * @uml.property name="parent"
 	 */
 	public final void setParent(final Parent parent) {
 		this.parent = parent;
@@ -93,6 +151,7 @@ public class Pom implements Serializable {
 
 	/**
 	 * @return the groupId
+	 * @uml.property name="groupId"
 	 */
 	public final String getGroupId() {
 		return groupId;
@@ -101,6 +160,7 @@ public class Pom implements Serializable {
 	/**
 	 * @param groupId
 	 *            the groupId to set
+	 * @uml.property name="groupId"
 	 */
 	public final void setGroupId(final String groupId) {
 		this.groupId = groupId;
@@ -108,6 +168,7 @@ public class Pom implements Serializable {
 
 	/**
 	 * @return the artifactId
+	 * @uml.property name="artifactId"
 	 */
 	public final String getArtifactId() {
 		return artifactId;
@@ -116,6 +177,7 @@ public class Pom implements Serializable {
 	/**
 	 * @param artifactId
 	 *            the artifactId to set
+	 * @uml.property name="artifactId"
 	 */
 	public final void setArtifactId(final String artifactId) {
 		this.artifactId = artifactId;
@@ -123,6 +185,7 @@ public class Pom implements Serializable {
 
 	/**
 	 * @return the version
+	 * @uml.property name="version"
 	 */
 	public final String getVersion() {
 		return version;
@@ -131,6 +194,7 @@ public class Pom implements Serializable {
 	/**
 	 * @param version
 	 *            the version to set
+	 * @uml.property name="version"
 	 */
 	public final void setVersion(final String version) {
 		this.version = version;
@@ -138,6 +202,7 @@ public class Pom implements Serializable {
 
 	/**
 	 * @return the packaging
+	 * @uml.property name="packaging"
 	 */
 	public final String getPackaging() {
 		return packaging;
@@ -146,6 +211,7 @@ public class Pom implements Serializable {
 	/**
 	 * @param packaging
 	 *            the packaging to set
+	 * @uml.property name="packaging"
 	 */
 	public final void setPackaging(final String packaging) {
 		this.packaging = packaging;
@@ -153,6 +219,7 @@ public class Pom implements Serializable {
 
 	/**
 	 * @return the name
+	 * @uml.property name="name"
 	 */
 	public final String getName() {
 		return name;
@@ -161,6 +228,7 @@ public class Pom implements Serializable {
 	/**
 	 * @param name
 	 *            the name to set
+	 * @uml.property name="name"
 	 */
 	public final void setName(final String name) {
 		this.name = name;
@@ -168,6 +236,7 @@ public class Pom implements Serializable {
 
 	/**
 	 * @return the description
+	 * @uml.property name="description"
 	 */
 	public final String getDescription() {
 		return description;
@@ -176,6 +245,7 @@ public class Pom implements Serializable {
 	/**
 	 * @param description
 	 *            the description to set
+	 * @uml.property name="description"
 	 */
 	public final void setDescription(final String description) {
 		this.description = description;
@@ -183,6 +253,7 @@ public class Pom implements Serializable {
 
 	/**
 	 * @return the url
+	 * @uml.property name="url"
 	 */
 	public final String getUrl() {
 		return url;
@@ -191,6 +262,7 @@ public class Pom implements Serializable {
 	/**
 	 * @param url
 	 *            the url to set
+	 * @uml.property name="url"
 	 */
 	public final void setUrl(final String url) {
 		this.url = url;
@@ -198,6 +270,7 @@ public class Pom implements Serializable {
 
 	/**
 	 * @return the inceptionYear
+	 * @uml.property name="inceptionYear"
 	 */
 	public final String getInceptionYear() {
 		return inceptionYear;
@@ -206,6 +279,7 @@ public class Pom implements Serializable {
 	/**
 	 * @param inceptionYear
 	 *            the inceptionYear to set
+	 * @uml.property name="inceptionYear"
 	 */
 	public final void setInceptionYear(final String inceptionYear) {
 		this.inceptionYear = inceptionYear;
@@ -213,6 +287,7 @@ public class Pom implements Serializable {
 
 	/**
 	 * @return the organization
+	 * @uml.property name="organization"
 	 */
 	public final Organization getOrganization() {
 		return organization;
@@ -221,6 +296,7 @@ public class Pom implements Serializable {
 	/**
 	 * @param organization
 	 *            the organization to set
+	 * @uml.property name="organization"
 	 */
 	public final void setOrganization(final Organization organization) {
 		this.organization = organization;
@@ -228,6 +304,7 @@ public class Pom implements Serializable {
 
 	/**
 	 * @return the licenses
+	 * @uml.property name="licenses"
 	 */
 	public final List<Licence> getLicenses() {
 		return licenses;
@@ -236,6 +313,7 @@ public class Pom implements Serializable {
 	/**
 	 * @param licenses
 	 *            the licenses to set
+	 * @uml.property name="licenses"
 	 */
 	public final void setLicenses(final List<Licence> licenses) {
 		this.licenses = licenses;
@@ -243,6 +321,7 @@ public class Pom implements Serializable {
 
 	/**
 	 * @return the developers
+	 * @uml.property name="developers"
 	 */
 	public final List<Developer> getDevelopers() {
 		return developers;
@@ -251,6 +330,7 @@ public class Pom implements Serializable {
 	/**
 	 * @param developers
 	 *            the developers to set
+	 * @uml.property name="developers"
 	 */
 	public final void setDevelopers(final List<Developer> developers) {
 		this.developers = developers;
@@ -258,6 +338,7 @@ public class Pom implements Serializable {
 
 	/**
 	 * @return the contributors
+	 * @uml.property name="contributors"
 	 */
 	public final List<Contributor> getContributors() {
 		return contributors;
@@ -266,6 +347,7 @@ public class Pom implements Serializable {
 	/**
 	 * @param contributors
 	 *            the contributors to set
+	 * @uml.property name="contributors"
 	 */
 	public final void setContributors(final List<Contributor> contributors) {
 		this.contributors = contributors;
@@ -273,6 +355,7 @@ public class Pom implements Serializable {
 
 	/**
 	 * @return the modules
+	 * @uml.property name="modules"
 	 */
 	public final List<String> getModules() {
 		return modules;
@@ -281,6 +364,7 @@ public class Pom implements Serializable {
 	/**
 	 * @param modules
 	 *            the modules to set
+	 * @uml.property name="modules"
 	 */
 	public final void setModules(final List<String> modules) {
 		this.modules = modules;
@@ -288,6 +372,7 @@ public class Pom implements Serializable {
 
 	/**
 	 * @return the dependencyManagement
+	 * @uml.property name="dependencyManagement"
 	 */
 	public final DependencyManagement getDependencyManagement() {
 		return dependencyManagement;
@@ -296,6 +381,7 @@ public class Pom implements Serializable {
 	/**
 	 * @param dependencyManagement
 	 *            the dependencyManagement to set
+	 * @uml.property name="dependencyManagement"
 	 */
 	public final void setDependencyManagement(final DependencyManagement dependencyManagement) {
 		this.dependencyManagement = dependencyManagement;
@@ -303,6 +389,7 @@ public class Pom implements Serializable {
 
 	/**
 	 * @return the dependencies
+	 * @uml.property name="dependencies"
 	 */
 	public final List<Dependency> getDependencies() {
 		return dependencies;
@@ -311,6 +398,7 @@ public class Pom implements Serializable {
 	/**
 	 * @param dependencies
 	 *            the dependencies to set
+	 * @uml.property name="dependencies"
 	 */
 	public final void setDependencies(final List<Dependency> dependencies) {
 		this.dependencies = dependencies;

@@ -17,6 +17,8 @@ local.properties
 .classpath
 .settings/
 .loadpath
+.uml*
+.euml*
 
 # External tool builders
 .externalToolBuilders/

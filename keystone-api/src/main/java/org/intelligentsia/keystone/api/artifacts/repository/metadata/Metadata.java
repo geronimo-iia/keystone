@@ -33,25 +33,36 @@ import java.util.List;
 public class Metadata {
 	/**
 	 * The groupId that is directory represents, if any.
+	 * 
+	 * @uml.property name="groupId"
 	 */
 	private String groupId;
 
 	/**
 	 * The artifactId that is directory represents, if any.
+	 * 
+	 * @uml.property name="artifactId"
 	 */
 	private String artifactId;
 
 	/**
 	 * The version that is directory represents, if any.
+	 * 
+	 * @uml.property name="version"
 	 */
 	private String version;
 
 	/**
 	 * Versioning information for the artifact.
+	 * 
+	 * @uml.property name="versioning"
+	 * @uml.associationEnd
 	 */
 	private Versioning versioning;
 	/**
 	 * The set of plugin mappings for the group.
+	 * 
+	 * @uml.property name="plugins"
 	 */
 	private List<Plugin> plugins;
 
@@ -62,30 +73,58 @@ public class Metadata {
 		super();
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="groupId"
+	 */
 	public String getGroupId() {
 		return this.groupId;
 	}
 
+	/**
+	 * @param groupId
+	 * @uml.property name="groupId"
+	 */
 	public void setGroupId(final String groupId) {
 		this.groupId = groupId;
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="artifactId"
+	 */
 	public String getArtifactId() {
 		return this.artifactId;
 	}
 
+	/**
+	 * @param artifactId
+	 * @uml.property name="artifactId"
+	 */
 	public void setArtifactId(final String artifactId) {
 		this.artifactId = artifactId;
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="version"
+	 */
 	public String getVersion() {
 		return this.version;
 	}
 
+	/**
+	 * @param version
+	 * @uml.property name="version"
+	 */
 	public void setVersion(final String version) {
 		this.version = version;
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="versioning"
+	 */
 	public Versioning getVersioning() {
 		if (versioning == null) {
 			versioning = new Versioning();
@@ -93,10 +132,18 @@ public class Metadata {
 		return this.versioning;
 	}
 
+	/**
+	 * @param versioning
+	 * @uml.property name="versioning"
+	 */
 	public void setVersioning(final Versioning versioning) {
 		this.versioning = versioning;
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="plugins"
+	 */
 	public List<Plugin> getPlugins() {
 		if (plugins == null) {
 			plugins = new ArrayList<Plugin>();
@@ -109,6 +156,10 @@ public class Metadata {
 		return plugins;
 	}
 
+	/**
+	 * @param plugins
+	 * @uml.property name="plugins"
+	 */
 	public void setPlugins(final List<Plugin> plugins) {
 		this.plugins = plugins;
 	}

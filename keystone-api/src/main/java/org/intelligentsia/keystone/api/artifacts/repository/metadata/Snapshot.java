@@ -26,45 +26,74 @@ package org.intelligentsia.keystone.api.artifacts.repository.metadata;
  * Snapshot Definition.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
 public class Snapshot {
 	/**
 	 * The time it was deployed.
+	 * 
+	 * @uml.property name="timestamp"
 	 */
 	private String timestamp;
 
 	/**
 	 * The incremental build number. Default value is: 0.
+	 * 
+	 * @uml.property name="buildNumber"
 	 */
 	private int buildNumber = 0;
 
 	/**
 	 * Whether to use a local copy instead (with filename that includes the base
 	 * version). Default value is: false.
+	 * 
+	 * @uml.property name="localCopy"
 	 */
 	private boolean localCopy = false;
 
+	/**
+	 * @return
+	 * @uml.property name="timestamp"
+	 */
 	public String getTimestamp() {
 		return this.timestamp;
 	}
 
+	/**
+	 * @param timestamp
+	 * @uml.property name="timestamp"
+	 */
 	public void setTimestamp(final String timestamp) {
 		this.timestamp = timestamp;
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="buildNumber"
+	 */
 	public int getBuildNumber() {
 		return this.buildNumber;
 	}
 
+	/**
+	 * @param buildNumber
+	 * @uml.property name="buildNumber"
+	 */
 	public void setBuildNumber(final int buildNumber) {
 		this.buildNumber = buildNumber;
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="localCopy"
+	 */
 	public boolean isLocalCopy() {
 		return this.localCopy;
 	}
 
+	/**
+	 * @param localCopy
+	 * @uml.property name="localCopy"
+	 */
 	public void setLocalCopy(final boolean localCopy) {
 		this.localCopy = localCopy;
 	}

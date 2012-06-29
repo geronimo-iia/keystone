@@ -34,19 +34,26 @@ import org.xeustechnologies.jcl.JarClassLoader;
  * DefaultArtifactLoader implements ArtifactLoader.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
 public class DefaultArtifactLoader implements ArtifactLoader {
 	/**
 	 * ArtifactsService instance.
+	 * 
+	 * @uml.property name="artifactsService"
+	 * @uml.associationEnd
 	 */
 	private final ArtifactsService artifactsService;
 	/**
 	 * Parent JarClassLoader instance.
+	 * 
+	 * @uml.property name="parent"
 	 */
 	private final JarClassLoader parent;
 	/**
 	 * CompositeProxyClassLoader instance.
+	 * 
+	 * @uml.property name="compositeProxyClassLoader"
+	 * @uml.associationEnd
 	 */
 	private final CompositeProxyClassLoader compositeProxyClassLoader;
 
@@ -112,6 +119,7 @@ public class DefaultArtifactLoader implements ArtifactLoader {
 
 	/**
 	 * @return class loader instance used as parent.
+	 * @uml.property name="parent"
 	 */
 	public JarClassLoader getParent() {
 		return parent;

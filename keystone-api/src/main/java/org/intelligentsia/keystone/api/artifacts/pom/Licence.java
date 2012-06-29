@@ -29,9 +29,21 @@ import java.io.Serializable;
  */
 public class Licence implements Serializable {
 	private static final long serialVersionUID = -8198638735891821626L;
+	/**
+	 * @uml.property name="name"
+	 */
 	private String name;
+	/**
+	 * @uml.property name="url"
+	 */
 	private String url;
+	/**
+	 * @uml.property name="distribution"
+	 */
 	private String distribution;
+	/**
+	 * @uml.property name="comments"
+	 */
 	private String comments;
 
 	public Licence() {
@@ -40,6 +52,7 @@ public class Licence implements Serializable {
 
 	/**
 	 * @return the name
+	 * @uml.property name="name"
 	 */
 	public final String getName() {
 		return name;
@@ -48,6 +61,7 @@ public class Licence implements Serializable {
 	/**
 	 * @param name
 	 *            the name to set
+	 * @uml.property name="name"
 	 */
 	public final void setName(final String name) {
 		this.name = name;
@@ -55,6 +69,7 @@ public class Licence implements Serializable {
 
 	/**
 	 * @return the url
+	 * @uml.property name="url"
 	 */
 	public final String getUrl() {
 		return url;
@@ -63,6 +78,7 @@ public class Licence implements Serializable {
 	/**
 	 * @param url
 	 *            the url to set
+	 * @uml.property name="url"
 	 */
 	public final void setUrl(final String url) {
 		this.url = url;
@@ -70,6 +86,7 @@ public class Licence implements Serializable {
 
 	/**
 	 * @return the distribution
+	 * @uml.property name="distribution"
 	 */
 	public final String getDistribution() {
 		return distribution;
@@ -78,6 +95,7 @@ public class Licence implements Serializable {
 	/**
 	 * @param distribution
 	 *            the distribution to set
+	 * @uml.property name="distribution"
 	 */
 	public final void setDistribution(final String distribution) {
 		this.distribution = distribution;
@@ -85,6 +103,7 @@ public class Licence implements Serializable {
 
 	/**
 	 * @return the comments
+	 * @uml.property name="comments"
 	 */
 	public final String getComments() {
 		return comments;
@@ -93,6 +112,7 @@ public class Licence implements Serializable {
 	/**
 	 * @param comments
 	 *            the comments to set
+	 * @uml.property name="comments"
 	 */
 	public final void setComments(final String comments) {
 		this.comments = comments;

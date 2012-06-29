@@ -51,12 +51,14 @@ import com.ning.http.util.AsyncHttpProviderUtils;
 /**
  * An ClientHttpRepository using an AsyncHttpClient to retrieve resource.
  * 
- * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class ClientHttpRepository implements RepositoryService {
 	/**
 	 * Inner locator.
+	 * 
+	 * @uml.property name="locator"
+	 * @uml.associationEnd
 	 */
 	private final Locator<String> locator;
 	/**
@@ -285,10 +287,12 @@ public class ClientHttpRepository implements RepositoryService {
 	 * Inner URL locator.
 	 * 
 	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
-	 * 
 	 */
 	private class URLLocator implements Locator<String> {
 
+		/**
+		 * @uml.property name="root"
+		 */
 		private final String root;
 
 		/**
@@ -303,6 +307,7 @@ public class ClientHttpRepository implements RepositoryService {
 
 		/**
 		 * @see org.intelligentsia.keystone.api.artifacts.repository.Locator#getRoot()
+		 * @uml.property name="root"
 		 */
 		@Override
 		public String getRoot() {

@@ -25,13 +25,18 @@ package org.intelligentsia.keystone.api.artifacts.pom;
 import java.io.Serializable;
 
 /**
- * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class Exclusion implements Serializable {
 
 	private static final long serialVersionUID = -7862829736920336173L;
+	/**
+	 * @uml.property name="artifactId"
+	 */
 	private String artifactId;
+	/**
+	 * @uml.property name="groupId"
+	 */
 	private String groupId;
 
 	public Exclusion() {
@@ -40,6 +45,7 @@ public class Exclusion implements Serializable {
 
 	/**
 	 * @return the artifactId
+	 * @uml.property name="artifactId"
 	 */
 	public final String getArtifactId() {
 		return artifactId;
@@ -48,6 +54,7 @@ public class Exclusion implements Serializable {
 	/**
 	 * @param artifactId
 	 *            the artifactId to set
+	 * @uml.property name="artifactId"
 	 */
 	public final void setArtifactId(final String artifactId) {
 		this.artifactId = artifactId;
@@ -55,6 +62,7 @@ public class Exclusion implements Serializable {
 
 	/**
 	 * @return the groupId
+	 * @uml.property name="groupId"
 	 */
 	public final String getGroupId() {
 		return groupId;
@@ -63,6 +71,7 @@ public class Exclusion implements Serializable {
 	/**
 	 * @param groupId
 	 *            the groupId to set
+	 * @uml.property name="groupId"
 	 */
 	public final void setGroupId(final String groupId) {
 		this.groupId = groupId;

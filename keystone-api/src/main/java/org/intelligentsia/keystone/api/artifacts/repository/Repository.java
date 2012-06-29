@@ -30,16 +30,20 @@ import java.io.Serializable;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 /**
- * <code></code>.
+ * a Repository bean.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
- *         16:06:08
  */
 public class Repository implements Serializable {
 
 	private static final long serialVersionUID = -7481265013458675666L;
+	/**
+	 * @uml.property name="id"
+	 */
 	private String id;
+	/**
+	 * @uml.property name="url"
+	 */
 	private String url;
 
 	/**
@@ -61,21 +65,34 @@ public class Repository implements Serializable {
 		this.url = url;
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="id"
+	 */
 	public String getId() {
 		return this.id;
 	}
 
 	/**
 	 * @param id
+	 * @uml.property name="id"
 	 */
 	public void setId(final String id) {
 		this.id = id;
 	}
 
+	/**
+	 * @return
+	 * @uml.property name="url"
+	 */
 	public String getUrl() {
 		return this.url;
 	}
 
+	/**
+	 * @param url
+	 * @uml.property name="url"
+	 */
 	public void setUrl(final String url) {
 		this.url = url;
 	}

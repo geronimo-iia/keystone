@@ -40,11 +40,13 @@ import org.intelligentsia.utilities.StringUtils;
  * A FileRepository class.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
 public class FileRepository implements RepositoryService {
 	/**
 	 * Inner locator.
+	 * 
+	 * @uml.property name="locator"
+	 * @uml.associationEnd
 	 */
 	private final FileLocator locator;
 
@@ -176,9 +178,11 @@ public class FileRepository implements RepositoryService {
 	 * Inner File locator.
 	 * 
 	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
-	 * 
 	 */
 	private class FileLocator implements Locator<File> {
+		/**
+		 * @uml.property name="root"
+		 */
 		private final File root;
 
 		/**
@@ -202,6 +206,7 @@ public class FileRepository implements RepositoryService {
 
 		/**
 		 * @see org.intelligentsia.keystone.api.artifacts.repository.Locator#getRoot()
+		 * @uml.property name="root"
 		 */
 		@Override
 		public File getRoot() {

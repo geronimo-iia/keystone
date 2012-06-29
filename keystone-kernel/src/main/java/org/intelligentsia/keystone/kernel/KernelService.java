@@ -28,17 +28,6 @@ package org.intelligentsia.keystone.kernel;
  * 
  */
 public interface KernelService extends Service {
-	/**
-	 * Register this service instance on specified kernel.
-	 * 
-	 * @param microkernel
-	 */
-	public void register(Microkernel microkernel);
-
-	/**
-	 * Un Register this service instance on specified kernel.
-	 * 
-	 * @param microkernel
-	 */
-	public void unregister(Microkernel microkernel);
+	 
+	
 }

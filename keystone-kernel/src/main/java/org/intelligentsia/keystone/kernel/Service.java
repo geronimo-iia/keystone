@@ -37,4 +37,18 @@ public interface Service {
 	 * @return a firendly user name.
 	 */
 	public String getName();
+	
+	/**
+	 * Register this service instance on specified kernel context.
+	 * 
+	 * @param context
+	 */
+	public void register(KernelContext context);
+
+	/**
+	 * Un Register this service instance on specified kernel context.
+	 * 
+	 * @param context
+	 */
+	public void unregister(KernelContext context);
 }

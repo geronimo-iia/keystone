@@ -17,24 +17,26 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel;
+package org.intelligentsia.keystone.kernel.artifact;
+
+import java.util.Collection;
+
+import org.intelligentsia.keystone.api.artifacts.repository.RepositoryService;
+import org.intelligentsia.keystone.kernel.Service;
 
 /**
- * Service declare methods to manage a 'service' in our system.
  * 
- * <p>
- * A service —also known as a subsystem, extends the functionality provided by
- * the microkernel. It represents a separate component that offers additional
- * functionality.
- * </p>
+ * KernelRepositoryService.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
-public interface Service {
+public interface KernelRepositoryService extends Service {
 
-	/**
-	 * @return a firendly user name.
-	 */
-	public String getName();
+	public void add(RepositoryService repositoryService);
+
+	public void remove(RepositoryService repositoryService);
+
+	public boolean contains(RepositoryService repositoryService);
+
+	public Collection<RepositoryService> findAllRepositoryService();
 }

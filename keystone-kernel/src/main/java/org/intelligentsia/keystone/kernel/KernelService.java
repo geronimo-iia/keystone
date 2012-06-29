@@ -20,21 +20,25 @@
 package org.intelligentsia.keystone.kernel;
 
 /**
- * Service declare methods to manage a 'service' in our system.
  * 
- * <p>
- * A service —also known as a subsystem, extends the functionality provided by
- * the microkernel. It represents a separate component that offers additional
- * functionality.
- * </p>
+ * KernelService extends functionality of kernel. Kernel service instance have
+ * no restriction on kernel usage.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public interface Service {
+public interface KernelService extends Service {
+	/**
+	 * Register this service instance on specified kernel.
+	 * 
+	 * @param microkernel
+	 */
+	public void register(Microkernel microkernel);
 
 	/**
-	 * @return a firendly user name.
+	 * Un Register this service instance on specified kernel.
+	 * 
+	 * @param microkernel
 	 */
-	public String getName();
+	public void unregister(Microkernel microkernel);
 }

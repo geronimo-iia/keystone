@@ -17,24 +17,27 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel;
+package org.intelligentsia.keystone.kernel.artifact;
 
 /**
- * Service declare methods to manage a 'service' in our system.
- * 
- * <p>
- * A service —also known as a subsystem, extends the functionality provided by
- * the microkernel. It represents a separate component that offers additional
- * functionality.
- * </p>
+ * IsolationLevel enumeration define supported isolation level :
+ * <ul>
+ * <li>NONE: This artifact will be loaded in Kernel classloader</li>
+ * <li>ISOLATED: This artifact will be loaded in a dedicated class loader.
+ * Kernel classloader will be his parent.</li>
+ * </ul>
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
-public interface Service {
-
+public enum IsolationLevel {
 	/**
-	 * @return a firendly user name.
+	 * @uml.property name="nONE"
+	 * @uml.associationEnd
 	 */
-	public String getName();
+	NONE,
+	/**
+	 * @uml.property name="iSOLATED"
+	 * @uml.associationEnd
+	 */
+	ISOLATED;
 }

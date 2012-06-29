@@ -17,24 +17,37 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel;
+package org.intelligentsia.keystone.kernel.artifact;
+
+import java.net.URL;
+
+import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 
 /**
- * Service declare methods to manage a 'service' in our system.
- * 
- * <p>
- * A service —also known as a subsystem, extends the functionality provided by
- * the microkernel. It represents a separate component that offers additional
- * functionality.
- * </p>
+ * ArtifactContext declare all attribut member.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public interface Service {
+public interface ArtifactContext {
 
 	/**
-	 * @return a firendly user name.
+	 * @return the artifactIdentifier
 	 */
-	public String getName();
+	public ArtifactIdentifier getArtifactIdentifier();
+
+	/**
+	 * @return the localResource
+	 */
+	public URL getLocalResource();
+
+	/**
+	 * @return the classLoader
+	 */
+	public ClassLoader getClassLoader();
+
+	/**
+	 * @return the isolationLevel
+	 */
+	public IsolationLevel getIsolationLevel();
 }

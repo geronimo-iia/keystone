@@ -237,7 +237,7 @@
 		<com.ning.version>1.6.5</com.ning.version>
 		<org.codehaus.jackson.version>1.9.0</org.codehaus.jackson.version>
 		<com.fasterxml.version>0.6.1</com.fasterxml.version>
-		<jcl.version>2.3</jcl.version>
+		<jcl.version>2.4</jcl.version>
 		<org.intelligents-ia.event-bus.version>1.2</org.intelligents-ia.event-bus.version>
 	</properties>
 </project>

@@ -25,9 +25,9 @@ import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.api.artifacts.ArtifactsService;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.api.artifacts.Resource;
-import org.intelligentsia.keystone.kernel.jcl.CompositeProxyClassLoader;
-import org.intelligentsia.keystone.kernel.jcl.DelegateProxyClassLoader;
 import org.intelligentsia.keystone.kernel.jcl.JarClassLoaderFactory;
+import org.xeustechnologies.jcl.CompositeProxyClassLoader;
+import org.xeustechnologies.jcl.DelegateProxyClassLoader;
 import org.xeustechnologies.jcl.JarClassLoader;
 
 /**

@@ -17,46 +17,18 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel.jcl;
-
-import org.xeustechnologies.jcl.JarClassLoader;
+package org.intelligentsia.keystone.kernelold;
 
 /**
  * 
- * JarClassLoaderFactory expose methode to clean up JarClassLoader (waiting
- * 2.4).
+ * Initializable declare method to initialize instance.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public enum JarClassLoaderFactory {
-	;
-
+public interface Initializable {
 	/**
-	 * Initialize internal priority of proxy loader.
-	 * 
-	 * @return initialized classLoader
+	 * Initialize instance.
 	 */
-	public static JarClassLoader initialize() {
-		return initialize(new JarClassLoader());
-	}
-
-	/**
-	 * Initialize internal priority of proxy loader.
-	 * 
-	 * @param classLoader
-	 *            classLoader to initialize
-	 * @return initialized classLoader
-	 */
-	public static JarClassLoader initialize(final JarClassLoader classLoader) {
-		classLoader.getSystemLoader().setOrder(50);
-		classLoader.getThreadLoader().setOrder(40);
-		classLoader.getParentLoader().setOrder(30);
-		classLoader.getCurrentLoader().setOrder(20);
-		classLoader.getLocalLoader().setOrder(10);
-		classLoader.getOsgiBootLoader().setOrder(0);
-		classLoader.getOsgiBootLoader().setEnabled(false);
-		return classLoader;
-	}
-
+	public void initialize();
 }

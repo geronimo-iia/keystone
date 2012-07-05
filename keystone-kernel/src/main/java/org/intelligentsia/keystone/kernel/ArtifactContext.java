@@ -17,27 +17,36 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel.loader;
+package org.intelligentsia.keystone.kernel;
+
+import java.net.URL;
+
+import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 
 /**
- * IsolationLevel enumeration define supported isolation level :
- * <ul>
- * <li>NONE: This artifact will be loaded in Kernel classloader</li>
- * <li>ISOLATED: This artifact will be loaded in a dedicated class loader.
- * Kernel classloader will be his parent.</li>
- * </ul>
+ * ArtifactContext declare all attribut member.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
  */
-public enum IsolationLevel {
+public interface ArtifactContext {
 	/**
-	 * @uml.property name="nONE"
-	 * @uml.associationEnd
+	 * @return the artifactIdentifier
 	 */
-	NONE,
+	public ArtifactIdentifier getArtifactIdentifier();
+
 	/**
-	 * @uml.property name="iSOLATED"
-	 * @uml.associationEnd
+	 * @return the localResource
 	 */
-	ISOLATED;
+	public URL getLocalResource();
+
+	/**
+	 * @return the classLoader
+	 */
+	public ClassLoader getClassLoader();
+
+	/**
+	 * @return the isolationLevel
+	 */
+	public IsolationLevel getIsolationLevel();
 }

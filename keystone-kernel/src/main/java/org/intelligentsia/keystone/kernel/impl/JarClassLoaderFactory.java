@@ -17,45 +17,45 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel;
+package org.intelligentsia.keystone.kernel.impl;
 
-import java.util.Set;
-
-import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
-import org.intelligentsia.keystone.kernel.loader.ArtifactLoader;
+import org.xeustechnologies.jcl.JarClassLoader;
 
 /**
- * <p>
- * Microkernel Responsibility:
- * </p>
- * <ul>
- * <li>Provides core mechanisms</li>
- * <li>Offers communication facilities</li>
- * <li>Encapsulates system dependencies</li>
- * <li>Manages and controls resources</li>
- * </ul>
  * 
- * <p>
- * “Perfection is not achieved when there is nothing left to add, but when there
- * is nothing left to take away”<br />
- * --Antoine de St. Exupery
- * </p>
- * 
+ * JarClassLoaderFactory expose methode to clean up JarClassLoader.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
  */
-public interface Microkernel extends ArtifactLoader {
-	/**
-	 * @return an unmodifiable set of loaded artifact identifier.
-	 */
-	public Set<ArtifactIdentifier> list();
+public enum JarClassLoaderFactory {
+	;
 
 	/**
-	 * @param artifactIdentifier
-	 *            artifact Identifier
-	 * @return true if specified artifact Identifier is managed by this kernel
-	 *         instance.
+	 * Initialize internal priority of proxy loader.
+	 * 
+	 * @return initialized classLoader
 	 */
-	public boolean contains(ArtifactIdentifier artifactIdentifier);
+	public static JarClassLoader initialize() {
+		return initialize(new JarClassLoader());
+	}
+
+	/**
+	 * Initialize internal priority of proxy loader.
+	 * 
+	 * @param classLoader
+	 *            classLoader to initialize
+	 * @return initialized classLoader
+	 */
+	public static JarClassLoader initialize(final JarClassLoader classLoader) {
+		classLoader.getSystemLoader().setOrder(50);
+		classLoader.getThreadLoader().setOrder(40);
+		classLoader.getParentLoader().setOrder(30);
+		classLoader.getCurrentLoader().setOrder(20);
+		classLoader.getLocalLoader().setOrder(10);
+		classLoader.getOsgiBootLoader().setOrder(0);
+		classLoader.getOsgiBootLoader().setEnabled(false);
+		return classLoader;
+	}
 
 }

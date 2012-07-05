@@ -17,28 +17,43 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel;
+package org.intelligentsia.keystone.kernelold;
 
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 
 /**
+ * Service declare methods to manage a 'service' in our system.
  * 
- * KernelContext see as an interface between service and micro kernel.
+ * <p>
+ * A service —also known as a subsystem, extends the functionality provided by
+ * the microkernel. It represents a separate component that offers additional
+ * functionality.
+ * </p>
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public interface KernelContext {
+public interface Service {
 
 	/**
-	 * Find specified service.
-	 * 
-	 * @param service
-	 *            service class name
-	 * @return service instance or null is none is found.
+	 * @return a firendly user name.
 	 */
-	public Service find(Class<?> service) throws KeystoneRuntimeException;
+	public String getName();
+	
+	/**
+	 * Register this service instance on specified kernel context.
+	 * 
+	 * @param context
+	 */
+	public void register(KernelContext context);
 
+	/**
+	 * Un Register this service instance on specified kernel context.
+	 * 
+	 * @param context
+	 */
+	public void unregister(KernelContext context);
+	
 	/**
 	 * Register specified service instance on kernel.
 	 * 
@@ -53,8 +68,4 @@ public interface KernelContext {
 	 */
 	public void unregister(Service service) throws KeystoneRuntimeException;
 
-	/**
-	 * @return an EventPublisher instance.
-	 */
-	public EventPublisher getEventPublisher();
 }

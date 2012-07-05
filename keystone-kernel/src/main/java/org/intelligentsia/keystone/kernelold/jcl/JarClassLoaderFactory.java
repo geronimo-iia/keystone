@@ -17,27 +17,46 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel.artifact;
+package org.intelligentsia.keystone.kernelold.jcl;
+
+import org.xeustechnologies.jcl.JarClassLoader;
 
 /**
- * IsolationLevel enumeration define supported isolation level :
- * <ul>
- * <li>NONE: This artifact will be loaded in Kernel classloader</li>
- * <li>ISOLATED: This artifact will be loaded in a dedicated class loader.
- * Kernel classloader will be his parent.</li>
- * </ul>
+ * 
+ * JarClassLoaderFactory expose methode to clean up JarClassLoader (waiting
+ * 2.4).
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
  */
-public enum IsolationLevel {
+public enum JarClassLoaderFactory {
+	;
+
 	/**
-	 * @uml.property name="nONE"
-	 * @uml.associationEnd
+	 * Initialize internal priority of proxy loader.
+	 * 
+	 * @return initialized classLoader
 	 */
-	NONE,
+	public static JarClassLoader initialize() {
+		return initialize(new JarClassLoader());
+	}
+
 	/**
-	 * @uml.property name="iSOLATED"
-	 * @uml.associationEnd
+	 * Initialize internal priority of proxy loader.
+	 * 
+	 * @param classLoader
+	 *            classLoader to initialize
+	 * @return initialized classLoader
 	 */
-	ISOLATED;
+	public static JarClassLoader initialize(final JarClassLoader classLoader) {
+		classLoader.getSystemLoader().setOrder(50);
+		classLoader.getThreadLoader().setOrder(40);
+		classLoader.getParentLoader().setOrder(30);
+		classLoader.getCurrentLoader().setOrder(20);
+		classLoader.getLocalLoader().setOrder(10);
+		classLoader.getOsgiBootLoader().setOrder(0);
+		classLoader.getOsgiBootLoader().setEnabled(false);
+		return classLoader;
+	}
+
 }

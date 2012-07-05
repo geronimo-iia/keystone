@@ -17,26 +17,24 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel.artifact;
+package org.intelligentsia.keystone.kernelold;
 
-import java.util.Collection;
-
-import org.intelligentsia.keystone.api.artifacts.repository.RepositoryService;
-import org.intelligentsia.keystone.kernel.Service;
 
 /**
  * 
- * KernelRepositoryService.
+ * EventPublisher define methods to publish an event.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface KernelRepositoryService extends Service {
-
-	public void add(RepositoryService repositoryService);
-
-	public void remove(RepositoryService repositoryService);
-
-	public boolean contains(RepositoryService repositoryService);
-
-	public Collection<RepositoryService> findAllRepositoryService();
+public interface EventPublisher {
+	/**
+	 * Sends a message on the bus which will be propagated to the appropriate
+	 * subscribers of the event type. Only subscribers which have elected to
+	 * subscribe to the same event type as the supplied event will be notified
+	 * of the event.
+	 * 
+	 * @param event
+	 *            The event to send out to the subscribers of the same type.
+	 */
+	public void publish(Object event);
 }

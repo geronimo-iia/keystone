@@ -20,14 +20,24 @@
 package org.intelligentsia.keystone.kernel;
 
 /**
- * 
- * KernelService extends functionality of kernel. Kernel service instance have
- * no restriction on kernel usage.
+ * IsolationLevel enumeration define supported isolation level :
+ * <ul>
+ * <li>NONE: This artifact will be loaded in Kernel classloader</li>
+ * <li>ISOLATED: This artifact will be loaded in a dedicated class loader.
+ * Kernel classloader will be his parent.</li>
+ * </ul>
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
-public interface KernelService extends Service {
-	 
-	
+public enum IsolationLevel {
+	/**
+	 * @uml.property name="nONE"
+	 * @uml.associationEnd
+	 */
+	NONE,
+	/**
+	 * @uml.property name="iSOLATED"
+	 * @uml.associationEnd
+	 */
+	ISOLATED;
 }

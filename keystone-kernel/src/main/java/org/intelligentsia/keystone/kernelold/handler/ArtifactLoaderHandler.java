@@ -17,24 +17,24 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel;
+package org.intelligentsia.keystone.kernelold.handler;
 
+import org.intelligentsia.keystone.kernelold.loader.ArtifactContext;
 
 /**
  * 
- * EventPublisher define methods to publish an event.
+ * ArtifactLoaderHandler declare method to handle artifact load event.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
  */
-public interface EventPublisher {
+public interface ArtifactLoaderHandler {
+
 	/**
-	 * Sends a message on the bus which will be propagated to the appropriate
-	 * subscribers of the event type. Only subscribers which have elected to
-	 * subscribe to the same event type as the supplied event will be notified
-	 * of the event.
+	 * Do some processing on loading.
 	 * 
-	 * @param event
-	 *            The event to send out to the subscribers of the same type.
+	 * @param context
 	 */
-	public void publish(Object event);
+	public void handle(ArtifactContext context);
+
 }

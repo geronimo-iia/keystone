@@ -17,18 +17,27 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel;
+package org.intelligentsia.keystone.kernelold.loader;
 
 /**
- * 
- * Disposable declare method to dispose resource.
+ * IsolationLevel enumeration define supported isolation level :
+ * <ul>
+ * <li>NONE: This artifact will be loaded in Kernel classloader</li>
+ * <li>ISOLATED: This artifact will be loaded in a dedicated class loader.
+ * Kernel classloader will be his parent.</li>
+ * </ul>
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
-public interface Disposable {
+public enum IsolationLevel {
 	/**
-	 * Free all resource.
+	 * @uml.property name="nONE"
+	 * @uml.associationEnd
 	 */
-	public void dispose();
+	NONE,
+	/**
+	 * @uml.property name="iSOLATED"
+	 * @uml.associationEnd
+	 */
+	ISOLATED;
 }

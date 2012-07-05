@@ -17,24 +17,37 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel.handler;
+package org.intelligentsia.keystone.kernelold.loader;
 
-import org.intelligentsia.keystone.kernel.loader.ArtifactContext;
+import java.net.URL;
+
+import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 
 /**
- * 
- * ArtifactLoaderHandler declare method to handle artifact load event.
+ * ArtifactContext declare all attribut member.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public interface ArtifactLoaderHandler {
+public interface ArtifactContext {
 
 	/**
-	 * Do some processing on loading.
-	 * 
-	 * @param context
+	 * @return the artifactIdentifier
 	 */
-	public void handle(ArtifactContext context);
+	public ArtifactIdentifier getArtifactIdentifier();
 
+	/**
+	 * @return the localResource
+	 */
+	public URL getLocalResource();
+
+	/**
+	 * @return the classLoader
+	 */
+	public ClassLoader getClassLoader();
+
+	/**
+	 * @return the isolationLevel
+	 */
+	public IsolationLevel getIsolationLevel();
 }

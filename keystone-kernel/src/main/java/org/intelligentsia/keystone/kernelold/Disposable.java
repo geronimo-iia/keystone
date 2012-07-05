@@ -17,38 +17,18 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel;
+package org.intelligentsia.keystone.kernelold;
 
 /**
- * Service declare methods to manage a 'service' in our system.
  * 
- * <p>
- * A service —also known as a subsystem, extends the functionality provided by
- * the microkernel. It represents a separate component that offers additional
- * functionality.
- * </p>
+ * Disposable declare method to dispose resource.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public interface Service {
-
+public interface Disposable {
 	/**
-	 * @return a firendly user name.
+	 * Free all resource.
 	 */
-	public String getName();
-	
-	/**
-	 * Register this service instance on specified kernel context.
-	 * 
-	 * @param context
-	 */
-	public void register(KernelContext context);
-
-	/**
-	 * Un Register this service instance on specified kernel context.
-	 * 
-	 * @param context
-	 */
-	public void unregister(KernelContext context);
+	public void dispose();
 }

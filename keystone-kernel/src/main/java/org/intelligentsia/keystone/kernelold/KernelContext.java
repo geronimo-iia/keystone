@@ -17,18 +17,30 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel;
+package org.intelligentsia.keystone.kernelold;
+
+import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 
 /**
  * 
- * Initializable declare method to initialize instance.
+ * KernelContext see as an interface between client and micro kernel.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public interface Initializable {
+public interface KernelContext {
+
 	/**
-	 * Initialize instance.
+	 * Find specified service.
+	 * 
+	 * @param service
+	 *            service class name
+	 * @return service instance or null is none is found.
 	 */
-	public void initialize();
+	public Service find(Class<?> service) throws KeystoneRuntimeException;
+
+	/**
+	 * @return an EventPublisher instance.
+	 */
+	public EventPublisher getEventPublisher();
 }

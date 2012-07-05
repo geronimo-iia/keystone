@@ -17,37 +17,45 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel.artifact;
+package org.intelligentsia.keystone.kernelold;
 
-import java.net.URL;
+import java.util.Set;
 
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
+import org.intelligentsia.keystone.kernelold.loader.ArtifactLoader;
 
 /**
- * ArtifactContext declare all attribut member.
+ * <p>
+ * Microkernel Responsibility:
+ * </p>
+ * <ul>
+ * <li>Provides core mechanisms</li>
+ * <li>Offers communication facilities</li>
+ * <li>Encapsulates system dependencies</li>
+ * <li>Manages and controls resources</li>
+ * </ul>
+ * 
+ * <p>
+ * “Perfection is not achieved when there is nothing left to add, but when there
+ * is nothing left to take away”<br />
+ * --Antoine de St. Exupery
+ * </p>
+ * 
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
-public interface ArtifactContext {
+public interface Microkernel extends ArtifactLoader {
+	/**
+	 * @return an unmodifiable set of loaded artifact identifier.
+	 */
+	public Set<ArtifactIdentifier> list();
 
 	/**
-	 * @return the artifactIdentifier
+	 * @param artifactIdentifier
+	 *            artifact Identifier
+	 * @return true if specified artifact Identifier is managed by this kernel
+	 *         instance.
 	 */
-	public ArtifactIdentifier getArtifactIdentifier();
+	public boolean contains(ArtifactIdentifier artifactIdentifier);
 
-	/**
-	 * @return the localResource
-	 */
-	public URL getLocalResource();
-
-	/**
-	 * @return the classLoader
-	 */
-	public ClassLoader getClassLoader();
-
-	/**
-	 * @return the isolationLevel
-	 */
-	public IsolationLevel getIsolationLevel();
 }

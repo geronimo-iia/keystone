@@ -28,9 +28,10 @@ import java.util.StringTokenizer;
 /**
  * ArtifactIdentifier manage the 2B3...
  * 
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class ArtifactIdentifier implements Serializable {
+public class ArtifactIdentifier implements Serializable, Comparable<ArtifactIdentifier> {
 
 	private static final long serialVersionUID = 4702119966025396690L;
 	/**
@@ -163,4 +164,27 @@ public class ArtifactIdentifier implements Serializable {
 		return true;
 	}
 
+	/**
+	 * Compare this instance with other.
+	 * 
+	 * @throws IllegalArgumentException if group and artifact are not the same or one of both have no version.
+	 */
+	@Override
+	public int compareTo(ArtifactIdentifier other) {
+		if (!sameAs(other)) {
+			throw new IllegalArgumentException("this instance is not same as other");
+		}
+		if (version==null|| other.version==null) {
+			throw new IllegalArgumentException("No version information");
+		}
+		return Version.parse(version).compareTo(Version.parse(other.version));
+	}
+
+	/**
+	 * @param other
+	 * @return true if this instance and other have the same group and artifact identifier.
+	 */
+	public boolean sameAs(ArtifactIdentifier other) {
+		return  groupId.equals(other.groupId) &&  artifactId.equals(other.artifactId);
+	}
 }

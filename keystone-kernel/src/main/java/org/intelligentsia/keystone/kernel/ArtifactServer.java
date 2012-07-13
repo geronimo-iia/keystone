@@ -24,7 +24,8 @@ import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 
 /**
  * 
- * ArtifactServer declare methods to manage artifact.
+ * ArtifactServer declare methods to manage artifact and acts as a collection of
+ * {@link ArtifactIdentifier}.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 

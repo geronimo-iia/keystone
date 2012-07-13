@@ -22,8 +22,9 @@ package org.intelligentsia.keystone.kernel;
 import org.intelligentsia.keystone.api.artifacts.repository.RepositoryService;
 
 /**
- * RepositoryServer act as a {@link RepositoryService} and declare methods to
- * manage multiple {@link RepositoryService} a one aggregate.
+ * RepositoryServer act as a {@link RepositoryService}, declare methods to
+ * manage multiple {@link RepositoryService} a one aggregate, and acts as a
+ * collection of {@link RepositoryService}.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */

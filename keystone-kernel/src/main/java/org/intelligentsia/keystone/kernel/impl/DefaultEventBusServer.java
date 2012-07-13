@@ -38,7 +38,7 @@ public class DefaultEventBusServer implements EventBusServer {
 	/**
 	 * Internal underlying implementation of event bus.
 	 */
-	private EventBus eventBus;
+	private final EventBus eventBus;
 
 	/**
 	 * 
@@ -52,7 +52,7 @@ public class DefaultEventBusServer implements EventBusServer {
 	 * @see org.intelligentsia.keystone.kernel.EventBusServer#subscribe(java.lang.Object)
 	 */
 	@Override
-	public void subscribe(Object subscriber) {
+	public void subscribe(final Object subscriber) {
 		eventBus.subscribe(subscriber);
 
 	}
@@ -61,7 +61,7 @@ public class DefaultEventBusServer implements EventBusServer {
 	 * @see org.intelligentsia.keystone.kernel.EventBusServer#unsubscribe(java.lang.Object)
 	 */
 	@Override
-	public void unsubscribe(Object subscriber) {
+	public void unsubscribe(final Object subscriber) {
 		eventBus.unsubscribe(subscriber);
 	}
 
@@ -69,7 +69,7 @@ public class DefaultEventBusServer implements EventBusServer {
 	 * @see org.intelligentsia.keystone.kernel.EventBusServer#publish(java.lang.Object)
 	 */
 	@Override
-	public void publish(Object event) {
+	public void publish(final Object event) {
 		eventBus.publish(event);
 	}
 

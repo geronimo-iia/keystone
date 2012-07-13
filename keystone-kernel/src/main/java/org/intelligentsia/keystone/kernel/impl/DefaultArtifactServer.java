@@ -96,7 +96,7 @@ public class DefaultArtifactServer implements ArtifactServer {
 	 *      .keystone.api.artifacts.ArtifactIdentifier)
 	 */
 	@Override
-	public boolean contains(ArtifactIdentifier artifactIdentifier) throws NullPointerException {
+	public boolean contains(final ArtifactIdentifier artifactIdentifier) throws NullPointerException {
 		if (artifactIdentifier == null) {
 			throw new NullPointerException("artifactIdentifier");
 		}
@@ -108,7 +108,7 @@ public class DefaultArtifactServer implements ArtifactServer {
 	 *      .keystone.api.artifacts.ArtifactIdentifier)
 	 */
 	@Override
-	public ArtifactContext find(ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException, NullPointerException {
+	public ArtifactContext find(final ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException, NullPointerException {
 		if (artifactIdentifier == null) {
 			throw new NullPointerException("artifactIdentifier");
 		}
@@ -121,7 +121,7 @@ public class DefaultArtifactServer implements ArtifactServer {
 	 *      org.intelligentsia.keystone.kernel.IsolationLevel)
 	 */
 	@Override
-	public ArtifactContext load(ArtifactIdentifier artifactIdentifier, IsolationLevel isolationLevel) throws KeystoneRuntimeException, NullPointerException {
+	public ArtifactContext load(final ArtifactIdentifier artifactIdentifier, final IsolationLevel isolationLevel) throws KeystoneRuntimeException, NullPointerException {
 		if (artifactIdentifier == null) {
 			throw new NullPointerException("artifactIdentifier");
 		}
@@ -150,7 +150,7 @@ public class DefaultArtifactServer implements ArtifactServer {
 	 *      .keystone.api.artifacts.ArtifactIdentifier)
 	 */
 	@Override
-	public void unload(ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException, NullPointerException {
+	public void unload(final ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException, NullPointerException {
 		// TODO Auto-generated method stub
 
 	}

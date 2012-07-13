@@ -19,7 +19,6 @@
  */
 package org.intelligentsia.keystone.kernelold;
 
-
 /**
  * 
  * EventPublisher define methods to publish an event.

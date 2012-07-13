@@ -31,10 +31,8 @@ import org.junit.Test;
 public class ArtifactsTest {
 	@Test
 	public void testEquals() {
-		final ArtifactIdentifier identifier = new ArtifactIdentifier("g1",
-				"a1", "v1");
-		final ArtifactIdentifier identifier2 = new ArtifactIdentifier(
-				"g1:a1:v1");
+		final ArtifactIdentifier identifier = new ArtifactIdentifier("g1", "a1", "v1");
+		final ArtifactIdentifier identifier2 = new ArtifactIdentifier("g1:a1:v1");
 		Assert.assertEquals(identifier, identifier2);
 	}
 

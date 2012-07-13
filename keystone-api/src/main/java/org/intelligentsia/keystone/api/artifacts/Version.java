@@ -63,7 +63,7 @@ public final class Version implements Comparable<Version> {
 	 * @throws NullPointerException
 	 *             if major is null
 	 */
-	public Version(Integer major) throws NullPointerException {
+	public Version(final Integer major) throws NullPointerException {
 		this(major, null, null, null);
 	}
 
@@ -75,7 +75,7 @@ public final class Version implements Comparable<Version> {
 	 * @throws NullPointerException
 	 *             if major is null
 	 */
-	public Version(Integer major, String classifier) throws NullPointerException {
+	public Version(final Integer major, final String classifier) throws NullPointerException {
 		this(major, null, null, classifier);
 	}
 
@@ -89,8 +89,8 @@ public final class Version implements Comparable<Version> {
 	 * @throws NullPointerException
 	 *             if major is null
 	 */
-	public Version(Integer major, Integer medium) throws NullPointerException {
-		this(major, medium,null, null);
+	public Version(final Integer major, final Integer medium) throws NullPointerException {
+		this(major, medium, null, null);
 	}
 
 	/**
@@ -105,7 +105,7 @@ public final class Version implements Comparable<Version> {
 	 * @throws NullPointerException
 	 *             if major is null
 	 */
-	public Version(Integer major, Integer medium, String classifier) throws NullPointerException {
+	public Version(final Integer major, final Integer medium, final String classifier) throws NullPointerException {
 		this(major, medium, null, classifier);
 	}
 
@@ -121,7 +121,7 @@ public final class Version implements Comparable<Version> {
 	 * @throws NullPointerException
 	 *             if major is null
 	 */
-	public Version(Integer major, Integer medium, Integer minor) throws NullPointerException {
+	public Version(final Integer major, final Integer medium, final Integer minor) throws NullPointerException {
 		this(major, medium, minor, null);
 	}
 
@@ -161,11 +161,11 @@ public final class Version implements Comparable<Version> {
 	 *             if major, medium or minor ae not number.
 	 */
 	public final static Version parse(final String version) throws IllegalArgumentException, NumberFormatException {
-		StringTokenizer tokenizer = new StringTokenizer(version, ".");
+		final StringTokenizer tokenizer = new StringTokenizer(version, ".");
 		if (!tokenizer.hasMoreTokens()) {
 			throw new IllegalArgumentException(version + " is not a valid Version");
 		}
-		Integer major = Integer.parseInt(tokenizer.nextToken());
+		final Integer major = Integer.parseInt(tokenizer.nextToken());
 		// medium
 		Integer medium = null;
 		if (tokenizer.countTokens() == 2) {

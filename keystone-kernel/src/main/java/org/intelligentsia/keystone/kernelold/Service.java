@@ -39,7 +39,7 @@ public interface Service {
 	 * @return a firendly user name.
 	 */
 	public String getName();
-	
+
 	/**
 	 * Register this service instance on specified kernel context.
 	 * 
@@ -53,7 +53,7 @@ public interface Service {
 	 * @param context
 	 */
 	public void unregister(KernelContext context);
-	
+
 	/**
 	 * Register specified service instance on kernel.
 	 * 

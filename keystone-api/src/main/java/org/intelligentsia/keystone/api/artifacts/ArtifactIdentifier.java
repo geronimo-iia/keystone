@@ -167,14 +167,16 @@ public class ArtifactIdentifier implements Serializable, Comparable<ArtifactIden
 	/**
 	 * Compare this instance with other.
 	 * 
-	 * @throws IllegalArgumentException if group and artifact are not the same or one of both have no version.
+	 * @throws IllegalArgumentException
+	 *             if group and artifact are not the same or one of both have no
+	 *             version.
 	 */
 	@Override
-	public int compareTo(ArtifactIdentifier other) {
+	public int compareTo(final ArtifactIdentifier other) {
 		if (!sameAs(other)) {
 			throw new IllegalArgumentException("this instance is not same as other");
 		}
-		if (version==null|| other.version==null) {
+		if ((version == null) || (other.version == null)) {
 			throw new IllegalArgumentException("No version information");
 		}
 		return Version.parse(version).compareTo(Version.parse(other.version));
@@ -182,9 +184,10 @@ public class ArtifactIdentifier implements Serializable, Comparable<ArtifactIden
 
 	/**
 	 * @param other
-	 * @return true if this instance and other have the same group and artifact identifier.
+	 * @return true if this instance and other have the same group and artifact
+	 *         identifier.
 	 */
-	public boolean sameAs(ArtifactIdentifier other) {
-		return  groupId.equals(other.groupId) &&  artifactId.equals(other.artifactId);
+	public boolean sameAs(final ArtifactIdentifier other) {
+		return groupId.equals(other.groupId) && artifactId.equals(other.artifactId);
 	}
 }

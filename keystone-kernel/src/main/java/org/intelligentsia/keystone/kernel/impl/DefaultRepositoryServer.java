@@ -46,7 +46,7 @@ public class DefaultRepositoryServer implements RepositoryServer {
 	 * @uml.property name="repositoryService"
 	 * @uml.associationEnd
 	 */
-	private GroupRepositoryService groupRepositoryService;
+	private final GroupRepositoryService groupRepositoryService;
 
 	/**
 	 * Build a new instance of DefaultRepositoryServer.java.
@@ -60,7 +60,7 @@ public class DefaultRepositoryServer implements RepositoryServer {
 	 *      java.io.File)
 	 */
 	@Override
-	public void put(String resource, File source) throws ResourceDoesNotExistException, TransferFailedException {
+	public void put(final String resource, final File source) throws ResourceDoesNotExistException, TransferFailedException {
 		groupRepositoryService.put(resource, source);
 	}
 
@@ -68,7 +68,7 @@ public class DefaultRepositoryServer implements RepositoryServer {
 	 * @see org.intelligentsia.keystone.api.artifacts.repository.RepositoryService#get(java.lang.String)
 	 */
 	@Override
-	public File get(String resource) throws ResourceDoesNotExistException, TransferFailedException {
+	public File get(final String resource) throws ResourceDoesNotExistException, TransferFailedException {
 		return groupRepositoryService.get(resource);
 	}
 
@@ -76,7 +76,7 @@ public class DefaultRepositoryServer implements RepositoryServer {
 	 * @see org.intelligentsia.keystone.api.artifacts.repository.RepositoryService#exists(java.lang.String)
 	 */
 	@Override
-	public boolean exists(String resource) throws TransferFailedException {
+	public boolean exists(final String resource) throws TransferFailedException {
 		return groupRepositoryService.exists(resource);
 	}
 
@@ -84,7 +84,7 @@ public class DefaultRepositoryServer implements RepositoryServer {
 	 * @see org.intelligentsia.keystone.api.artifacts.repository.RepositoryService#delete(java.lang.String)
 	 */
 	@Override
-	public boolean delete(String resource) throws ResourceDoesNotExistException {
+	public boolean delete(final String resource) throws ResourceDoesNotExistException {
 		return groupRepositoryService.delete(resource);
 	}
 
@@ -92,7 +92,7 @@ public class DefaultRepositoryServer implements RepositoryServer {
 	 * @see org.intelligentsia.keystone.kernel.RepositoryServer#add(org.intelligentsia.keystone.api.artifacts.repository.RepositoryService)
 	 */
 	@Override
-	public void add(RepositoryService repositoryService) throws NullPointerException {
+	public void add(final RepositoryService repositoryService) throws NullPointerException {
 		if (repositoryService == null) {
 			throw new NullPointerException("repositoryService");
 		}
@@ -105,7 +105,7 @@ public class DefaultRepositoryServer implements RepositoryServer {
 	 * @see org.intelligentsia.keystone.kernel.RepositoryServer#remove(org.intelligentsia.keystone.api.artifacts.repository.RepositoryService)
 	 */
 	@Override
-	public void remove(RepositoryService repositoryService) throws NullPointerException {
+	public void remove(final RepositoryService repositoryService) throws NullPointerException {
 		if (repositoryService == null) {
 			throw new NullPointerException("repositoryService");
 		}

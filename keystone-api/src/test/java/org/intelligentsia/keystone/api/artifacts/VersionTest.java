@@ -19,7 +19,10 @@
  */
 package org.intelligentsia.keystone.api.artifacts;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
 /**
@@ -32,6 +35,14 @@ public class VersionTest {
 
 	@Test
 	public void checkParseVersion() {
+
+		assertEquals(new Version(1), Version.parse("1"));
+		// TODO
+		// assertEquals(new Version(1, "test"), Version.parse("1-test"));
+		assertEquals(new Version(1, 2), Version.parse("1.2"));
+		assertEquals(new Version(1, 2, "test"), Version.parse("1.2-test"));
+		assertEquals(new Version(1, 2, 3), Version.parse("1.2.3"));
+		assertEquals(new Version(1, 2, 3, "test"), Version.parse("1.2.3-test"));
 
 	}
 
@@ -86,9 +97,13 @@ public class VersionTest {
 
 	@Test
 	public void checkEqualsVersion() {
-		Version version = new Version(1);
-		assertEquals(new Integer(1), version);
-
+		assertTrue(new Version(1).equals(new Version(1)));
+		assertTrue(!new Version(1).equals(new Version(2)));
+		assertTrue(new Version(1, 2).equals(new Version(1, 2)));
+		assertTrue(!new Version(1, 2).equals(new Version(1, 2, 3)));
+		assertTrue(!new Version(1, 2).equals(new Version(2, 1)));
+		assertTrue(new Version(1, 2, 3).equals(new Version(1, 2, 3)));
+		assertTrue(new Version(1, 2, 3, "test").equals(new Version(1, 2, 3, "test")));
 	}
 
 	@Test

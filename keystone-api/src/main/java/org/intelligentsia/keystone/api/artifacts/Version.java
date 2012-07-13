@@ -20,6 +20,7 @@
 package org.intelligentsia.keystone.api.artifacts;
 
 import java.util.IllegalFormatException;
+import java.util.StringTokenizer;
 
 /**
  * Version class expose methods to compare and analyse version field.
@@ -59,6 +60,75 @@ public final class Version implements Comparable<Version> {
 	 * Build a new instance of Version.java.
 	 * 
 	 * @param major
+	 * @throws NullPointerException
+	 *             if major is null
+	 */
+	public Version(Integer major) throws NullPointerException {
+		this(major, null, null, null);
+	}
+
+	/**
+	 * Build a new instance of Version.java.
+	 * 
+	 * @param major
+	 * @param classifier
+	 * @throws NullPointerException
+	 *             if major is null
+	 */
+	public Version(Integer major, String classifier) throws NullPointerException {
+		this(major, null, null, classifier);
+	}
+
+	/**
+	 * Build a new instance of Version.java.
+	 * 
+	 * @param major
+	 *            major version numebr
+	 * @param medium
+	 *            optional medium version number
+	 * @throws NullPointerException
+	 *             if major is null
+	 */
+	public Version(Integer major, Integer medium) throws NullPointerException {
+		this(major, medium,null, null);
+	}
+
+	/**
+	 * Build a new instance of Version.java.
+	 * 
+	 * @param major
+	 *            major version numebr
+	 * @param medium
+	 *            optional medium version number
+	 * @param classifier
+	 *            optional version classifier
+	 * @throws NullPointerException
+	 *             if major is null
+	 */
+	public Version(Integer major, Integer medium, String classifier) throws NullPointerException {
+		this(major, medium, null, classifier);
+	}
+
+	/**
+	 * Build a new instance of Version.java.
+	 * 
+	 * @param major
+	 *            major version numebr
+	 * @param medium
+	 *            optional medium version number
+	 * @param minor
+	 *            optional minor version number
+	 * @throws NullPointerException
+	 *             if major is null
+	 */
+	public Version(Integer major, Integer medium, Integer minor) throws NullPointerException {
+		this(major, medium, minor, null);
+	}
+
+	/**
+	 * Build a new instance of Version.java.
+	 * 
+	 * @param major
 	 *            major version numebr
 	 * @param medium
 	 *            optional medium version number
@@ -86,11 +156,32 @@ public final class Version implements Comparable<Version> {
 	 * @param version
 	 * @return Version instance.
 	 * @throws IllegalFormatException
-	 *             if version is not a {@link Version}.
+	 *             if version is not a {@link Version} with separator.
+	 * @throws NumberFormatException
+	 *             if major, medium or minor ae not number.
 	 */
-	public final static Version parse(final String version) throws IllegalFormatException {
-
-		return null;
+	public final static Version parse(final String version) throws IllegalArgumentException, NumberFormatException {
+		StringTokenizer tokenizer = new StringTokenizer(version, ".");
+		if (!tokenizer.hasMoreTokens()) {
+			throw new IllegalArgumentException(version + " is not a valid Version");
+		}
+		Integer major = Integer.parseInt(tokenizer.nextToken());
+		// medium
+		Integer medium = null;
+		if (tokenizer.countTokens() == 2) {
+			medium = Integer.parseInt(tokenizer.nextToken());
+		}
+		// minor and classifier
+		Integer minor = null;
+		String classifier = null;
+		if (tokenizer.hasMoreTokens()) {
+			minor = Integer.parseInt(tokenizer.nextToken("-"));
+			if (tokenizer.hasMoreTokens()) {
+				classifier = tokenizer.nextToken();
+			}
+		}
+		// return final result
+		return new Version(major, medium, minor, classifier);
 	}
 
 	/**
@@ -104,7 +195,7 @@ public final class Version implements Comparable<Version> {
 	 *             if version is null
 	 */
 	public final static String format(final Version version) throws NullPointerException {
-		final StringBuilder builder = new StringBuilder(version.major);
+		final StringBuilder builder = new StringBuilder().append(version.major);
 		if (version.medium != null) {
 			builder.append('.').append(version.medium);
 		}

@@ -19,8 +19,15 @@
  */
 package org.intelligentsia.keystone.api.artifacts;
 
+import static org.junit.Assert.*;
 import org.junit.Test;
 
+/**
+ * 
+ * VersionTest implement test case for {@link Version}.
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ */
 public class VersionTest {
 
 	@Test
@@ -30,7 +37,12 @@ public class VersionTest {
 
 	@Test
 	public void checkFormatVersion() {
-		// TODO
+		assertEquals("1", Version.format(new Version(1)));
+		assertEquals("1-test", Version.format(new Version(1, "test")));
+		assertEquals("1.2", Version.format(new Version(1, 2)));
+		assertEquals("1.2-test", Version.format(new Version(1, 2, "test")));
+		assertEquals("1.2.3", Version.format(new Version(1, 2, 3)));
+		assertEquals("1.2.3-test", Version.format(new Version(1, 2, 3, "test")));
 	}
 
 	@Test

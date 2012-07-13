@@ -32,7 +32,7 @@ public class VersionTest {
 
 	@Test
 	public void checkParseVersion() {
-		// TODO
+
 	}
 
 	@Test
@@ -46,8 +46,49 @@ public class VersionTest {
 	}
 
 	@Test
+	public void checkConstructorVersion() {
+		Version version = new Version(1);
+		assertEquals(new Integer(1), version.getMajor());
+		assertNull(version.getMedium());
+		assertNull(version.getMinor());
+		assertNull(version.getClassifier());
+
+		version = new Version(1, "test");
+		assertEquals(new Integer(1), version.getMajor());
+		assertNull(version.getMedium());
+		assertNull(version.getMinor());
+		assertEquals("test", version.getClassifier());
+
+		version = new Version(1, 2);
+		assertEquals(new Integer(1), version.getMajor());
+		assertEquals(new Integer(2), version.getMedium());
+		assertNull(version.getMinor());
+		assertNull(version.getClassifier());
+
+		version = new Version(1, 2, "test");
+		assertEquals(new Integer(1), version.getMajor());
+		assertEquals(new Integer(2), version.getMedium());
+		assertNull(version.getMinor());
+		assertEquals("test", version.getClassifier());
+
+		version = new Version(1, 2, 3);
+		assertEquals(new Integer(1), version.getMajor());
+		assertEquals(new Integer(2), version.getMedium());
+		assertEquals(new Integer(3), version.getMinor());
+		assertNull(version.getClassifier());
+
+		version = new Version(1, 2, 3, "test");
+		assertEquals(new Integer(1), version.getMajor());
+		assertEquals(new Integer(2), version.getMedium());
+		assertEquals(new Integer(3), version.getMinor());
+		assertEquals("test", version.getClassifier());
+	}
+
+	@Test
 	public void checkEqualsVersion() {
-		// TODO
+		Version version = new Version(1);
+		assertEquals(new Integer(1), version);
+
 	}
 
 	@Test

@@ -273,4 +273,32 @@ public final class Version implements Comparable<Version> {
 		return format(this);
 	}
 
+	/**
+	 * @return the major
+	 */
+	public final Integer getMajor() {
+		return major;
+	}
+
+	/**
+	 * @return the medium
+	 */
+	public final Integer getMedium() {
+		return medium;
+	}
+
+	/**
+	 * @return the minor
+	 */
+	public final Integer getMinor() {
+		return minor;
+	}
+
+	/**
+	 * @return the classifier
+	 */
+	public final String getClassifier() {
+		return classifier;
+	}
+
 }

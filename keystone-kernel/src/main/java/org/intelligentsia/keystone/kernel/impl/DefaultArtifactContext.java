@@ -41,7 +41,7 @@ public class DefaultArtifactContext implements ArtifactContext {
 	 */
 	private final ArtifactIdentifier artifactIdentifier;
 	/**
-	 * Local URL resource.
+	 * Local resource (as {@link URL} instance).
 	 * 
 	 * @uml.property name="localResource"
 	 */

@@ -4,7 +4,6 @@
 package org.intelligentsia.keystone.kernel.impl;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.Iterator;
 
 import org.intelligentsia.keystone.api.artifacts.ResourceDoesNotExistException;
@@ -14,88 +13,88 @@ import org.intelligentsia.keystone.api.artifacts.repository.RepositoryService;
 import org.intelligentsia.keystone.kernel.RepositoryServer;
 
 /**
- * @author geronimo
- *
+ * DefaultRepositoryServer implements {@link RepositoryServer} by delegating to
+ * a {@link GroupRepositoryService} instance.
+ * 
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class DefaultRepositoryServer implements RepositoryServer {
 
 	/**
-	 * GroupRepositoryService instance.
+	 * {@link GroupRepositoryService} instance.
 	 * 
 	 * @uml.property name="repositoryService"
 	 * @uml.associationEnd
 	 */
-	private GroupRepositoryService repositoryService;
-	
+	private GroupRepositoryService groupRepositoryService;
+
 	/**
-	 * 
+	 * Build a new instance of DefaultRepositoryServer.java.
 	 */
 	public DefaultRepositoryServer() {
-		repositoryService=new GroupRepositoryService();
+		groupRepositoryService = new GroupRepositoryService();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.intelligentsia.keystone.api.artifacts.repository.RepositoryService#put(java.lang.String, java.io.File)
+	/**
+	 * @see org.intelligentsia.keystone.api.artifacts.repository.RepositoryService#put(java.lang.String,
+	 *      java.io.File)
 	 */
 	@Override
-	public void put(String resource, File source)
-			throws ResourceDoesNotExistException, TransferFailedException {
-		// TODO Auto-generated method stub
-		repositoryService.put(resource, source);
+	public void put(String resource, File source) throws ResourceDoesNotExistException, TransferFailedException {
+		groupRepositoryService.put(resource, source);
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.intelligentsia.keystone.api.artifacts.repository.RepositoryService#get(java.lang.String)
 	 */
 	@Override
-	public File get(String resource) throws ResourceDoesNotExistException,
-			TransferFailedException {
-		// TODO Auto-generated method stub
-		return repositoryService.get(resource);
+	public File get(String resource) throws ResourceDoesNotExistException, TransferFailedException {
+		return groupRepositoryService.get(resource);
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.intelligentsia.keystone.api.artifacts.repository.RepositoryService#exists(java.lang.String)
 	 */
 	@Override
 	public boolean exists(String resource) throws TransferFailedException {
-		// TODO Auto-generated method stub
-		return repositoryService.exists(resource);
+		return groupRepositoryService.exists(resource);
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.intelligentsia.keystone.api.artifacts.repository.RepositoryService#delete(java.lang.String)
 	 */
 	@Override
 	public boolean delete(String resource) throws ResourceDoesNotExistException {
-		// TODO Auto-generated method stub
-		return repositoryService.delete(resource);
+		return groupRepositoryService.delete(resource);
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.intelligentsia.keystone.kernel.RepositoryServer#add(org.intelligentsia.keystone.api.artifacts.repository.RepositoryService)
 	 */
 	@Override
-	public void add(RepositoryService repositoryService)
-			throws NullPointerException {
-		// TODO Auto-generated method stub
-		this.repositoryService.add(repositoryService);
+	public void add(RepositoryService repositoryService) throws NullPointerException {
+		if (repositoryService == null) {
+			throw new NullPointerException("repositoryService");
+		}
+		if (!this.groupRepositoryService.contains(repositoryService)) {
+			this.groupRepositoryService.add(repositoryService);
+		}
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.intelligentsia.keystone.kernel.RepositoryServer#remove(org.intelligentsia.keystone.api.artifacts.repository.RepositoryService)
 	 */
 	@Override
-	public void remove(RepositoryService repositoryService)
-			throws NullPointerException {
-		// TODO Auto-generated method stub
-		this.repositoryService.remove(repositoryService);
+	public void remove(RepositoryService repositoryService) throws NullPointerException {
+		if (repositoryService == null) {
+			throw new NullPointerException("repositoryService");
+		}
+		this.groupRepositoryService.remove(repositoryService);
 	}
 
 	@Override
 	public Iterator<RepositoryService> iterator() {
-		// TODO Auto-generated method stub
-		return repositoryService.iterator();
+		return groupRepositoryService.iterator();
 	}
-
 }

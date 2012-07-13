@@ -19,8 +19,6 @@
  */
 package org.intelligentsia.keystone.kernel;
 
-import java.util.Collection;
-
 import org.intelligentsia.keystone.api.artifacts.repository.RepositoryService;
 
 /**
@@ -29,10 +27,11 @@ import org.intelligentsia.keystone.api.artifacts.repository.RepositoryService;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface RepositoryServer extends RepositoryService , Iterable<RepositoryService> {
+public interface RepositoryServer extends RepositoryService, Iterable<RepositoryService> {
 
 	/**
 	 * Add specified Repository to this server.
+	 * 
 	 * @param repositoryService
 	 *            repository Service instance to add
 	 * @throws NullPointerException
@@ -42,6 +41,7 @@ public interface RepositoryServer extends RepositoryService , Iterable<Repositor
 
 	/**
 	 * Remove specified Repository from this server.
+	 * 
 	 * @param repositoryService
 	 *            repository Service instance to remove
 	 * @throws NullPointerException

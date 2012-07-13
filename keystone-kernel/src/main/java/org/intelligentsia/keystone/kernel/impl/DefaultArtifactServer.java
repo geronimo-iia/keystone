@@ -4,7 +4,6 @@
 package org.intelligentsia.keystone.kernel.impl;
 
 import java.net.MalformedURLException;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -21,40 +20,38 @@ import org.xeustechnologies.jcl.DelegateProxyClassLoader;
 import org.xeustechnologies.jcl.JarClassLoader;
 
 /**
- * @author geronimo
- *
+ * DefaultArtifactServer implements {@link ArtifactServer}.
+ * 
+ * 
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class DefaultArtifactServer implements ArtifactServer {
 
 	/**
-	 * ArtifactsService instance.
+	 * {@link ArtifactsService} instance.
 	 * 
 	 * @uml.property name="artifactsService"
 	 * @uml.associationEnd
 	 */
 	private final ArtifactsService artifactsService;
 	/**
-	 * Parent JarClassLoader instance.
+	 * Parent {@link JarClassLoader} instance.
 	 * 
 	 * @uml.property name="parent"
 	 */
 	private final JarClassLoader parent;
 	/**
-	 * CompositeProxyClassLoader instance.
+	 * {@link CompositeProxyClassLoader} instance.
 	 * 
 	 * @uml.property name="compositeProxyClassLoader"
 	 * @uml.associationEnd
 	 */
 	private final CompositeProxyClassLoader compositeProxyClassLoader;
-
-	
-
 	/**
-	 * Map of ArtifactIdentifier and ArtifactContext.
+	 * Map of {@link ArtifactIdentifier} and {@link ArtifactContext}.
 	 */
 	private final Map<ArtifactIdentifier, ArtifactContext> artifacts = new HashMap<ArtifactIdentifier, ArtifactContext>();
 
-	
 	/**
 	 * Build a new instance of DefaultArtifactServer.java.
 	 * 
@@ -75,35 +72,43 @@ public class DefaultArtifactServer implements ArtifactServer {
 		parent.addLoader(compositeProxyClassLoader);
 	}
 
-
-	/* (non-Javadoc)
-	 * @see org.intelligentsia.keystone.kernel.ArtifactServer#contains(org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier)
+	/**
+	 * @see org.intelligentsia.keystone.kernel.ArtifactServer#contains(org.intelligentsia
+	 *      .keystone.api.artifacts.ArtifactIdentifier)
 	 */
 	@Override
-	public boolean contains(ArtifactIdentifier artifactIdentifier)
-			throws NullPointerException {
-		// TODO Auto-generated method stub
+	public boolean contains(ArtifactIdentifier artifactIdentifier) throws NullPointerException {
+		if (artifactIdentifier == null) {
+			throw new NullPointerException("artifactIdentifier");
+		}
 		return artifacts.containsKey(artifactIdentifier);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.intelligentsia.keystone.kernel.ArtifactServer#find(org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier)
+	/**
+	 * @see org.intelligentsia.keystone.kernel.ArtifactServer#find(org.intelligentsia
+	 *      .keystone.api.artifacts.ArtifactIdentifier)
 	 */
 	@Override
-	public ArtifactContext find(ArtifactIdentifier artifactIdentifier)
-			throws KeystoneRuntimeException, NullPointerException {
-		// TODO Auto-generated method stub
+	public ArtifactContext find(ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException, NullPointerException {
+		if (artifactIdentifier == null) {
+			throw new NullPointerException("artifactIdentifier");
+		}
 		return artifacts.get(artifactIdentifier);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.intelligentsia.keystone.kernel.ArtifactServer#load(org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier, org.intelligentsia.keystone.kernel.IsolationLevel)
+	/**
+	 * @see org.intelligentsia.keystone.kernel.ArtifactServer#load(org.intelligentsia
+	 *      .keystone.api.artifacts.ArtifactIdentifier,
+	 *      org.intelligentsia.keystone.kernel.IsolationLevel)
 	 */
 	@Override
-	public ArtifactContext load(ArtifactIdentifier artifactIdentifier,
-			IsolationLevel isolationLevel) throws KeystoneRuntimeException,
-			NullPointerException {
-		// TODO check if not ever loaded
+	public ArtifactContext load(ArtifactIdentifier artifactIdentifier, IsolationLevel isolationLevel) throws KeystoneRuntimeException, NullPointerException {
+		if (artifactIdentifier == null) {
+			throw new NullPointerException("artifactIdentifier");
+		}
+		if (isolationLevel == null) {
+			throw new NullPointerException("isolationLevel");
+		}
 		final DefaultArtifactContext result = new DefaultArtifactContext(artifactIdentifier);
 		// get resource
 		final Resource resource = artifactsService.get(artifactIdentifier);
@@ -121,17 +126,15 @@ public class DefaultArtifactServer implements ArtifactServer {
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.intelligentsia.keystone.kernel.ArtifactServer#unload(org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier)
+	/**
+	 * @see org.intelligentsia.keystone.kernel.ArtifactServer#unload(org.intelligentsia
+	 *      .keystone.api.artifacts.ArtifactIdentifier)
 	 */
 	@Override
-	public void unload(ArtifactIdentifier artifactIdentifier)
-			throws KeystoneRuntimeException, NullPointerException {
+	public void unload(ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException, NullPointerException {
 		// TODO Auto-generated method stub
 
 	}
-
-	
 
 	/**
 	 * @param isolationLevel
@@ -156,6 +159,11 @@ public class DefaultArtifactServer implements ArtifactServer {
 		return classLoader;
 	}
 
+	@Override
+	public Iterator<ArtifactIdentifier> iterator() {
+		return artifacts.keySet().iterator();
+	}
+
 	/**
 	 * @return class loader instance used as parent.
 	 * @uml.property name="parent"
@@ -163,13 +171,4 @@ public class DefaultArtifactServer implements ArtifactServer {
 	public JarClassLoader getParent() {
 		return parent;
 	}
-
-
-	@Override
-	public Iterator<ArtifactIdentifier> iterator() {
-		// TODO Auto-generated method stub
-		return artifacts.keySet().iterator();
-	}
-	
-	
 }

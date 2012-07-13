@@ -22,11 +22,9 @@ package org.intelligentsia.keystone.kernel.impl;
 import org.xeustechnologies.jcl.JarClassLoader;
 
 /**
- * 
- * JarClassLoaderFactory expose methode to clean up JarClassLoader.
+ * JarClassLoaderFactory expose methods to initialize {@link JarClassLoader}.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
 public enum JarClassLoaderFactory {
 	;

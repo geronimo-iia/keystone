@@ -19,50 +19,21 @@
  */
 package org.intelligentsia.keystone.kernel;
 
+import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 
 /**
- * Kernel interface which declare core methods.
- * <p>
- * Microkernel Responsibility:
- * </p>
- * <ul>
- * <li>Provides core mechanisms</li>
- * <li>Offers communication facilities</li>
- * <li>Encapsulates system dependencies</li>
- * <li>Manages and controls resources</li>
- * </ul>
  * 
- * <p>
- * “Perfection is not achieved when there is nothing left to add, but when there
- * is nothing left to take away”<br />
- * --Antoine de St. Exupery
- * </p>
+ * Launcher declare methods to launch kernel.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface Kernel {
+public interface Launcher {
 
 	/**
-	 * @return a {@link RepositoryServer} instance.
-	 */
-	public RepositoryServer getRepositoryServer();
-
-	/**
-	 * @return a {@link ArtifactServer} instance.
-	 */
-	public ArtifactServer getArtifactServer();
-
-	/**
-	 * @return a {@link EventBusServer} instance.
-	 */
-	public EventBusServer getEventBus();
-
-	/**
-	 * Display a message in kernel message log.
+	 * Launch kernel.
 	 * 
-	 * @param message
-	 * @param args
+	 * @throws KeystoneRuntimeException
+	 *             if an error occurs
 	 */
-	public void dmesg(final String message, final Object... args);
-
+	public void launch() throws KeystoneRuntimeException;
 }

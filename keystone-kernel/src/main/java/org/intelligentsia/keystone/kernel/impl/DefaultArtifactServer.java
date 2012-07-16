@@ -151,11 +151,18 @@ public class DefaultArtifactServer implements ArtifactServer {
 	 */
 	@Override
 	public void unload(final ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException, NullPointerException {
-		// TODO Auto-generated method stub
-
+		// TODO implements unload
+		throw new KeystoneRuntimeException("not yet implemented");
 	}
 
 	/**
+	 * Build a new instance of JarClassLoader with only local loader activated.
+	 * <p>
+	 * All instance have a common parent {@link JarClassLoader} instance. If
+	 * {@link IsolationLevel#NONE} then newly classloader is added by
+	 * composition to parent.
+	 * </p>
+	 * 
 	 * @param isolationLevel
 	 *            isolation level
 	 * @return a new instance of JarClassLoader.

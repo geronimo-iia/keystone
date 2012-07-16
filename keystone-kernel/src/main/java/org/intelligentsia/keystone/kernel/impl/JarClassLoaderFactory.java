@@ -24,6 +24,19 @@ import org.xeustechnologies.jcl.JarClassLoader;
 /**
  * JarClassLoaderFactory expose methods to initialize {@link JarClassLoader}.
  * 
+ * <p>
+ * All JarClassLoader instance have (state, priority order lower first):
+ * </p>
+ * <ul>
+ * <li>SystemLoader: enabled, 50</li>
+ * <li>ThreadLoader: enabled, 40</li>
+ * <li>ParentLoader: enabled, 30</li>
+ * <li>CurrentLoader: enabled, 20</li>
+ * <li>LocalLoader: enabled, 10</li>
+ * <li>OsgiBootLoader: disabled, 0</li>
+ * </ul>
+ * 
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public enum JarClassLoaderFactory {

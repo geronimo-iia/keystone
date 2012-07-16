@@ -41,7 +41,8 @@ public class DefaultEventBusServer implements EventBusServer {
 	private final EventBus eventBus;
 
 	/**
-	 * 
+	 * Build a new instance of DefaultEventBusServer.java with a
+	 * {@link BasicEventBus} underlaying instance.
 	 */
 	public DefaultEventBusServer() {
 		super();
@@ -54,7 +55,6 @@ public class DefaultEventBusServer implements EventBusServer {
 	@Override
 	public void subscribe(final Object subscriber) {
 		eventBus.subscribe(subscriber);
-
 	}
 
 	/**

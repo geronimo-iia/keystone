@@ -19,6 +19,7 @@
  */
 package org.intelligentsia.keystone.kernel.impl;
 
+import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.kernel.Kernel;
 import org.intelligentsia.keystone.kernel.KernelServer;
 
@@ -69,7 +70,7 @@ public abstract class AbstractKernelServer implements KernelServer {
 	}
 
 	@Override
-	public final void initialize(final Kernel kernel) {
+	public final void initialize(final Kernel kernel) throws KeystoneRuntimeException{
 		state = State.INITIALIZING;
 		this.kernel = kernel;
 		onInitialize();
@@ -86,8 +87,11 @@ public abstract class AbstractKernelServer implements KernelServer {
 
 	/**
 	 * Called on initialize event.
+	 * 
+	 * @throws KeystoneRuntimeException
+	 *             if error occurs
 	 */
-	protected abstract void onInitialize();
+	protected abstract void onInitialize() throws KeystoneRuntimeException;
 
 	/**
 	 * Called on detsory event.

@@ -29,6 +29,7 @@ import java.util.Map;
 
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.api.artifacts.ArtifactsService;
+import org.intelligentsia.keystone.api.artifacts.DefaultArtifactsService;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.api.artifacts.Resource;
 import org.intelligentsia.keystone.kernel.ArtifactContext;
@@ -54,7 +55,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	 * @uml.property name="artifactsService"
 	 * @uml.associationEnd
 	 */
-	private final ArtifactsService artifactsService;
+	private ArtifactsService artifactsService;
 	/**
 	 * Parent {@link JarClassLoader} instance.
 	 * 
@@ -68,7 +69,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	 * @uml.associationEnd
 	 */
 	private final CompositeProxyClassLoader compositeProxyClassLoader;
-	
+
 	/**
 	 * Map of {@link ArtifactIdentifier} and {@link ArtifactContext}.
 	 */
@@ -82,21 +83,25 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	 * @throws NullPointerException
 	 *             if artifactsService is null
 	 */
-	public DefaultArtifactServer(final ArtifactsService artifactsService) throws NullPointerException {
+	public DefaultArtifactServer() {
 		super();
-		if (artifactsService == null) {
-			throw new NullPointerException("artifactsService is null");
-		}
-		this.artifactsService = artifactsService;
 		this.parent = JarClassLoaderFactory.initialize();
 		compositeProxyClassLoader = new CompositeProxyClassLoader();
 		compositeProxyClassLoader.setOrder(15);
 		parent.addLoader(compositeProxyClassLoader);
 	}
 
+	/**
+	 * Initialize internal {@link ArtifactsService}.
+	 * 
+	 * @see org.intelligentsia.keystone.kernel.impl.AbstractKernelServer#onInitialize()
+	 */
 	@Override
 	protected void onInitialize() {
-		// nothing to do.
+		if (kernel.getRepositoryServer()==null) {
+			throw new KeystoneRuntimeException("Repository Server cannot be null"); 
+		}
+		this.artifactsService = new DefaultArtifactsService(kernel.getRepositoryServer());
 	}
 
 	/**
@@ -114,6 +119,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 			}
 		}
 		artifacts.clear();
+		artifactsService = null;
 	}
 
 	/**

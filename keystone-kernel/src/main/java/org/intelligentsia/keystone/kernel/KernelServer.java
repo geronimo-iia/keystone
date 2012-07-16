@@ -19,6 +19,8 @@
  */
 package org.intelligentsia.keystone.kernel;
 
+import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
+
 /**
  * {@link KernelServer} declare methods to manage internal kernel 'server'.
  * 
@@ -70,8 +72,10 @@ public interface KernelServer {
 	 * 
 	 * @param kernel
 	 *            internal kernel instance.
+	 * @throws KeystoneRuntimeException
+	 *             if error occurs
 	 */
-	public void initialize(Kernel kernel);
+	public void initialize(Kernel kernel) throws KeystoneRuntimeException;
 
 	/**
 	 * Detroy kernel server instance (all resources should be closed).

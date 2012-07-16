@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernelold;
+package org.intelligentsia.keystone.service;
 
 import java.io.BufferedInputStream;
 import java.io.File;

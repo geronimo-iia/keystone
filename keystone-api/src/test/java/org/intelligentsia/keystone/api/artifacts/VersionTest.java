@@ -35,10 +35,8 @@ public class VersionTest {
 
 	@Test
 	public void checkParseVersion() {
-
 		assertEquals(new Version(1), Version.parse("1"));
-		// TODO
-		// assertEquals(new Version(1, "test"), Version.parse("1-test"));
+		assertEquals(new Version(1, "test"), Version.parse("1-test"));
 		assertEquals(new Version(1, 2), Version.parse("1.2"));
 		assertEquals(new Version(1, 2, "test"), Version.parse("1.2-test"));
 		assertEquals(new Version(1, 2, 3), Version.parse("1.2.3"));
@@ -107,8 +105,40 @@ public class VersionTest {
 	}
 
 	@Test
-	public void checkCompareVersion() {
-		// TODO
+	public void checkCompareVersionOnMajor() {
+		Version version = new Version(1);
+		assertEquals(new Integer(0), (Integer) version.compareTo(new Version(1)));
+		version = new Version(1);
+		assertEquals(new Integer(-1), (Integer) version.compareTo(new Version(3)));
+		version = new Version(1, 3);
+		assertEquals(new Integer(-1), (Integer) version.compareTo(new Version(3, 1)));
+		version = new Version(1, 3, 4);
+		assertEquals(new Integer(-1), (Integer) version.compareTo(new Version(3, 1, 0)));
+		version = new Version(3);
+		assertEquals(new Integer(1), (Integer) version.compareTo(new Version(1)));
 	}
 
+	@Test
+	public void checkCompareVersionOnMedium() {
+		Version version = new Version(1, 1);
+		assertEquals(new Integer(0), (Integer) version.compareTo(new Version(1, 1)));
+		version = new Version(1, 1);
+		assertEquals(new Integer(-1), (Integer) version.compareTo(new Version(1, 3)));
+		version = new Version(1, 3);
+		assertEquals(new Integer(1), (Integer) version.compareTo(new Version(1, 1)));
+		version = new Version(1, 3, 4);
+		assertEquals(new Integer(1), (Integer) version.compareTo(new Version(1, 3, 0)));
+		version = new Version(1, 3, 0);
+		assertEquals(new Integer(-1), (Integer) version.compareTo(new Version(1, 3, 4)));
+	}
+
+	@Test
+	public void checkCompareVersionOnMinor() {
+		Version version = new Version(1, 1, 1);
+		assertEquals(new Integer(0), (Integer) version.compareTo(new Version(1, 1, 1)));
+		version = new Version(1, 1, 1);
+		assertEquals(new Integer(-1), (Integer) version.compareTo(new Version(1, 1, 3)));
+		version = new Version(1, 1, 3);
+		assertEquals(new Integer(1), (Integer) version.compareTo(new Version(1, 1, 1)));
+	}
 }

@@ -161,24 +161,28 @@ public final class Version implements Comparable<Version> {
 	 *             if major, medium or minor ae not number.
 	 */
 	public final static Version parse(final String version) throws IllegalArgumentException, NumberFormatException {
-		final StringTokenizer tokenizer = new StringTokenizer(version, ".");
+		// analyze classifier
+		StringTokenizer tokenizer = new StringTokenizer(version, "-");
 		if (!tokenizer.hasMoreTokens()) {
 			throw new IllegalArgumentException(version + " is not a valid Version");
 		}
+		final String numbers = tokenizer.nextToken();
+		String classifier = null;
+		if (tokenizer.hasMoreTokens()) {
+			classifier = tokenizer.nextToken();
+		}
+		// analyze sequence number
+		tokenizer = new StringTokenizer(numbers, ".");
 		final Integer major = Integer.parseInt(tokenizer.nextToken());
 		// medium
 		Integer medium = null;
-		if (tokenizer.countTokens() == 2) {
+		if (tokenizer.hasMoreTokens()) {
 			medium = Integer.parseInt(tokenizer.nextToken());
 		}
 		// minor and classifier
 		Integer minor = null;
-		String classifier = null;
 		if (tokenizer.hasMoreTokens()) {
-			minor = Integer.parseInt(tokenizer.nextToken("-"));
-			if (tokenizer.hasMoreTokens()) {
-				classifier = tokenizer.nextToken();
-			}
+			minor = Integer.parseInt(tokenizer.nextToken());
 		}
 		// return final result
 		return new Version(major, medium, minor, classifier);
@@ -209,9 +213,19 @@ public final class Version implements Comparable<Version> {
 	}
 
 	@Override
-	public int compareTo(final Version arg0) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int compareTo(final Version version) {
+		int result = major.compareTo(version.major);
+		if (result == 0) {
+			if (medium != null) {
+				result = (version.medium == null) ? 1 : medium.compareTo(version.medium);
+			}
+			if (result == 0) {
+				if (minor != null) {
+					result = (version.minor == null) ? 1 : minor.compareTo(version.minor);
+				}
+			}
+		}
+		return result;
 	}
 
 	@Override

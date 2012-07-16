@@ -72,7 +72,9 @@ public class DefaultKernel implements Kernel {
 
 	@Override
 	public void dmesg(String message, Object... args) {
-		errStream.println(StringUtils.format(message, args));
+		if (errStream != null) {
+			errStream.println(StringUtils.format(message, args));
+		}
 	}
 
 }

@@ -38,7 +38,7 @@ import org.intelligentsia.keystone.kernel.RepositoryServer;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class DefaultRepositoryServer implements RepositoryServer {
+public class DefaultRepositoryServer extends AbstractKernelServer implements RepositoryServer {
 
 	/**
 	 * {@link GroupRepositoryService} instance.
@@ -53,6 +53,15 @@ public class DefaultRepositoryServer implements RepositoryServer {
 	 */
 	public DefaultRepositoryServer() {
 		groupRepositoryService = new GroupRepositoryService();
+	}
+
+	@Override
+	protected void onInitialize() {
+	}
+
+	@Override
+	protected void onDestroy() {
+		groupRepositoryService.clear();
 	}
 
 	/**

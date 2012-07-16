@@ -22,6 +22,8 @@
  */
 package org.intelligentsia.keystone.kernel.impl;
 
+import java.util.concurrent.TimeUnit;
+
 import org.intelligentsia.keystone.kernel.EventBusServer;
 
 import com.adamtaft.eventbus.BasicEventBus;
@@ -33,12 +35,12 @@ import com.adamtaft.eventbus.EventBus;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class DefaultEventBusServer implements EventBusServer {
+public class DefaultEventBusServer extends AbstractKernelServer implements EventBusServer {
 
 	/**
-	 * Internal underlying implementation of event bus.
+	 * Internal underlying implementation of event bus ({@link BasicEventBus}).
 	 */
-	private final EventBus eventBus;
+	private final BasicEventBus eventBus;
 
 	/**
 	 * Build a new instance of DefaultEventBusServer.java with a
@@ -49,25 +51,37 @@ public class DefaultEventBusServer implements EventBusServer {
 		this.eventBus = new BasicEventBus();
 	}
 
+	@Override
+	protected void onInitialize() {
+		// nothing to do
+	}
+
 	/**
-	 * @see org.intelligentsia.keystone.kernel.EventBusServer#subscribe(java.lang.Object)
+	 * Wait 10 second before ending.
+	 * 
+	 * @see org.intelligentsia.keystone.kernel.impl.AbstractKernelServer#onDestroy()
 	 */
+	@Override
+	protected void onDestroy() {
+		try {
+			eventBus.shutdown(10, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			if (eventBus.hasPendingEvents()) {
+				log("Some event will be not processed");
+			}
+		}
+	}
+
 	@Override
 	public void subscribe(final Object subscriber) {
 		eventBus.subscribe(subscriber);
 	}
 
-	/**
-	 * @see org.intelligentsia.keystone.kernel.EventBusServer#unsubscribe(java.lang.Object)
-	 */
 	@Override
 	public void unsubscribe(final Object subscriber) {
 		eventBus.unsubscribe(subscriber);
 	}
 
-	/**
-	 * @see org.intelligentsia.keystone.kernel.EventBusServer#publish(java.lang.Object)
-	 */
 	@Override
 	public void publish(final Object event) {
 		eventBus.publish(event);

@@ -36,6 +36,8 @@ import org.intelligentsia.keystone.api.artifacts.TransferFailedException;
  */
 public class GroupRepositoryService implements RepositoryService, Iterable<RepositoryService> {
 
+	
+
 	private final List<RepositoryService> repositoryServices = new ArrayList<RepositoryService>();
 
 	/**
@@ -149,6 +151,13 @@ public class GroupRepositoryService implements RepositoryService, Iterable<Repos
 		return repositoryServices.remove(o);
 	}
 
+	/**
+	 * Clear all {@link RepositoryService} instance from this group. 
+	 */
+	public void clear() {
+		repositoryServices.clear();
+	}
+	
 	@Override
 	public Iterator<RepositoryService> iterator() {
 		return repositoryServices.iterator();

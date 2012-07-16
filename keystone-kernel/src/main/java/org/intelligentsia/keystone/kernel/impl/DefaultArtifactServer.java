@@ -44,7 +44,7 @@ import org.xeustechnologies.jcl.JarClassLoader;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class DefaultArtifactServer implements ArtifactServer {
+public class DefaultArtifactServer extends AbstractKernelServer implements ArtifactServer {
 
 	/**
 	 * {@link ArtifactsService} instance.
@@ -89,6 +89,28 @@ public class DefaultArtifactServer implements ArtifactServer {
 		compositeProxyClassLoader = new CompositeProxyClassLoader();
 		compositeProxyClassLoader.setOrder(15);
 		parent.addLoader(compositeProxyClassLoader);
+	}
+
+	@Override
+	protected void onInitialize() {
+		// nothing to do.
+	}
+
+	/**
+	 * Unload all artifact.
+	 * 
+	 * @see org.intelligentsia.keystone.kernel.impl.AbstractKernelServer#onDestroy()
+	 */
+	@Override
+	protected void onDestroy() {
+		for (ArtifactIdentifier artifactIdentifier : artifacts.keySet()) {
+			try {
+				unload(artifactIdentifier);
+			} catch (Throwable e) {
+				log(e, "Error when unloading '%s': %s.", artifactIdentifier, e.getMessage());
+			}
+		}
+		artifacts.clear();
 	}
 
 	/**
@@ -151,6 +173,11 @@ public class DefaultArtifactServer implements ArtifactServer {
 	 */
 	@Override
 	public void unload(final ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException, NullPointerException {
+
+		if (State.READY.equals(getState())) {
+
+		}
+
 		// TODO implements unload
 		throw new KeystoneRuntimeException("not yet implemented");
 	}

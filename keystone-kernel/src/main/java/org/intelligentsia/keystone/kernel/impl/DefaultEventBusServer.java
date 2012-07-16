@@ -67,7 +67,7 @@ public class DefaultEventBusServer extends AbstractKernelServer implements Event
 			eventBus.shutdown(10, TimeUnit.SECONDS);
 		} catch (final InterruptedException e) {
 			if (eventBus.hasPendingEvents()) {
-				log("Some event will be not processed");
+				kernel.dmesg("Some event will be not processed.");
 			}
 		}
 	}

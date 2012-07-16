@@ -95,27 +95,6 @@ public abstract class AbstractKernelServer implements KernelServer {
 	protected abstract void onDestroy();
 
 	/**
-	 * Log a message in kernel message.
-	 * 
-	 * @param message
-	 * @param args
-	 */
-	protected void log(final String message, final Object... args) {
-
-	}
-
-	/**
-	 * Log a message in kernel message.
-	 * 
-	 * @param throwable
-	 * @param message
-	 * @param args
-	 */
-	protected void log(final Throwable throwable, final String message, final Object... args) {
-
-	}
-
-	/**
 	 * @return {@link Boolean#TRUE} if this instance is currently in 'destroy'
 	 *         process.
 	 */

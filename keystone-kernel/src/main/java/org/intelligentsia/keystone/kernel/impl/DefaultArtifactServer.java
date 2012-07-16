@@ -68,6 +68,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	 * @uml.associationEnd
 	 */
 	private final CompositeProxyClassLoader compositeProxyClassLoader;
+	
 	/**
 	 * Map of {@link ArtifactIdentifier} and {@link ArtifactContext}.
 	 */
@@ -109,7 +110,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 			try {
 				unload(artifactIdentifier);
 			} catch (final Throwable e) {
-				log(e, "Error when unloading '%s': %s.", artifactIdentifier, e.getMessage());
+				kernel.dmesg("Error when unloading '%s': %s.", artifactIdentifier, e.getMessage());
 			}
 		}
 		artifacts.clear();

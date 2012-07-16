@@ -55,4 +55,13 @@ public interface Kernel {
 	 * @return a {@link EventBusServer} instance.
 	 */
 	public EventBusServer getEventBus();
+
+	/**
+	 * Display a message in kernel message log.
+	 * 
+	 * @param message
+	 * @param args
+	 */
+	public void dmesg(final String message, final Object... args);
+
 }

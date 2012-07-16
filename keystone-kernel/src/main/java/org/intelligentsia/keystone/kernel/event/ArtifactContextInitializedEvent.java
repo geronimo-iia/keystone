@@ -17,26 +17,28 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel;
+package org.intelligentsia.keystone.kernel.event;
+
+import org.intelligentsia.keystone.kernel.ArtifactContext;
 
 /**
- * {@link ArtifactContextDestroyedEvent} is raised when an
+ * {@link ArtifactContextInitializedEvent} is raised when an
  * {@link ArtifactContext} is destroyed.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class ArtifactContextDestroyedEvent {
+public class ArtifactContextInitializedEvent {
 
 	private final ArtifactContext artifactContext;
 
 	/**
-	 * Build a new instance of ArtifactContextDestroyedEvent.java.
+	 * Build a new instance of ArtifactContextInitializedEvent.java.
 	 * 
 	 * @param artifactContext
 	 * @throws NullPointerException
 	 *             if {@link ArtifactContext} is null
 	 */
-	public ArtifactContextDestroyedEvent(ArtifactContext artifactContext) throws NullPointerException {
+	public ArtifactContextInitializedEvent(final ArtifactContext artifactContext) throws NullPointerException {
 		super();
 		if (artifactContext == null) {
 			throw new NullPointerException("artifactContext");
@@ -50,5 +52,4 @@ public class ArtifactContextDestroyedEvent {
 	public final ArtifactContext getArtifactContext() {
 		return artifactContext;
 	}
-
 }

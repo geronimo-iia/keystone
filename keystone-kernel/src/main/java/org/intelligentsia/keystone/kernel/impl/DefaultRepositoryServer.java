@@ -25,11 +25,13 @@ package org.intelligentsia.keystone.kernel.impl;
 import java.io.File;
 import java.util.Iterator;
 
+import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.api.artifacts.ResourceDoesNotExistException;
 import org.intelligentsia.keystone.api.artifacts.TransferFailedException;
 import org.intelligentsia.keystone.api.artifacts.repository.GroupRepositoryService;
 import org.intelligentsia.keystone.api.artifacts.repository.RepositoryService;
 import org.intelligentsia.keystone.kernel.RepositoryServer;
+import org.intelligentsia.keystone.kernel.event.RepositoryServiceChangeEvent;
 
 /**
  * DefaultRepositoryServer implements {@link RepositoryServer} by delegating to
@@ -105,8 +107,12 @@ public class DefaultRepositoryServer extends AbstractKernelServer implements Rep
 		if (repositoryService == null) {
 			throw new NullPointerException("repositoryService");
 		}
+		if (isDestroying()) {
+			throw new KeystoneRuntimeException("Cannot add repositoryService when destroying server");
+		}
 		if (!this.groupRepositoryService.contains(repositoryService)) {
 			this.groupRepositoryService.add(repositoryService);
+			kernel.getEventBus().publish(new RepositoryServiceChangeEvent(repositoryService, RepositoryServiceChangeEvent.State.ADDED));
 		}
 	}
 
@@ -119,6 +125,9 @@ public class DefaultRepositoryServer extends AbstractKernelServer implements Rep
 			throw new NullPointerException("repositoryService");
 		}
 		this.groupRepositoryService.remove(repositoryService);
+		if (!isDestroying()) {
+			kernel.getEventBus().publish(new RepositoryServiceChangeEvent(repositoryService, RepositoryServiceChangeEvent.State.REMOVED));
+		}
 	}
 
 	@Override

@@ -65,7 +65,7 @@ public class DefaultEventBusServer extends AbstractKernelServer implements Event
 	protected void onDestroy() {
 		try {
 			eventBus.shutdown(10, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			if (eventBus.hasPendingEvents()) {
 				log("Some event will be not processed");
 			}
@@ -84,7 +84,9 @@ public class DefaultEventBusServer extends AbstractKernelServer implements Event
 
 	@Override
 	public void publish(final Object event) {
-		eventBus.publish(event);
+		if (!isDestroying()) {
+			eventBus.publish(event);
+		}
 	}
 
 }

@@ -34,6 +34,8 @@ import org.intelligentsia.keystone.api.artifacts.Resource;
 import org.intelligentsia.keystone.kernel.ArtifactContext;
 import org.intelligentsia.keystone.kernel.ArtifactServer;
 import org.intelligentsia.keystone.kernel.IsolationLevel;
+import org.intelligentsia.keystone.kernel.event.ArtifactContextDestroyedEvent;
+import org.intelligentsia.keystone.kernel.event.ArtifactContextInitializedEvent;
 import org.xeustechnologies.jcl.CompositeProxyClassLoader;
 import org.xeustechnologies.jcl.DelegateProxyClassLoader;
 import org.xeustechnologies.jcl.JarClassLoader;
@@ -103,10 +105,10 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	 */
 	@Override
 	protected void onDestroy() {
-		for (ArtifactIdentifier artifactIdentifier : artifacts.keySet()) {
+		for (final ArtifactIdentifier artifactIdentifier : artifacts.keySet()) {
 			try {
 				unload(artifactIdentifier);
-			} catch (Throwable e) {
+			} catch (final Throwable e) {
 				log(e, "Error when unloading '%s': %s.", artifactIdentifier, e.getMessage());
 			}
 		}
@@ -150,6 +152,9 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 		if (isolationLevel == null) {
 			throw new NullPointerException("isolationLevel");
 		}
+		if (isDestroying()) {
+			throw new KeystoneRuntimeException("Cannot load artifact when destroying server");
+		}
 		final DefaultArtifactContext result = new DefaultArtifactContext(artifactIdentifier);
 		// get resource
 		final Resource resource = artifactsService.get(artifactIdentifier);
@@ -163,7 +168,8 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 			throw new KeystoneRuntimeException(e);
 		}
 		artifacts.put(artifactIdentifier, result);
-		// TODO add event
+		// raise event
+		kernel.getEventBus().publish(new ArtifactContextInitializedEvent(result));
 		return result;
 	}
 
@@ -173,12 +179,11 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	 */
 	@Override
 	public void unload(final ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException, NullPointerException {
-
-		if (State.READY.equals(getState())) {
-
-		}
-
 		// TODO implements unload
+		if (!isDestroying()) {
+			// now we could change behavior with lifecycle and not raising event
+			kernel.getEventBus().publish(new ArtifactContextDestroyedEvent(null));
+		}
 		throw new KeystoneRuntimeException("not yet implemented");
 	}
 

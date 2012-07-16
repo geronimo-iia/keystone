@@ -1,3 +1,22 @@
+/**
+ *        Licensed to the Apache Software Foundation (ASF) under one
+ *        or more contributor license agreements.  See the NOTICE file
+ *        distributed with this work for additional information
+ *        regarding copyright ownership.  The ASF licenses this file
+ *        to you under the Apache License, Version 2.0 (the
+ *        "License"); you may not use this file except in compliance
+ *        with the License.  You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *        Unless required by applicable law or agreed to in writing,
+ *        software distributed under the License is distributed on an
+ *        "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *        KIND, either express or implied.  See the License for the
+ *        specific language governing permissions and limitations
+ *        under the License.
+ *
+ */
 package org.intelligentsia.keystone.kernel.impl;
 
 import org.intelligentsia.keystone.kernel.Kernel;
@@ -28,7 +47,7 @@ public abstract class AbstractKernelServer implements KernelServer {
 	 * @param author
 	 * @param description
 	 */
-	public AbstractKernelServer(String author, String description) {
+	public AbstractKernelServer(final String author, final String description) {
 		super();
 		this.author = author;
 		this.description = description;
@@ -50,8 +69,8 @@ public abstract class AbstractKernelServer implements KernelServer {
 	}
 
 	@Override
-	public final void initialize(Kernel kernel) {
-		state = State.INITIALIZE;
+	public final void initialize(final Kernel kernel) {
+		state = State.INITIALIZING;
 		this.kernel = kernel;
 		onInitialize();
 		state = State.READY;
@@ -59,10 +78,10 @@ public abstract class AbstractKernelServer implements KernelServer {
 
 	@Override
 	public final void destroy() {
-		state = State.DESTROY;
+		state = State.DESTROYING;
 		this.kernel = null;
 		onDestroy();
-		state = State.DONE;
+		state = State.EOL;
 	}
 
 	/**
@@ -81,7 +100,7 @@ public abstract class AbstractKernelServer implements KernelServer {
 	 * @param message
 	 * @param args
 	 */
-	protected void log(String message, final Object... args) {
+	protected void log(final String message, final Object... args) {
 
 	}
 
@@ -92,8 +111,16 @@ public abstract class AbstractKernelServer implements KernelServer {
 	 * @param message
 	 * @param args
 	 */
-	protected void log(Throwable throwable, String message, final Object... args) {
+	protected void log(final Throwable throwable, final String message, final Object... args) {
 
+	}
+
+	/**
+	 * @return {@link Boolean#TRUE} if this instance is currently in 'destroy'
+	 *         process.
+	 */
+	protected boolean isDestroying() {
+		return State.DESTROYING.equals(state);
 	}
 
 	/**

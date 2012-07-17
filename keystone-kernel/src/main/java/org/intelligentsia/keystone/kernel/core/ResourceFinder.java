@@ -17,12 +17,13 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.service;
+package org.intelligentsia.keystone.kernel.core;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.JarURLConnection;
 import java.net.MalformedURLException;
@@ -43,9 +44,20 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 /**
+ * <p>
  * from
  * http://svn.apache.org/repos/asf/geronimo/xbean/tags/xbean-3.7/xbean-finder
  * /src/main/java/org/apache/xbean/finder/ResourceFinder.java
+ * </p>
+ * 
+ * <p>
+ * Change:
+ * </p>
+ * <ul>
+ * <li>JDK 1.5 syntax</li>
+ * <li>Set default encoding to UTF-8</li>
+ * </ul>
+ * 
  * 
  * @author David Blevins
  * @version $Rev$ $Date$
@@ -289,10 +301,10 @@ public class ResourceFinder {
 		resourcesNotLoaded.clear();
 		final Map<String, String> strings = new HashMap<String, String>();
 		final Map<String, URL> resourcesMap = getResourcesMap(uri);
-		for (final Iterator iterator = resourcesMap.entrySet().iterator(); iterator.hasNext();) {
-			final Map.Entry entry = (Map.Entry) iterator.next();
-			final String name = (String) entry.getKey();
-			final URL url = (URL) entry.getValue();
+		for (final Iterator<Entry<String, URL>> iterator = resourcesMap.entrySet().iterator(); iterator.hasNext();) {
+			final Entry<String, URL> entry = iterator.next();
+			final String name = entry.getKey();
+			final URL url = entry.getValue();
 			try {
 				final String value = readContents(url);
 				strings.put(name, value);
@@ -318,7 +330,7 @@ public class ResourceFinder {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public Class findClass(final String uri) throws IOException, ClassNotFoundException {
+	public Class<?> findClass(final String uri) throws IOException, ClassNotFoundException {
 		final String className = findString(uri);
 		return classLoader.loadClass(className);
 	}
@@ -335,11 +347,11 @@ public class ResourceFinder {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public List<Class> findAllClasses(final String uri) throws IOException, ClassNotFoundException {
-		final List<Class> classes = new ArrayList<Class>();
+	public List<Class<?>> findAllClasses(final String uri) throws IOException, ClassNotFoundException {
+		final List<Class<?>> classes = new ArrayList<Class<?>>();
 		final List<String> strings = findAllStrings(uri);
 		for (final String className : strings) {
-			final Class clazz = classLoader.loadClass(className);
+			final Class<?> clazz = classLoader.loadClass(className);
 			classes.add(clazz);
 		}
 		return classes;
@@ -357,13 +369,13 @@ public class ResourceFinder {
 	 * @throws IOException
 	 *             if classLoader.getResources throws an exception
 	 */
-	public List<Class> findAvailableClasses(final String uri) throws IOException {
+	public List<Class<?>> findAvailableClasses(final String uri) throws IOException {
 		resourcesNotLoaded.clear();
-		final List<Class> classes = new ArrayList<Class>();
+		final List<Class<?>> classes = new ArrayList<Class<?>>();
 		final List<String> strings = findAvailableStrings(uri);
 		for (final String className : strings) {
 			try {
-				final Class clazz = classLoader.loadClass(className);
+				final Class<?> clazz = classLoader.loadClass(className);
 				classes.add(clazz);
 			} catch (final Exception notAvailable) {
 				resourcesNotLoaded.add(className);
@@ -392,14 +404,14 @@ public class ResourceFinder {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public Map<String, Class> mapAllClasses(final String uri) throws IOException, ClassNotFoundException {
-		final Map<String, Class> classes = new HashMap<String, Class>();
+	public Map<String, Class<?>> mapAllClasses(final String uri) throws IOException, ClassNotFoundException {
+		final Map<String, Class<?>> classes = new HashMap<String, Class<?>>();
 		final Map<String, String> map = mapAllStrings(uri);
-		for (final Iterator iterator = map.entrySet().iterator(); iterator.hasNext();) {
-			final Map.Entry entry = (Map.Entry) iterator.next();
-			final String string = (String) entry.getKey();
-			final String className = (String) entry.getValue();
-			final Class clazz = classLoader.loadClass(className);
+		for (final Iterator<Entry<String, String>> iterator = map.entrySet().iterator(); iterator.hasNext();) {
+			final Entry<String, String> entry = iterator.next();
+			final String string = entry.getKey();
+			final String className = entry.getValue();
+			final Class<?> clazz = classLoader.loadClass(className);
 			classes.put(string, clazz);
 		}
 		return classes;
@@ -426,16 +438,16 @@ public class ResourceFinder {
 	 * @throws IOException
 	 *             if classLoader.getResources throws an exception
 	 */
-	public Map<String, Class> mapAvailableClasses(final String uri) throws IOException {
+	public Map<String, Class<?>> mapAvailableClasses(final String uri) throws IOException {
 		resourcesNotLoaded.clear();
-		final Map<String, Class> classes = new HashMap<String, Class>();
+		final Map<String, Class<?>> classes = new HashMap<String, Class<?>>();
 		final Map<String, String> map = mapAvailableStrings(uri);
-		for (final Iterator iterator = map.entrySet().iterator(); iterator.hasNext();) {
-			final Map.Entry entry = (Map.Entry) iterator.next();
-			final String string = (String) entry.getKey();
-			final String className = (String) entry.getValue();
+		for (final Iterator<Entry<String, String>> iterator = map.entrySet().iterator(); iterator.hasNext();) {
+			final Entry<String, String> entry = iterator.next();
+			final String string = entry.getKey();
+			final String className = entry.getValue();
 			try {
-				final Class clazz = classLoader.loadClass(className);
+				final Class<?> clazz = classLoader.loadClass(className);
 				classes.put(string, clazz);
 			} catch (final Exception notAvailable) {
 				resourcesNotLoaded.add(className);
@@ -477,9 +489,9 @@ public class ResourceFinder {
 	 *             if the class found is not assignable to the specified
 	 *             superclass or interface
 	 */
-	public Class findImplementation(final Class interfase) throws IOException, ClassNotFoundException {
+	public Class<?> findImplementation(final Class<?> interfase) throws IOException, ClassNotFoundException {
 		final String className = findString(interfase.getName());
-		final Class impl = classLoader.loadClass(className);
+		final Class<?> impl = classLoader.loadClass(className);
 		if (!interfase.isAssignableFrom(impl)) {
 			throw new ClassCastException("Class not of type: " + interfase.getName());
 		}
@@ -518,11 +530,11 @@ public class ResourceFinder {
 	 *             if the class found is not assignable to the specified
 	 *             superclass or interface
 	 */
-	public List<Class> findAllImplementations(final Class interfase) throws IOException, ClassNotFoundException {
-		final List<Class> implementations = new ArrayList<Class>();
+	public List<Class<?>> findAllImplementations(final Class<?> interfase) throws IOException, ClassNotFoundException {
+		final List<Class<?>> implementations = new ArrayList<Class<?>>();
 		final List<String> strings = findAllStrings(interfase.getName());
 		for (final String className : strings) {
-			final Class impl = classLoader.loadClass(className);
+			final Class<?> impl = classLoader.loadClass(className);
 			if (!interfase.isAssignableFrom(impl)) {
 				throw new ClassCastException("Class not of type: " + interfase.getName());
 			}
@@ -558,13 +570,13 @@ public class ResourceFinder {
 	 * @throws IOException
 	 *             if classLoader.getResources throws an exception
 	 */
-	public List<Class> findAvailableImplementations(final Class interfase) throws IOException {
+	public List<Class<?>> findAvailableImplementations(final Class<?> interfase) throws IOException {
 		resourcesNotLoaded.clear();
-		final List<Class> implementations = new ArrayList<Class>();
+		final List<Class<?>> implementations = new ArrayList<Class<?>>();
 		final List<String> strings = findAvailableStrings(interfase.getName());
 		for (final String className : strings) {
 			try {
-				final Class impl = classLoader.loadClass(className);
+				final Class<?> impl = classLoader.loadClass(className);
 				if (interfase.isAssignableFrom(impl)) {
 					implementations.add(impl);
 				} else {
@@ -607,14 +619,14 @@ public class ResourceFinder {
 	 *             if the class found is not assignable to the specified
 	 *             superclass or interface
 	 */
-	public Map<String, Class> mapAllImplementations(final Class interfase) throws IOException, ClassNotFoundException {
-		final Map<String, Class> implementations = new HashMap<String, Class>();
+	public Map<String, Class<?>> mapAllImplementations(final Class<?> interfase) throws IOException, ClassNotFoundException {
+		final Map<String, Class<?>> implementations = new HashMap<String, Class<?>>();
 		final Map<String, String> map = mapAllStrings(interfase.getName());
-		for (final Iterator iterator = map.entrySet().iterator(); iterator.hasNext();) {
-			final Map.Entry entry = (Map.Entry) iterator.next();
-			final String string = (String) entry.getKey();
-			final String className = (String) entry.getValue();
-			final Class impl = classLoader.loadClass(className);
+		for (final Iterator<Entry<String, String>> iterator = map.entrySet().iterator(); iterator.hasNext();) {
+			final Entry<String, String> entry = iterator.next();
+			final String string = entry.getKey();
+			final String className = entry.getValue();
+			final Class<?> impl = classLoader.loadClass(className);
 			if (!interfase.isAssignableFrom(impl)) {
 				throw new ClassCastException("Class not of type: " + interfase.getName());
 			}
@@ -648,16 +660,16 @@ public class ResourceFinder {
 	 * @throws IOException
 	 *             if classLoader.getResources throws an exception
 	 */
-	public Map<String, Class> mapAvailableImplementations(final Class interfase) throws IOException {
+	public Map<String, Class<?>> mapAvailableImplementations(final Class<?> interfase) throws IOException {
 		resourcesNotLoaded.clear();
-		final Map<String, Class> implementations = new HashMap<String, Class>();
+		final Map<String, Class<?>> implementations = new HashMap<String, Class<?>>();
 		final Map<String, String> map = mapAvailableStrings(interfase.getName());
-		for (final Iterator iterator = map.entrySet().iterator(); iterator.hasNext();) {
-			final Map.Entry entry = (Map.Entry) iterator.next();
-			final String string = (String) entry.getKey();
-			final String className = (String) entry.getValue();
+		for (final Iterator<Entry<String, String>> iterator = map.entrySet().iterator(); iterator.hasNext();) {
+			final Entry<String, String> entry = iterator.next();
+			final String string = entry.getKey();
+			final String className = entry.getValue();
 			try {
-				final Class impl = classLoader.loadClass(className);
+				final Class<?> impl = classLoader.loadClass(className);
 				if (interfase.isAssignableFrom(impl)) {
 					implementations.put(string, impl);
 				} else {
@@ -796,10 +808,10 @@ public class ResourceFinder {
 	public Map<String, Properties> mapAllProperties(final String uri) throws IOException {
 		final Map<String, Properties> propertiesMap = new HashMap<String, Properties>();
 		final Map<String, URL> map = getResourcesMap(uri);
-		for (final Iterator iterator = map.entrySet().iterator(); iterator.hasNext();) {
-			final Map.Entry entry = (Map.Entry) iterator.next();
-			final String string = (String) entry.getKey();
-			final URL url = (URL) entry.getValue();
+		for (final Iterator<Entry<String, URL>> iterator = map.entrySet().iterator(); iterator.hasNext();) {
+			final Entry<String, URL> entry = iterator.next();
+			final String string = entry.getKey();
+			final URL url = entry.getValue();
 			final Properties properties = loadProperties(url);
 			propertiesMap.put(string, properties);
 		}
@@ -832,10 +844,10 @@ public class ResourceFinder {
 		resourcesNotLoaded.clear();
 		final Map<String, Properties> propertiesMap = new HashMap<String, Properties>();
 		final Map<String, URL> map = getResourcesMap(uri);
-		for (final Iterator iterator = map.entrySet().iterator(); iterator.hasNext();) {
-			final Map.Entry entry = (Map.Entry) iterator.next();
-			final String string = (String) entry.getKey();
-			final URL url = (URL) entry.getValue();
+		for (final Iterator<Entry<String, URL>> iterator = map.entrySet().iterator(); iterator.hasNext();) {
+			final Entry<String, URL> entry = iterator.next();
+			final String string = entry.getKey();
+			final URL url = entry.getValue();
 			try {
 				final Properties properties = loadProperties(url);
 				propertiesMap.put(string, properties);
@@ -881,8 +893,8 @@ public class ResourceFinder {
 		return resources;
 	}
 
-	private static void readDirectoryEntries(final URL location, final Map<String, URL> resources) throws MalformedURLException {
-		final File dir = new File(URLDecoder.decode(location.getPath()));
+	private static void readDirectoryEntries(final URL location, final Map<String, URL> resources) throws MalformedURLException, UnsupportedEncodingException {
+		final File dir = new File(URLDecoder.decode(location.getPath(), "UTF-8"));
 		if (dir.isDirectory()) {
 			final File[] files = dir.listFiles();
 			for (final File file : files) {
@@ -974,7 +986,7 @@ public class ResourceFinder {
 		if (urls == null) {
 			return classLoader.getResources(fulluri);
 		}
-		final Vector<URL> resources = new Vector();
+		final Vector<URL> resources = new Vector<URL>();
 		for (final URL url : urls) {
 			final URL resource = findResource(fulluri, url);
 			if (resource != null) {
@@ -1068,7 +1080,7 @@ public class ResourceFinder {
 					buf.append(fixedResName);
 					final String filename = buf.toString();
 					final File file = new File(filename);
-					final File file2 = new File(URLDecoder.decode(filename));
+					final File file2 = new File(URLDecoder.decode(filename, "UTF-8"));
 
 					if (file.exists() || file2.exists()) {
 						return targetURL(currentUrl, fixedResName);

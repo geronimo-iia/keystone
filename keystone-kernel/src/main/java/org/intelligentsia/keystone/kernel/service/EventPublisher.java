@@ -17,39 +17,23 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.service;
-
+package org.intelligentsia.keystone.kernel.service;
 
 /**
- * Service declare methods to manage a 'service' in our system.
  * 
- * <p>
- * A service —also known as a subsystem, extends the functionality provided by
- * the microkernel. It represents a separate component that offers additional
- * functionality.
- * </p>
+ * EventPublisher define methods to publish an event.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
-public interface Service {
-
+public interface EventPublisher {
 	/**
-	 * @return a friendly user name.
-	 */
-	public String getName();
-
-	/**
-	 * Initialize this service instance with specified kernel context.
+	 * Sends a message on the bus which will be propagated to the appropriate
+	 * subscribers of the event type. Only subscribers which have elected to
+	 * subscribe to the same event type as the supplied event will be notified
+	 * of the event.
 	 * 
-	 * @param context
+	 * @param event
+	 *            The event to send out to the subscribers of the same type.
 	 */
-	public void initialize(KernelContext context);
-
-	/**
-	 * Destroy this service instance.
-	 * 
-	 */
-	public void destroy();
-
+	public void publish(Object event);
 }

@@ -60,29 +60,29 @@ public class KernelBuilder {
 		return new DefaultKernel(repositoryServer, artifactServer, eventBusServer, errStream);
 	}
 
-	public KernelBuilder setEventBusServer(EventBusServer eventBusServer) {
+	public KernelBuilder setEventBusServer(final EventBusServer eventBusServer) {
 		this.eventBusServer = eventBusServer;
 		return this;
 	}
 
-	public KernelBuilder setRepositoryServer(RepositoryServer repositoryServer) {
+	public KernelBuilder setRepositoryServer(final RepositoryServer repositoryServer) {
 		this.repositoryServer = repositoryServer;
 		return this;
 	}
 
-	public KernelBuilder addRepositoryService(RepositoryService... repositoryServices) {
-		for (RepositoryService repositoryService : repositoryServices) {
+	public KernelBuilder addRepositoryService(final RepositoryService... repositoryServices) {
+		for (final RepositoryService repositoryService : repositoryServices) {
 			repositoryServer.add(repositoryService);
 		}
 		return this;
 	}
 
-	public KernelBuilder setArtifactServer(ArtifactServer artifactServer) {
+	public KernelBuilder setArtifactServer(final ArtifactServer artifactServer) {
 		this.artifactServer = artifactServer;
 		return this;
 	}
 
-	public KernelBuilder setErrStream(PrintStream errStream) {
+	public KernelBuilder setErrStream(final PrintStream errStream) {
 		this.errStream = errStream;
 		return this;
 	}

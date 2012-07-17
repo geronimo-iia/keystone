@@ -19,7 +19,6 @@
  */
 package org.intelligentsia.keystone.kernel;
 
-
 /**
  * Kernel interface which declare core methods.
  * <p>

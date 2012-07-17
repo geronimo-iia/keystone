@@ -34,10 +34,10 @@ import org.intelligentsia.utilities.StringUtils;
  */
 public class DefaultKernel implements Kernel {
 
-	private RepositoryServer repositoryServer;
-	private ArtifactServer artifactServer;
-	private EventBusServer eventBusServer;
-	private PrintStream errStream;
+	private final RepositoryServer repositoryServer;
+	private final ArtifactServer artifactServer;
+	private final EventBusServer eventBusServer;
+	private final PrintStream errStream;
 
 	/**
 	 * Build a new instance of DefaultKernel.java.
@@ -47,7 +47,7 @@ public class DefaultKernel implements Kernel {
 	 * @param eventBusServer
 	 * @param errStream
 	 */
-	public DefaultKernel(RepositoryServer repositoryServer, ArtifactServer artifactServer, EventBusServer eventBusServer, PrintStream errStream) {
+	public DefaultKernel(final RepositoryServer repositoryServer, final ArtifactServer artifactServer, final EventBusServer eventBusServer, final PrintStream errStream) {
 		super();
 		this.repositoryServer = repositoryServer;
 		this.artifactServer = artifactServer;
@@ -71,7 +71,7 @@ public class DefaultKernel implements Kernel {
 	}
 
 	@Override
-	public void dmesg(String message, Object... args) {
+	public void dmesg(final String message, final Object... args) {
 		if (errStream != null) {
 			errStream.println(StringUtils.format(message, args));
 		}

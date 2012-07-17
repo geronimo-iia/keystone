@@ -17,27 +17,20 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel;
+package org.intelligentsia.keystone.kernel.init;
 
-import static org.junit.Assert.*;
-
-import org.intelligentsia.keystone.kernel.init.KernelBuilder;
-import org.junit.Test;
+import org.intelligentsia.keystone.kernel.Kernel;
 
 /**
- * KernelBuilderTest.
+ * 
+ * Predicate.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class KernelBuilderTest {
-
-	@Test
-	public void checkDefaultBuilder() {
-		Kernel kernel = new KernelBuilder().build();
-		assertNotNull(kernel);
-		assertNotNull(kernel.getEventBus());
-		assertNotNull(kernel.getRepositoryServer());
-		assertNotNull(kernel.getArtifactServer());
-	}
-
+public interface Predicate {
+	/**
+	 * @param kernel
+	 * @return result of predicate evaluation.
+	 */
+	public boolean evaluate(Kernel kernel);
 }

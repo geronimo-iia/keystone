@@ -17,30 +17,27 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.service;
+package org.intelligentsia.keystone.kernel.init;
 
-import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
+import static org.junit.Assert.assertNotNull;
+
+import org.intelligentsia.keystone.kernel.Kernel;
+import org.junit.Test;
 
 /**
- * 
- * KernelContext see as an interface between client and micro kernel.
+ * KernelBuilderTest.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
-public interface KernelContext {
+public class KernelBuilderTest {
 
-	/**
-	 * Find specified service.
-	 * 
-	 * @param service
-	 *            service class name
-	 * @return service instance or null is none is found.
-	 */
-	public Service find(Class<?> service) throws KeystoneRuntimeException;
+	@Test
+	public void checkDefaultBuilder() {
+		final Kernel kernel = new KernelBuilder().build();
+		assertNotNull(kernel);
+		assertNotNull(kernel.getEventBus());
+		assertNotNull(kernel.getRepositoryServer());
+		assertNotNull(kernel.getArtifactServer());
+	}
 
-	/**
-	 * @return an EventPublisher instance.
-	 */
-	public EventPublisher getEventPublisher();
 }

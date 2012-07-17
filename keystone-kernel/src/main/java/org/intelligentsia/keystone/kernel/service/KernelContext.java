@@ -17,25 +17,30 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel.init;
+package org.intelligentsia.keystone.kernel.service;
 
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
-import org.intelligentsia.keystone.kernel.Kernel;
 
 /**
  * 
- * Launcher declare methods to launch kernel.
+ * KernelContext see as an interface between client and micro kernel.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
  */
-public interface Launcher {
+public interface KernelContext {
 
 	/**
-	 * Launch kernel.
+	 * Find specified service.
 	 * 
-	 * @param kernel
-	 * @throws KeystoneRuntimeException
-	 *             if an error occurs
+	 * @param service
+	 *            service class name
+	 * @return service instance or null is none is found.
 	 */
-	public void launch(Kernel kernel) throws KeystoneRuntimeException;
+	public Service find(Class<?> service) throws KeystoneRuntimeException;
+
+	/**
+	 * @return an EventPublisher instance.
+	 */
+	public EventPublisher getEventPublisher();
 }

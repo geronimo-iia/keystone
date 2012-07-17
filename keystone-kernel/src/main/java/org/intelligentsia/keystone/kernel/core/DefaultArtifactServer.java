@@ -98,8 +98,8 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	 */
 	@Override
 	protected void onInitialize() {
-		if (kernel.getRepositoryServer()==null) {
-			throw new KeystoneRuntimeException("Repository Server cannot be null"); 
+		if (kernel.getRepositoryServer() == null) {
+			throw new KeystoneRuntimeException("Repository Server cannot be null");
 		}
 		this.artifactsService = new DefaultArtifactsService(kernel.getRepositoryServer());
 	}

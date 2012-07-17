@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel.impl;
+package org.intelligentsia.keystone.kernel.core;
 
 import java.io.PrintStream;
 

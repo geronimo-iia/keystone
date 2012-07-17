@@ -20,7 +20,7 @@
 /**
  * 
  */
-package org.intelligentsia.keystone.kernel.impl;
+package org.intelligentsia.keystone.kernel.core;
 
 import java.net.MalformedURLException;
 import java.util.HashMap;
@@ -94,7 +94,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	/**
 	 * Initialize internal {@link ArtifactsService}.
 	 * 
-	 * @see org.intelligentsia.keystone.kernel.impl.AbstractKernelServer#onInitialize()
+	 * @see org.intelligentsia.keystone.kernel.core.AbstractKernelServer#onInitialize()
 	 */
 	@Override
 	protected void onInitialize() {
@@ -107,7 +107,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	/**
 	 * Unload all artifact.
 	 * 
-	 * @see org.intelligentsia.keystone.kernel.impl.AbstractKernelServer#onDestroy()
+	 * @see org.intelligentsia.keystone.kernel.core.AbstractKernelServer#onDestroy()
 	 */
 	@Override
 	protected void onDestroy() {

@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel.impl;
+package org.intelligentsia.keystone.kernel.core;
 
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.kernel.Kernel;

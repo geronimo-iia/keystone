@@ -20,7 +20,7 @@
 /**
  * 
  */
-package org.intelligentsia.keystone.kernel.impl;
+package org.intelligentsia.keystone.kernel.core;
 
 import java.io.File;
 import java.util.Iterator;

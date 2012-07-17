@@ -17,15 +17,19 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel;
+package org.intelligentsia.keystone.kernel.init;
 
 import java.io.PrintStream;
 
 import org.intelligentsia.keystone.api.artifacts.repository.RepositoryService;
-import org.intelligentsia.keystone.kernel.impl.DefaultArtifactServer;
-import org.intelligentsia.keystone.kernel.impl.DefaultEventBusServer;
-import org.intelligentsia.keystone.kernel.impl.DefaultKernel;
-import org.intelligentsia.keystone.kernel.impl.DefaultRepositoryServer;
+import org.intelligentsia.keystone.kernel.ArtifactServer;
+import org.intelligentsia.keystone.kernel.EventBusServer;
+import org.intelligentsia.keystone.kernel.Kernel;
+import org.intelligentsia.keystone.kernel.RepositoryServer;
+import org.intelligentsia.keystone.kernel.core.DefaultArtifactServer;
+import org.intelligentsia.keystone.kernel.core.DefaultEventBusServer;
+import org.intelligentsia.keystone.kernel.core.DefaultKernel;
+import org.intelligentsia.keystone.kernel.core.DefaultRepositoryServer;
 
 /**
  * KernelBuilder implement a builder fo {@link Kernel}.

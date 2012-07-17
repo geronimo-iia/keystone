@@ -20,7 +20,7 @@
 /**
  * 
  */
-package org.intelligentsia.keystone.kernel.impl;
+package org.intelligentsia.keystone.kernel.core;
 
 import java.util.concurrent.TimeUnit;
 
@@ -59,7 +59,7 @@ public class DefaultEventBusServer extends AbstractKernelServer implements Event
 	/**
 	 * Wait 10 second before ending.
 	 * 
-	 * @see org.intelligentsia.keystone.kernel.impl.AbstractKernelServer#onDestroy()
+	 * @see org.intelligentsia.keystone.kernel.core.AbstractKernelServer#onDestroy()
 	 */
 	@Override
 	protected void onDestroy() {

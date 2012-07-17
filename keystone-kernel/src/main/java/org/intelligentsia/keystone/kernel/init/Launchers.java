@@ -17,7 +17,9 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel;
+package org.intelligentsia.keystone.kernel.init;
+
+import org.intelligentsia.keystone.kernel.Kernel;
 
 /**
  * 

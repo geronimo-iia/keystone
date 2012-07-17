@@ -20,6 +20,8 @@
 package org.intelligentsia.keystone.kernel;
 
 import static org.junit.Assert.*;
+
+import org.intelligentsia.keystone.kernel.init.KernelBuilder;
 import org.junit.Test;
 
 /**

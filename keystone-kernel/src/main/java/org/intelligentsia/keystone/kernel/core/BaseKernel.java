@@ -28,11 +28,11 @@ import org.intelligentsia.keystone.kernel.RepositoryServer;
 import org.intelligentsia.utilities.StringUtils;
 
 /**
- * DefaultKernel implementation.
+ * BaseKernel implementation.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class DefaultKernel implements Kernel {
+public class BaseKernel implements Kernel {
 
 	private final RepositoryServer repositoryServer;
 	private final ArtifactServer artifactServer;
@@ -40,14 +40,14 @@ public class DefaultKernel implements Kernel {
 	private final PrintStream errStream;
 
 	/**
-	 * Build a new instance of DefaultKernel.java.
+	 * Build a new instance of BaseKernel.java.
 	 * 
 	 * @param repositoryServer
 	 * @param artifactServer
 	 * @param eventBusServer
 	 * @param errStream
 	 */
-	public DefaultKernel(final RepositoryServer repositoryServer, final ArtifactServer artifactServer, final EventBusServer eventBusServer, final PrintStream errStream) {
+	public BaseKernel(final RepositoryServer repositoryServer, final ArtifactServer artifactServer, final EventBusServer eventBusServer, final PrintStream errStream) {
 		super();
 		this.repositoryServer = repositoryServer;
 		this.artifactServer = artifactServer;

@@ -28,7 +28,7 @@ import org.intelligentsia.keystone.kernel.Kernel;
 import org.intelligentsia.keystone.kernel.RepositoryServer;
 import org.intelligentsia.keystone.kernel.core.DefaultArtifactServer;
 import org.intelligentsia.keystone.kernel.core.DefaultEventBusServer;
-import org.intelligentsia.keystone.kernel.core.DefaultKernel;
+import org.intelligentsia.keystone.kernel.core.BaseKernel;
 import org.intelligentsia.keystone.kernel.core.DefaultRepositoryServer;
 
 /**
@@ -57,7 +57,7 @@ public class KernelBuilder {
 	 * @return a new {@link Kernel} instance.
 	 */
 	public Kernel build() {
-		return new DefaultKernel(repositoryServer, artifactServer, eventBusServer, errStream);
+		return new BaseKernel(repositoryServer, artifactServer, eventBusServer, errStream);
 	}
 
 	public KernelBuilder setEventBusServer(final EventBusServer eventBusServer) {

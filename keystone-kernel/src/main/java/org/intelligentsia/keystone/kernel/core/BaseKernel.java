@@ -25,6 +25,7 @@ import org.intelligentsia.keystone.kernel.ArtifactServer;
 import org.intelligentsia.keystone.kernel.EventBusServer;
 import org.intelligentsia.keystone.kernel.Kernel;
 import org.intelligentsia.keystone.kernel.RepositoryServer;
+import org.intelligentsia.keystone.kernel.ServiceServer;
 import org.intelligentsia.utilities.StringUtils;
 
 /**
@@ -38,6 +39,7 @@ public class BaseKernel implements Kernel {
 	private final ArtifactServer artifactServer;
 	private final EventBusServer eventBusServer;
 	private final PrintStream errStream;
+	private final ServiceServer serviceServer;
 
 	/**
 	 * Build a new instance of BaseKernel.java.
@@ -46,13 +48,15 @@ public class BaseKernel implements Kernel {
 	 * @param artifactServer
 	 * @param eventBusServer
 	 * @param errStream
+	 * @param serviceServer
 	 */
-	public BaseKernel(final RepositoryServer repositoryServer, final ArtifactServer artifactServer, final EventBusServer eventBusServer, final PrintStream errStream) {
+	public BaseKernel(RepositoryServer repositoryServer, ArtifactServer artifactServer, EventBusServer eventBusServer, PrintStream errStream, ServiceServer serviceServer) {
 		super();
 		this.repositoryServer = repositoryServer;
 		this.artifactServer = artifactServer;
 		this.eventBusServer = eventBusServer;
 		this.errStream = errStream;
+		this.serviceServer = serviceServer;
 	}
 
 	@Override
@@ -68,6 +72,11 @@ public class BaseKernel implements Kernel {
 	@Override
 	public EventBusServer getEventBus() {
 		return eventBusServer;
+	}
+
+	@Override
+	public ServiceServer getServiceServer() {
+		return serviceServer;
 	}
 
 	@Override

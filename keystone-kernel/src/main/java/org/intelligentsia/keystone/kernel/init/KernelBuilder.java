@@ -26,10 +26,12 @@ import org.intelligentsia.keystone.kernel.ArtifactServer;
 import org.intelligentsia.keystone.kernel.EventBusServer;
 import org.intelligentsia.keystone.kernel.Kernel;
 import org.intelligentsia.keystone.kernel.RepositoryServer;
+import org.intelligentsia.keystone.kernel.ServiceServer;
+import org.intelligentsia.keystone.kernel.core.BaseKernel;
 import org.intelligentsia.keystone.kernel.core.DefaultArtifactServer;
 import org.intelligentsia.keystone.kernel.core.DefaultEventBusServer;
-import org.intelligentsia.keystone.kernel.core.BaseKernel;
 import org.intelligentsia.keystone.kernel.core.DefaultRepositoryServer;
+import org.intelligentsia.keystone.kernel.core.DefaultServiceServer;
 
 /**
  * KernelBuilder implement a builder fo {@link Kernel}.
@@ -42,6 +44,7 @@ public class KernelBuilder {
 	private ArtifactServer artifactServer;
 	private EventBusServer eventBusServer;
 	private PrintStream errStream;
+	private ServiceServer serviceServer;
 
 	/**
 	 * Build a new instance of KernelBuilder with all default server.
@@ -51,13 +54,14 @@ public class KernelBuilder {
 		repositoryServer = new DefaultRepositoryServer();
 		artifactServer = new DefaultArtifactServer();
 		errStream = System.err;
+		serviceServer = new DefaultServiceServer();
 	}
 
 	/**
 	 * @return a new {@link Kernel} instance.
 	 */
 	public Kernel build() {
-		return new BaseKernel(repositoryServer, artifactServer, eventBusServer, errStream);
+		return new BaseKernel(repositoryServer, artifactServer, eventBusServer, errStream, serviceServer);
 	}
 
 	public KernelBuilder setEventBusServer(final EventBusServer eventBusServer) {
@@ -87,4 +91,8 @@ public class KernelBuilder {
 		return this;
 	}
 
+	public KernelBuilder setServiceServer(ServiceServer serviceServer) {
+		this.serviceServer = serviceServer;
+		return this;
+	}
 }

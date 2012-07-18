@@ -91,7 +91,7 @@ public class KernelBuilder {
 		return this;
 	}
 
-	public KernelBuilder setServiceServer(ServiceServer serviceServer) {
+	public KernelBuilder setServiceServer(final ServiceServer serviceServer) {
 		this.serviceServer = serviceServer;
 		return this;
 	}

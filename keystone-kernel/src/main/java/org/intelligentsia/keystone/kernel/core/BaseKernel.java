@@ -50,7 +50,7 @@ public class BaseKernel implements Kernel {
 	 * @param errStream
 	 * @param serviceServer
 	 */
-	public BaseKernel(RepositoryServer repositoryServer, ArtifactServer artifactServer, EventBusServer eventBusServer, PrintStream errStream, ServiceServer serviceServer) {
+	public BaseKernel(final RepositoryServer repositoryServer, final ArtifactServer artifactServer, final EventBusServer eventBusServer, final PrintStream errStream, final ServiceServer serviceServer) {
 		super();
 		this.repositoryServer = repositoryServer;
 		this.artifactServer = artifactServer;

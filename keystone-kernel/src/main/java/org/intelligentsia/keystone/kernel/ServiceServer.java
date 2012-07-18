@@ -23,11 +23,11 @@ import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.kernel.service.Service;
 
 /**
- * {@link ServiceServer} manage a collection opf {@link Service}.
+ * {@link ServiceServer} manage a collection of {@link Service} class name.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface ServiceServer extends Iterable<Service> {
+public interface ServiceServer extends Iterable<Class<Service>> {
 
 	/**
 	 * Register a new instance of {@link Service} with specified service class

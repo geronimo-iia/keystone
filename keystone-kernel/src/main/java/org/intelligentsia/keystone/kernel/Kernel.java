@@ -55,7 +55,7 @@ public interface Kernel {
 	 * @return a {@link EventBusServer} instance.
 	 */
 	public EventBusServer getEventBus();
-	
+
 	/**
 	 * @return a {@link ServiceServer} instance.
 	 */

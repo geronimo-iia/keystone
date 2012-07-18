@@ -19,48 +19,64 @@
  */
 package org.intelligentsia.keystone.kernel.event;
 
-import org.intelligentsia.keystone.api.artifacts.repository.RepositoryService;
-import org.intelligentsia.keystone.kernel.RepositoryServer;
+import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
+import org.intelligentsia.keystone.kernel.ServiceServer;
+import org.intelligentsia.keystone.kernel.service.Service;
 
 /**
- * {@link RepositoryServiceChangeEvent} raised when {@link RepositoryService} is
- * added/removed from {@link RepositoryServer}.
+ * ServiceRegistryChangeEvent raised when {@link Service} is
+ * registered/unregistredfrom {@link ServiceServer}.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
  */
-public class RepositoryServiceChangeEvent {
+public class ServiceRegistryChangeEvent {
 
 	public enum State {
-		ADDED, REMOVED
+		REGISTERED, UNREGISTERED
 	}
 
-	private final RepositoryService repositoryService;
+	private final ArtifactIdentifier artifactIdentifier;
+
+	private final Class<Service> serviceClassName;
 
 	private final State state;
 
 	/**
-	 * Build a new instance of RepositoryServiceChangeEvent.java.
+	 * Build a new instance of ServiceRegistryChangeEvent.java.
 	 * 
-	 * @param repositoryService
+	 * @param artifactIdentifier
+	 * @param serviceClassName
 	 * @param state
 	 */
-	public RepositoryServiceChangeEvent(final RepositoryService repositoryService, final State state) {
+	public ServiceRegistryChangeEvent(final ArtifactIdentifier artifactIdentifier, final Class<Service> serviceClassName, final State state) {
 		super();
-		if (repositoryService == null) {
-			throw new NullPointerException("repositoryService");
+		if (artifactIdentifier == null) {
+			throw new NullPointerException("artifactIdentifier");
+		}
+		if (serviceClassName == null) {
+			throw new NullPointerException("serviceClassName");
 		}
 		if (state == null) {
 			throw new NullPointerException("state");
 		}
-		this.repositoryService = repositoryService;
+		this.artifactIdentifier = artifactIdentifier;
+		this.serviceClassName = serviceClassName;
 		this.state = state;
 	}
 
 	/**
-	 * @return the repositoryService
+	 * @return the artifactIdentifier
 	 */
-	public final RepositoryService getRepositoryService() {
-		return repositoryService;
+	public final ArtifactIdentifier getArtifactIdentifier() {
+		return artifactIdentifier;
+	}
+
+	/**
+	 * @return the serviceClassName
+	 */
+	public final Class<Service> getServiceClassName() {
+		return serviceClassName;
 	}
 
 	/**
@@ -75,7 +91,7 @@ public class RepositoryServiceChangeEvent {
 	 */
 	@Override
 	public String toString() {
-		return "RepositoryServiceChangeEvent [repositoryService=" + repositoryService + ", state=" + state + "]";
+		return "ServiceRegistryChangeEvent [artifactIdentifier=" + artifactIdentifier + ", serviceClassName=" + serviceClassName + ", state=" + state + "]";
 	}
 
 }

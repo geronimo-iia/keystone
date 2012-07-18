@@ -22,6 +22,9 @@ package org.intelligentsia.keystone.kernel.core;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.kernel.Kernel;
 import org.intelligentsia.keystone.kernel.KernelServer;
+import org.intelligentsia.keystone.kernel.service.EventPublisher;
+import org.intelligentsia.keystone.kernel.service.KernelContext;
+import org.intelligentsia.keystone.kernel.service.Service;
 
 /**
  * {@link AbstractKernelServer} class.
@@ -120,4 +123,29 @@ public abstract class AbstractKernelServer implements KernelServer {
 		return this.getClass().getSimpleName() + " [author=" + author + ", description=" + description + "]";
 	}
 
-}
+	/**
+	 * @return a new kernel context instance.
+	 */
+	protected KernelContext getKernelContext() {
+		return new KernelContext() {
+			
+			private final EventPublisher eventPublisher = new EventPublisher() {
+				
+				@Override
+				public void publish(Object event) {
+					kernel.getEventBus().publish(event);
+				}
+			}; 
+			
+			@Override
+			public EventPublisher getEventPublisher() {
+				return eventPublisher;
+			}
+			
+			@Override
+			public Service find(Class<?> service) throws KeystoneRuntimeException {
+				return null;
+			}
+		};
+	}
+} 

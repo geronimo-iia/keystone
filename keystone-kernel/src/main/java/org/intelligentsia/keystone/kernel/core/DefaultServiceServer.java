@@ -91,7 +91,7 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 			throw new KeystoneRuntimeException(serviceClassName + " is ever registered with " + artifactContext.getArtifactIdentifier().toString());
 		}
 		// initialize
-		service.initialize(null);
+		service.initialize(getKernelContext());
 		// add
 		serviceRegistry.put(artifactContext.getArtifactIdentifier(), service);
 		// raise event

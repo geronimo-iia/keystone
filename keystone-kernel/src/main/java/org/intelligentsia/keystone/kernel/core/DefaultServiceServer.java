@@ -28,6 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
+import org.intelligentsia.keystone.api.artifacts.Version;
 import org.intelligentsia.keystone.kernel.ArtifactContext;
 import org.intelligentsia.keystone.kernel.ServiceServer;
 import org.intelligentsia.keystone.kernel.event.ServiceRegistryChangeEvent;
@@ -120,8 +121,8 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 	}
 
 	@Override
-	public Service find(final Class<? extends Service> service, final ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException {
-		return getServiceRegistry(service).find(artifactIdentifier);
+	public Service find(final Class<? extends Service> service, final Version version) throws KeystoneRuntimeException {
+		return getServiceRegistry(service).find( );
 	}
 
 	/**

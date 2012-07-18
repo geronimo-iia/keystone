@@ -19,8 +19,8 @@
  */
 package org.intelligentsia.keystone.kernel;
 
-import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
+import org.intelligentsia.keystone.api.artifacts.Version;
 import org.intelligentsia.keystone.kernel.service.Service;
 
 /**
@@ -67,14 +67,14 @@ public interface ServiceServer extends Iterable<Class<? extends Service>> {
 	public Service find(Class<? extends Service> service) throws KeystoneRuntimeException;
 
 	/**
-	 * Find specified service which is compatible with specified
-	 * {@link ArtifactIdentifier}.
+	 * Find specified service which is compatible with specified {@link version}
+	 * .
 	 * 
 	 * @param service
 	 *            service class name
-	 * @param artifactIdentifier
-	 *            artifact Identifier
+	 * @param version
+	 *            a version
 	 * @return service instance or null is none is found.
 	 */
-	public Service find(Class<? extends Service> service, ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException;
+	public Service find(Class<? extends Service> service, Version version) throws KeystoneRuntimeException;
 }

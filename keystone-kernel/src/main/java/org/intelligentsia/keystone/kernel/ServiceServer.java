@@ -19,6 +19,7 @@
  */
 package org.intelligentsia.keystone.kernel;
 
+import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.kernel.service.Service;
 
@@ -27,7 +28,7 @@ import org.intelligentsia.keystone.kernel.service.Service;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface ServiceServer extends Iterable<Class<Service>> {
+public interface ServiceServer extends Iterable<Class<? extends Service>> {
 
 	/**
 	 * Register a new instance of {@link Service} with specified service class
@@ -55,4 +56,25 @@ public interface ServiceServer extends Iterable<Class<Service>> {
 	 *             if error occurs
 	 */
 	public void unregister(ArtifactContext artifactContext, Class<Service> serviceClassName) throws KeystoneRuntimeException;
+
+	/**
+	 * Find specified service.
+	 * 
+	 * @param service
+	 *            service class name
+	 * @return service instance or null is none is found.
+	 */
+	public Service find(Class<? extends Service> service) throws KeystoneRuntimeException;
+
+	/**
+	 * Find specified service which is compatible with specified
+	 * {@link ArtifactIdentifier}.
+	 * 
+	 * @param service
+	 *            service class name
+	 * @param artifactIdentifier
+	 *            artifact Identifier
+	 * @return service instance or null is none is found.
+	 */
+	public Service find(Class<? extends Service> service, ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException;
 }

@@ -41,7 +41,7 @@ import org.intelligentsia.keystone.kernel.service.Service;
  */
 public class DefaultServiceServer extends AbstractKernelServer implements ServiceServer {
 
-	private final Map<Class<Service>, ServiceRegistry> registry = new ConcurrentHashMap<Class<Service>, DefaultServiceServer.ServiceRegistry>();
+	private final Map<Class<? extends Service>, ServiceRegistry> registry = new ConcurrentHashMap<Class<? extends Service>, DefaultServiceServer.ServiceRegistry>();
 
 	/**
 	 * Build a new instance of DefaultServiceServer.java.
@@ -66,7 +66,7 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 	}
 
 	@Override
-	public Iterator<Class<Service>> iterator() {
+	public Iterator<Class<? extends Service>> iterator() {
 		return registry.keySet().iterator();
 	}
 
@@ -114,6 +114,16 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 		}
 	}
 
+	@Override
+	public Service find(final Class<? extends Service> service) throws KeystoneRuntimeException {
+		return getServiceRegistry(service).find();
+	}
+
+	@Override
+	public Service find(final Class<? extends Service> service, final ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException {
+		return getServiceRegistry(service).find(artifactIdentifier);
+	}
+
 	/**
 	 * Utility: return associated {@link ServiceRegistry} instance with
 	 * specified service Class Name
@@ -121,7 +131,7 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 	 * @param serviceClassName
 	 * @return {@link ServiceRegistry} instance or a new one if not exists.
 	 */
-	protected ServiceRegistry getServiceRegistry(final Class<Service> serviceClassName) {
+	protected ServiceRegistry getServiceRegistry(final Class<? extends Service> serviceClassName) {
 		ServiceRegistry result = registry.get(serviceClassName);
 		if (result == null) {
 			result = new ServiceRegistry();
@@ -151,13 +161,23 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 	 */
 	private class ServiceRegistry implements Iterable<ArtifactIdentifier> {
 
-		final Map<ArtifactIdentifier, Service> entries = new ConcurrentHashMap<ArtifactIdentifier, Service>(4);
+		private final Map<ArtifactIdentifier, Service> entries = new ConcurrentHashMap<ArtifactIdentifier, Service>(4);
 
 		/**
 		 * Build a new instance of DefaultServiceServer.java.
 		 */
 		public ServiceRegistry() {
 			super();
+		}
+
+		public Service find(final ArtifactIdentifier artifactIdentifier) {
+			// TODO implement this
+			return null;
+		}
+
+		public Service find() {
+			// TODO implement this
+			return null;
 		}
 
 		public boolean contains(final ArtifactIdentifier key) {

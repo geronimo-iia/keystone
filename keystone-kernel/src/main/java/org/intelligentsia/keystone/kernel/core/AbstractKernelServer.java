@@ -128,24 +128,24 @@ public abstract class AbstractKernelServer implements KernelServer {
 	 */
 	protected KernelContext getKernelContext() {
 		return new KernelContext() {
-			
+
 			private final EventPublisher eventPublisher = new EventPublisher() {
-				
+
 				@Override
-				public void publish(Object event) {
+				public void publish(final Object event) {
 					kernel.getEventBus().publish(event);
 				}
-			}; 
-			
+			};
+
 			@Override
 			public EventPublisher getEventPublisher() {
 				return eventPublisher;
 			}
-			
+
 			@Override
-			public Service find(Class<?> service) throws KeystoneRuntimeException {
-				return null;
+			public Service find(final Class<? extends Service> service) throws KeystoneRuntimeException {
+				return kernel.getServiceServer().find(service);
 			}
 		};
 	}
-} 
+}

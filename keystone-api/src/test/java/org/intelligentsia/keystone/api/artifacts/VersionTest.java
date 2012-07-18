@@ -141,4 +141,18 @@ public class VersionTest {
 		version = new Version(1, 1, 3);
 		assertEquals(new Integer(1), (Integer) version.compareTo(new Version(1, 1, 1)));
 	}
+
+	@Test
+	public void checkIsBackwardCompatible() {
+		Version version = new Version(1, 1, 1);
+		assertTrue(version.isBackwardCompatible(new Version(1)));
+		assertTrue(version.isBackwardCompatible(new Version(1, 3)));
+		assertTrue(version.isBackwardCompatible(new Version(1, 9, 9)));
+		assertTrue(!version.isBackwardCompatible(new Version(1, 9, 9, "test")));
+		assertTrue(!version.isBackwardCompatible(new Version(2)));
+
+		version = new Version(1, "RELEASE");
+		assertTrue(!version.isBackwardCompatible(new Version(1)));
+		assertTrue(version.isBackwardCompatible(new Version(1, 1, "RELEASE")));
+	}
 }

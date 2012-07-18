@@ -35,6 +35,17 @@ import java.util.StringTokenizer;
  * <li>ext: classifier (optional)</li>
  * </ul>
  * 
+ * <p>
+ * Versioning
+ * </p>
+ * <ul>
+ * <li>Breaking backward compatibility: major is incremeted (medium and minor
+ * are reset)</li>
+ * <li>New additions without breaking backward compatibility: the medium is
+ * incremeted (minor is reset)</li>
+ * <li>Bug fixes and misc change: minor is incremeted</li>
+ * </ul>
+ * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
@@ -226,6 +237,17 @@ public final class Version implements Comparable<Version> {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * Same major and classifier.
+	 * 
+	 * @param version
+	 * @return true if this version is backward compatible with specified
+	 *         version.
+	 */
+	public boolean isBackwardCompatible(final Version version) {
+		return major.equals(version.major) && (classifier != null ? classifier.equals(version.classifier) : version.classifier == null);
 	}
 
 	@Override

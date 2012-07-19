@@ -29,11 +29,6 @@ import java.io.Serializable;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-/**
- * a Repository bean.
- * 
- * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- */
 public class Repository implements Serializable {
 
 	private static final long serialVersionUID = -7481265013458675666L;

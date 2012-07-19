@@ -115,38 +115,42 @@ public class GroupRepositoryService implements RepositoryService, Iterable<Repos
 	}
 
 	/**
-	 * @return
-	 * @see java.util.List#isEmpty()
+	 * @return true if this instance have no {@link RepositoryService}.
 	 */
 	public boolean isEmpty() {
 		return repositoryServices.isEmpty();
 	}
 
 	/**
-	 * @param o
-	 * @return
-	 * @see java.util.List#contains(java.lang.Object)
+	 * @param repositoryService
+	 *            {@link RepositoryService}
+	 * @return true if specified {@link RepositoryService} is contains in this
+	 *         instance.
 	 */
-	public boolean contains(final RepositoryService o) {
-		return repositoryServices.contains(o);
+	public boolean contains(final RepositoryService repositoryService) {
+		return repositoryServices.contains(repositoryService);
 	}
 
 	/**
-	 * @param e
-	 * @return
-	 * @see java.util.List#add(java.lang.Object)
+	 * Add the specified {@link RepositoryService}.
+	 * 
+	 * @param repositoryService
+	 *            {@link RepositoryService}
+	 * @return true.
 	 */
-	public boolean add(final RepositoryService e) {
-		return repositoryServices.add(e);
+	public boolean add(final RepositoryService repositoryService) {
+		return repositoryServices.add(repositoryService);
 	}
 
 	/**
-	 * @param o
-	 * @return
-	 * @see java.util.List#remove(java.lang.Object)
+	 * Remove {@link RepositoryService}.
+	 * 
+	 * @param repositoryService
+	 *            {@link RepositoryService}
+	 * @return treue.
 	 */
-	public boolean remove(final RepositoryService o) {
-		return repositoryServices.remove(o);
+	public boolean remove(final RepositoryService repositoryService) {
+		return repositoryServices.remove(repositoryService);
 	}
 
 	/**

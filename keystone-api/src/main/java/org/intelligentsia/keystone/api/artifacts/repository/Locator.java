@@ -23,7 +23,7 @@
 package org.intelligentsia.keystone.api.artifacts.repository;
 
 /**
- * a small Locator API.
+ * A small Locator API.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */

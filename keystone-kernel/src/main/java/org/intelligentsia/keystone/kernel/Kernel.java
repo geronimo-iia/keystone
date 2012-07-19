@@ -65,7 +65,9 @@ public interface Kernel {
 	 * Display a message in kernel message log.
 	 * 
 	 * @param message
+	 *            message templaye
 	 * @param args
+	 *            arguments to substitute of the '%s' placeholders
 	 */
 	public void dmesg(final String message, final Object... args);
 

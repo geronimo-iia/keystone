@@ -28,11 +28,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
-import org.intelligentsia.keystone.api.artifacts.Version;
 import org.intelligentsia.keystone.kernel.ArtifactContext;
 import org.intelligentsia.keystone.kernel.ServiceServer;
 import org.intelligentsia.keystone.kernel.event.ServiceRegistryChangeEvent;
 import org.intelligentsia.keystone.kernel.service.Service;
+import org.intelligentsia.keystone.kernel.service.ServiceProvider;
+import org.intelligentsia.keystone.kernel.service.ServiceRegistryKey;
 
 /**
  * {@link DefaultServiceServer} extends {@link AbstractKernelServer} and
@@ -42,7 +43,10 @@ import org.intelligentsia.keystone.kernel.service.Service;
  */
 public class DefaultServiceServer extends AbstractKernelServer implements ServiceServer {
 
-	private final Map<Class<? extends Service>, ServiceRegistry> registry = new ConcurrentHashMap<Class<? extends Service>, DefaultServiceServer.ServiceRegistry>();
+	/**
+	 * Registry instance.
+	 */
+	private final Map<Class<? extends Service>, ServiceProvider> registry = new ConcurrentHashMap<Class<? extends Service>, ServiceProvider>();
 
 	/**
 	 * Build a new instance of DefaultServiceServer.java.
@@ -57,11 +61,14 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 
 	@Override
 	protected void onDestroy() {
-		for (final ServiceRegistry serviceRegistry : registry.values()) {
-			for (final ArtifactIdentifier artifactIdentifier : serviceRegistry) {
-				destroy(serviceRegistry, artifactIdentifier);
+		for (final ServiceProvider serviceProvider : registry.values()) {
+			for (final ArtifactIdentifier artifactIdentifier : serviceProvider.keys()) {
+				final ServiceRegistryKey key = serviceProvider.get(artifactIdentifier);
+				if ((key != null) && (key.getService() != null)) {
+					key.getService().destroy();
+				}
 			}
-			serviceRegistry.clear();
+			((DefaultServiceProvider) serviceProvider).clear();
 		}
 		registry.clear();
 	}
@@ -86,15 +93,15 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 			throw new NullPointerException("service");
 		}
 		// get registry entry.
-		final ServiceRegistry serviceRegistry = getServiceRegistry(serviceClassName);
+		final DefaultServiceProvider serviceProvider = (DefaultServiceProvider) find(serviceClassName);
 		// check if ever registered
-		if (serviceRegistry.contains(artifactContext.getArtifactIdentifier())) {
+		if (serviceProvider.contains(artifactContext.getArtifactIdentifier())) {
 			throw new KeystoneRuntimeException(serviceClassName + " is ever registered with " + artifactContext.getArtifactIdentifier().toString());
 		}
 		// initialize
 		service.initialize(getKernelContext());
 		// add
-		serviceRegistry.put(artifactContext.getArtifactIdentifier(), service);
+		serviceProvider.put(new ServiceRegistryKey(artifactContext.getArtifactIdentifier(), service));
 		// raise event
 		kernel.getEventBus().publish(new ServiceRegistryChangeEvent(artifactContext.getArtifactIdentifier(), serviceClassName, ServiceRegistryChangeEvent.State.REGISTERED));
 	}
@@ -108,89 +115,75 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 			throw new NullPointerException("serviceClassName");
 		}
 		// get registry
-		destroy(getServiceRegistry(serviceClassName), artifactContext.getArtifactIdentifier());
-		// raise event
-		if (!isDestroying()) {
-			kernel.getEventBus().publish(new ServiceRegistryChangeEvent(artifactContext.getArtifactIdentifier(), serviceClassName, ServiceRegistryChangeEvent.State.UNREGISTERED));
+		final DefaultServiceProvider serviceProvider = (DefaultServiceProvider) find(serviceClassName);
+		final ServiceRegistryKey key = serviceProvider.remove(artifactContext.getArtifactIdentifier());
+		// destroy
+		if ((key != null) && (key.getService() != null)) {
+			key.getService().destroy();
+			// raise event
+			if (!isDestroying()) {
+				kernel.getEventBus().publish(new ServiceRegistryChangeEvent(artifactContext.getArtifactIdentifier(), serviceClassName, ServiceRegistryChangeEvent.State.UNREGISTERED));
+			}
 		}
 	}
 
 	@Override
-	public Service find(final Class<? extends Service> service) throws KeystoneRuntimeException {
-		return getServiceRegistry(service).find();
-	}
-
-	@Override
-	public Service find(final Class<? extends Service> service, final Version version) throws KeystoneRuntimeException {
-		return getServiceRegistry(service).find( );
-	}
-
-	/**
-	 * Utility: return associated {@link ServiceRegistry} instance with
-	 * specified service Class Name
-	 * 
-	 * @param serviceClassName
-	 * @return {@link ServiceRegistry} instance or a new one if not exists.
-	 */
-	protected ServiceRegistry getServiceRegistry(final Class<? extends Service> serviceClassName) {
-		ServiceRegistry result = registry.get(serviceClassName);
-		if (result == null) {
-			result = new ServiceRegistry();
-			registry.put(serviceClassName, result);
+	public ServiceProvider find(final Class<? extends Service> service) throws KeystoneRuntimeException {
+		ServiceProvider serviceProvider = registry.get(service);
+		if (serviceProvider == null) {
+			serviceProvider = new DefaultServiceProvider();
+			registry.put(service, serviceProvider);
 		}
-		return result;
+		return serviceProvider;
 	}
 
 	/**
 	 * Utility to destroy a specific service.
 	 * 
-	 * @param serviceRegistry
+	 * @param serviceProvider
 	 * @param artifactIdentifier
 	 */
-	protected void destroy(final ServiceRegistry serviceRegistry, final ArtifactIdentifier artifactIdentifier) {
-		final Service service = serviceRegistry.get(artifactIdentifier);
-		if (service != null) {
-			service.destroy();
+	protected void destroy(final DefaultServiceProvider serviceProvider, final ArtifactIdentifier artifactIdentifier) {
+		final ServiceRegistryKey serviceRegistryKey = serviceProvider.get(artifactIdentifier);
+		if (serviceRegistryKey != null) {
+			serviceRegistryKey.getService().destroy();
 		}
 	}
 
 	/**
-	 * ServiceRegistry track all resgistration of same service name with
-	 * different artifact identifier.
+	 * DefaultServiceProvider implements {@link ServiceProvider}: track all
+	 * registration of same service name with different artifact identifier.
 	 * 
 	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
 	 */
-	private class ServiceRegistry implements Iterable<ArtifactIdentifier> {
+	private class DefaultServiceProvider implements ServiceProvider {
+		private final Map<ArtifactIdentifier, ServiceRegistryKey> entries = new ConcurrentHashMap<ArtifactIdentifier, ServiceRegistryKey>(4);
 
-		private final Map<ArtifactIdentifier, Service> entries = new ConcurrentHashMap<ArtifactIdentifier, Service>(4);
-
-		/**
-		 * Build a new instance of DefaultServiceServer.java.
-		 */
-		public ServiceRegistry() {
+		public DefaultServiceProvider() {
 			super();
 		}
 
-		public Service find(final ArtifactIdentifier artifactIdentifier) {
-			// TODO implement this
-			return null;
+		@Override
+		public Iterable<ArtifactIdentifier> keys() {
+			return entries.keySet();
 		}
 
-		public Service find() {
-			// TODO implement this
-			return null;
-		}
-
+		@Override
 		public boolean contains(final ArtifactIdentifier key) {
 			return entries.containsKey(key);
 		}
 
-		public Service get(final ArtifactIdentifier key) {
+		@Override
+		public ServiceRegistryKey get(final ArtifactIdentifier key) {
 			return entries.get(key);
 		}
 
-		public Service put(final ArtifactIdentifier key, final Service value) {
-			return entries.put(key, value);
+		public ServiceRegistryKey put(final ServiceRegistryKey serviceRegistryKey) {
+			return entries.put(serviceRegistryKey.getArtifactIdentifier(), serviceRegistryKey);
+		}
+
+		public ServiceRegistryKey remove(final ArtifactIdentifier artifactIdentifier) {
+			return entries.remove(artifactIdentifier);
 		}
 
 		public void clear() {
@@ -198,8 +191,8 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 		}
 
 		@Override
-		public Iterator<ArtifactIdentifier> iterator() {
-			return entries.keySet().iterator();
+		public Iterator<ServiceRegistryKey> iterator() {
+			return entries.values().iterator();
 		}
 
 	}

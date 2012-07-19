@@ -19,28 +19,50 @@
  */
 package org.intelligentsia.keystone.kernel.service;
 
-import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
+import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 
 /**
- * 
- * KernelContext see as an interface between client and micro kernel.
+ * ServiceRegistryKey associate an {@link ArtifactIdentifier} and a
+ * {@link Service} instance.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
-public interface KernelContext {
+public final class ServiceRegistryKey {
+	private final ArtifactIdentifier artifactIdentifier;
+	private final Service service;
 
 	/**
-	 * Find specified service.
+	 * Build a new instance of ServiceProvider.java.
 	 * 
+	 * @param artifactIdentifier
 	 * @param service
-	 *            service class name
-	 * @return service instance or null is none is found.
 	 */
-	public ServiceProvider find(Class<? extends Service> service) throws KeystoneRuntimeException;
+	public ServiceRegistryKey(final ArtifactIdentifier artifactIdentifier, final Service service) {
+		super();
+		this.artifactIdentifier = artifactIdentifier;
+		this.service = service;
+	}
 
 	/**
-	 * @return an EventPublisher instance.
+	 * @return the artifactIdentifier
 	 */
-	public EventPublisher getEventPublisher();
+	public final ArtifactIdentifier getArtifactIdentifier() {
+		return artifactIdentifier;
+	}
+
+	/**
+	 * @return the service
+	 */
+	public final Service getService() {
+		return service;
+	}
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "ServiceRegistryKey [artifactIdentifier=" + artifactIdentifier + ", service=" + service.getClass().getName() + "]";
+	}
+
 }

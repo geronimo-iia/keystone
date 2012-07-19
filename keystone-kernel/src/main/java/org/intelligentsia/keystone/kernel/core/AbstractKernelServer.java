@@ -25,6 +25,7 @@ import org.intelligentsia.keystone.kernel.KernelServer;
 import org.intelligentsia.keystone.kernel.service.EventPublisher;
 import org.intelligentsia.keystone.kernel.service.KernelContext;
 import org.intelligentsia.keystone.kernel.service.Service;
+import org.intelligentsia.keystone.kernel.service.ServiceProvider;
 
 /**
  * {@link AbstractKernelServer} class.
@@ -143,9 +144,10 @@ public abstract class AbstractKernelServer implements KernelServer {
 			}
 
 			@Override
-			public Service find(final Class<? extends Service> service) throws KeystoneRuntimeException {
+			public ServiceProvider find(final Class<? extends Service> service) throws KeystoneRuntimeException {
 				return kernel.getServiceServer().find(service);
 			}
+
 		};
 	}
 }

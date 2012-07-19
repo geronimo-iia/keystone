@@ -20,8 +20,8 @@
 package org.intelligentsia.keystone.kernel;
 
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
-import org.intelligentsia.keystone.api.artifacts.Version;
 import org.intelligentsia.keystone.kernel.service.Service;
+import org.intelligentsia.keystone.kernel.service.ServiceProvider;
 
 /**
  * {@link ServiceServer} manage a collection of {@link Service} class name.
@@ -58,23 +58,12 @@ public interface ServiceServer extends Iterable<Class<? extends Service>> {
 	public void unregister(ArtifactContext artifactContext, Class<Service> serviceClassName) throws KeystoneRuntimeException;
 
 	/**
-	 * Find specified service.
+	 * Find a {@link ServiceProvider} for specified service class.
 	 * 
 	 * @param service
-	 *            service class name
-	 * @return service instance or null is none is found.
+	 *            service class
+	 * @return {@link ServiceProvider} instance
 	 */
-	public Service find(Class<? extends Service> service) throws KeystoneRuntimeException;
+	public ServiceProvider find(Class<? extends Service> service) throws KeystoneRuntimeException;
 
-	/**
-	 * Find specified service which is compatible with specified {@link version}
-	 * .
-	 * 
-	 * @param service
-	 *            service class name
-	 * @param version
-	 *            a version
-	 * @return service instance or null is none is found.
-	 */
-	public Service find(Class<? extends Service> service, Version version) throws KeystoneRuntimeException;
 }

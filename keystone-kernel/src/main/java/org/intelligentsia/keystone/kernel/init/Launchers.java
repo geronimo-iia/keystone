@@ -19,6 +19,13 @@
  */
 package org.intelligentsia.keystone.kernel.init;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.kernel.Kernel;
 
@@ -43,7 +50,7 @@ public enum Launchers {
 			public boolean evaluate(final Kernel kernel) {
 				return false;
 			}
-		});
+		}, 10000);
 	}
 
 	/**
@@ -72,13 +79,34 @@ public enum Launchers {
 		return new Launcher() {
 			@Override
 			public void launch(final Kernel kernel) throws KeystoneRuntimeException {
-				try {
-					kernel.run();
-					do {
-						Thread.sleep(millis);
-					} while (!predicate.evaluate(kernel));
-				} catch (final InterruptedException e) {
-				}
+				final ExecutorService executor = Executors.newFixedThreadPool(1);
+				// set the executor thread working
+				final Future<?> future = executor.submit(new Runnable() {
+					@Override
+					public void run() {
+						kernel.run();
+					}
+				});
+				do {
+					try {
+						future.get(millis, TimeUnit.MILLISECONDS);
+					} catch (final ExecutionException executionException) {
+						// interrupts the worker thread if necessary
+						future.cancel(true);
+						// ExecutionException: deliverer threw exception
+						throw new KeystoneRuntimeException(executionException);
+					} catch (final TimeoutException timeoutException) {
+						// TimeoutException: didn't complete within
+						// millis
+					} catch (final InterruptedException interruptedException) {
+						// interrupts the worker thread if necessary
+						future.cancel(true);
+						// the executor thread was interrupted
+						throw new KeystoneRuntimeException(interruptedException);
+					}
+				} while (!predicate.evaluate(kernel));
+				// shutdown executor
+				executor.shutdown();
 			}
 		};
 

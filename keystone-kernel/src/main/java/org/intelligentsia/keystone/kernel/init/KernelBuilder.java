@@ -45,27 +45,34 @@ public class KernelBuilder {
 	private EventBusServer eventBusServer;
 	private PrintStream errStream;
 	private ServiceServer serviceServer;
+	private Runnable mainKernelProcess;
 
 	/**
 	 * Build a new instance of KernelBuilder with all default server.
 	 */
-	public KernelBuilder() {
+	public KernelBuilder(Runnable mainKernelProcess) {
 		eventBusServer = new DefaultEventBusServer();
 		repositoryServer = new DefaultRepositoryServer();
 		artifactServer = new DefaultArtifactServer();
 		errStream = System.err;
 		serviceServer = new DefaultServiceServer();
+		this.mainKernelProcess = mainKernelProcess;
 	}
 
 	/**
 	 * @return a new {@link Kernel} instance.
 	 */
 	public Kernel build() {
-		return new BaseKernel(repositoryServer, artifactServer, eventBusServer, errStream, serviceServer);
+		return new BaseKernel(repositoryServer, artifactServer, eventBusServer, errStream, serviceServer, mainKernelProcess);
 	}
 
 	public KernelBuilder setEventBusServer(final EventBusServer eventBusServer) {
 		this.eventBusServer = eventBusServer;
+		return this;
+	}
+
+	public KernelBuilder setMainKernelProcess(final Runnable mainKernelProcess) {
+		this.mainKernelProcess = mainKernelProcess;
 		return this;
 	}
 

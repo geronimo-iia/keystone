@@ -41,6 +41,8 @@ public class BaseKernel implements Kernel {
 	private final PrintStream errStream;
 	private final ServiceServer serviceServer;
 
+	private final Runnable mainKernelProcess;
+
 	/**
 	 * Build a new instance of BaseKernel.java.
 	 * 
@@ -50,13 +52,14 @@ public class BaseKernel implements Kernel {
 	 * @param errStream
 	 * @param serviceServer
 	 */
-	public BaseKernel(final RepositoryServer repositoryServer, final ArtifactServer artifactServer, final EventBusServer eventBusServer, final PrintStream errStream, final ServiceServer serviceServer) {
+	public BaseKernel(final RepositoryServer repositoryServer, final ArtifactServer artifactServer, final EventBusServer eventBusServer, final PrintStream errStream, final ServiceServer serviceServer, final Runnable mainKernelProcess) {
 		super();
 		this.repositoryServer = repositoryServer;
 		this.artifactServer = artifactServer;
 		this.eventBusServer = eventBusServer;
 		this.errStream = errStream;
 		this.serviceServer = serviceServer;
+		this.mainKernelProcess = mainKernelProcess;
 	}
 
 	@Override
@@ -88,7 +91,23 @@ public class BaseKernel implements Kernel {
 
 	@Override
 	public void run() {
-		// do nothing
+		try {
+			// initializing all server resource
+			eventBusServer.initialize(this);
+			repositoryServer.initialize(this);
+			artifactServer.initialize(this);
+			serviceServer.initialize(this);
+
+			// do something
+			mainKernelProcess.run();
+		} finally {
+			// destroy all server resource
+			serviceServer.destroy();
+			artifactServer.destroy();
+			repositoryServer.destroy();
+			eventBusServer.destroy();
+		}
+
 	}
 
 }

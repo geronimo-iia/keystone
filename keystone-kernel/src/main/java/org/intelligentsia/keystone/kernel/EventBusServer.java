@@ -24,7 +24,7 @@ package org.intelligentsia.keystone.kernel;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface EventBusServer {
+public interface EventBusServer extends KernelServer{
 
 	/**
 	 * Subscribes the specified service to the event bus.

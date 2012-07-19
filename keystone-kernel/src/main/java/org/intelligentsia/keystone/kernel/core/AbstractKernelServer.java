@@ -23,6 +23,7 @@ import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.kernel.EventPublisher;
 import org.intelligentsia.keystone.kernel.Kernel;
 import org.intelligentsia.keystone.kernel.KernelContext;
+import org.intelligentsia.keystone.kernel.KernelServer;
 import org.intelligentsia.keystone.kernel.service.Service;
 import org.intelligentsia.keystone.kernel.service.ServiceProvider;
 

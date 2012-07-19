@@ -28,7 +28,7 @@ import org.intelligentsia.keystone.kernel.service.ServiceProvider;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface ServiceServer extends Iterable<Class<? extends Service>> {
+public interface ServiceServer extends Iterable<Class<? extends Service>>, KernelServer {
 
 	/**
 	 * Register a new instance of {@link Service} with specified service class

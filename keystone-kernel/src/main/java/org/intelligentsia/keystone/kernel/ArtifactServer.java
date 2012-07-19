@@ -30,7 +30,7 @@ import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public interface ArtifactServer extends Iterable<ArtifactIdentifier> {
+public interface ArtifactServer extends Iterable<ArtifactIdentifier>, KernelServer {
 
 	/**
 	 * Check if an artifact with the specified artifact identifier is managed by

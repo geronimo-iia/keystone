@@ -22,8 +22,7 @@ package org.intelligentsia.keystone.kernel.service;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 
 /**
- * 
- * KernelContext see as an interface between client and micro kernel.
+ * {@link KernelContext} see as an interface between client and micro kernel.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
@@ -31,16 +30,16 @@ import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 public interface KernelContext {
 
 	/**
-	 * Find specified service.
+	 * Find a {@link ServiceProvider} for specified service.
 	 * 
 	 * @param service
 	 *            service class name
-	 * @return service instance or null is none is found.
+	 * @return ServiceProvider instance.
 	 */
 	public ServiceProvider find(Class<? extends Service> service) throws KeystoneRuntimeException;
 
 	/**
-	 * @return an EventPublisher instance.
+	 * @return an {@link EventPublisher} instance.
 	 */
 	public EventPublisher getEventPublisher();
 }

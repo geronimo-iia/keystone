@@ -31,9 +31,24 @@ import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
  */
 public interface ServiceProvider extends Iterable<ServiceRegistryKey> {
 
+	/**
+	 * @return an {@link Iterable} instance on {@link ArtifactIdentifier}
+	 *         contains in this {@link ServiceProvider}.
+	 */
 	public Iterable<ArtifactIdentifier> keys();
 
+	/**
+	 * @param key
+	 *            {@link ArtifactIdentifier}
+	 * @return True if specified key is present in this {@link ServiceProvider}.
+	 */
 	public boolean contains(final ArtifactIdentifier key);
 
+	/**
+	 * @param key
+	 *            {@link ArtifactIdentifier}
+	 * @return ServiceRegistryKey instance for specified key or null if not
+	 *         exists.
+	 */
 	public ServiceRegistryKey get(final ArtifactIdentifier key);
 }

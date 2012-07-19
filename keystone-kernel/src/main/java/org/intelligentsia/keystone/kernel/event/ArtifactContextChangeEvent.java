@@ -20,50 +20,42 @@
 package org.intelligentsia.keystone.kernel.event;
 
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
-import org.intelligentsia.keystone.kernel.ServiceServer;
-import org.intelligentsia.keystone.kernel.service.Service;
+import org.intelligentsia.keystone.kernel.ArtifactContext;
 
 /**
- * ServiceRegistryChangeEvent raised when {@link Service} is
- * registered/unregistredfrom {@link ServiceServer}.
+ * ArtifactContextChangeEvent is raised when an {@link ArtifactContext} is
+ * initialized or destroyed.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public class ServiceRegistryChangeEvent {
+public class ArtifactContextChangeEvent {
 
 	public enum State {
-		REGISTERED, UNREGISTERED
+		INITIALIZED, DESTROYED
 	}
 
 	private final ArtifactIdentifier artifactIdentifier;
 
-	private final Class<Service> serviceClassName;
-
 	private final State state;
 
 	/**
-	 * Build a new instance of ServiceRegistryChangeEvent.java.
+	 * Build a new instance of ArtifactContextChangeEvent.java.
 	 * 
 	 * @param artifactIdentifier
-	 * @param serviceClassName
 	 * @param state
-	 * @NullPointerException if artifactIdentifier, serviceClassName or state is
-	 *                       null
+	 * @throws NullPointerException
+	 *             if artifactContext or state is null
 	 */
-	public ServiceRegistryChangeEvent(final ArtifactIdentifier artifactIdentifier, final Class<Service> serviceClassName, final State state) throws NullPointerException {
+	public ArtifactContextChangeEvent(final ArtifactIdentifier artifactIdentifier, final State state) throws NullPointerException {
 		super();
 		if (artifactIdentifier == null) {
 			throw new NullPointerException("artifactIdentifier");
-		}
-		if (serviceClassName == null) {
-			throw new NullPointerException("serviceClassName");
 		}
 		if (state == null) {
 			throw new NullPointerException("state");
 		}
 		this.artifactIdentifier = artifactIdentifier;
-		this.serviceClassName = serviceClassName;
 		this.state = state;
 	}
 
@@ -72,13 +64,6 @@ public class ServiceRegistryChangeEvent {
 	 */
 	public final ArtifactIdentifier getArtifactIdentifier() {
 		return artifactIdentifier;
-	}
-
-	/**
-	 * @return the serviceClassName
-	 */
-	public final Class<Service> getServiceClassName() {
-		return serviceClassName;
 	}
 
 	/**
@@ -93,7 +78,7 @@ public class ServiceRegistryChangeEvent {
 	 */
 	@Override
 	public String toString() {
-		return "ServiceRegistryChangeEvent [artifactIdentifier=" + artifactIdentifier + ", serviceClassName=" + serviceClassName + ", state=" + state + "]";
+		return "ArtifactContextChangeEvent [artifactIdentifier=" + artifactIdentifier + ", state=" + state + "]";
 	}
 
 }

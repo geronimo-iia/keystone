@@ -20,8 +20,7 @@
 package org.intelligentsia.keystone.kernel.service;
 
 /**
- * 
- * EventPublisher define methods to publish an event.
+ * {@link EventPublisher} define methods to publish an event.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */

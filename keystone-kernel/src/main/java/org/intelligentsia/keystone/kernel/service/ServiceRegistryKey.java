@@ -19,6 +19,8 @@
  */
 package org.intelligentsia.keystone.kernel.service;
 
+import java.io.Serializable;
+
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 
 /**
@@ -27,18 +29,36 @@ import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public final class ServiceRegistryKey {
+public final class ServiceRegistryKey implements Serializable {
+	/**
+	 * serialVersionUID:long
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * {@link ArtifactIdentifier} instance.
+	 */
 	private final ArtifactIdentifier artifactIdentifier;
-	private final Service service;
+	/**
+	 * {@link Service} instacne.
+	 */
+	private final transient Service service;
 
 	/**
 	 * Build a new instance of ServiceProvider.java.
 	 * 
 	 * @param artifactIdentifier
 	 * @param service
+	 * @throws NullPointerException
+	 *             if artifactIdentifier or service is null
 	 */
-	public ServiceRegistryKey(final ArtifactIdentifier artifactIdentifier, final Service service) {
+	public ServiceRegistryKey(final ArtifactIdentifier artifactIdentifier, final Service service) throws NullPointerException {
 		super();
+		if (artifactIdentifier == null) {
+			throw new NullPointerException("artifactIdentifier");
+		}
+		if (service == null) {
+			throw new NullPointerException("service");
+		}
 		this.artifactIdentifier = artifactIdentifier;
 		this.service = service;
 	}

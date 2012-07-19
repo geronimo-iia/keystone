@@ -35,8 +35,7 @@ import org.intelligentsia.keystone.api.artifacts.Resource;
 import org.intelligentsia.keystone.kernel.ArtifactContext;
 import org.intelligentsia.keystone.kernel.ArtifactServer;
 import org.intelligentsia.keystone.kernel.IsolationLevel;
-import org.intelligentsia.keystone.kernel.event.ArtifactContextDestroyedEvent;
-import org.intelligentsia.keystone.kernel.event.ArtifactContextInitializedEvent;
+import org.intelligentsia.keystone.kernel.event.ArtifactContextChangeEvent;
 import org.xeustechnologies.jcl.CompositeProxyClassLoader;
 import org.xeustechnologies.jcl.DelegateProxyClassLoader;
 import org.xeustechnologies.jcl.JarClassLoader;
@@ -176,7 +175,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 		}
 		artifacts.put(artifactIdentifier, result);
 		// raise event
-		kernel.getEventBus().publish(new ArtifactContextInitializedEvent(result));
+		kernel.getEventBus().publish(new ArtifactContextChangeEvent(artifactIdentifier, ArtifactContextChangeEvent.State.INITIALIZED));
 		return result;
 	}
 
@@ -189,7 +188,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 		// TODO implements unload
 		if (!isDestroying()) {
 			// now we could change behavior with lifecycle and not raising event
-			kernel.getEventBus().publish(new ArtifactContextDestroyedEvent(null));
+			kernel.getEventBus().publish(new ArtifactContextChangeEvent(artifactIdentifier, ArtifactContextChangeEvent.State.DESTROYED));
 		}
 		throw new KeystoneRuntimeException("not yet implemented");
 	}

@@ -73,6 +73,7 @@ public enum Launchers {
 			@Override
 			public void launch(final Kernel kernel) throws KeystoneRuntimeException {
 				try {
+					kernel.run();
 					do {
 						Thread.sleep(millis);
 					} while (!predicate.evaluate(kernel));

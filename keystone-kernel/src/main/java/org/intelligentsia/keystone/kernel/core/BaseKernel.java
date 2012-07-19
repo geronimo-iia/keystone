@@ -86,4 +86,9 @@ public class BaseKernel implements Kernel {
 		}
 	}
 
+	@Override
+	public void run() {
+		// do nothing
+	}
+
 }

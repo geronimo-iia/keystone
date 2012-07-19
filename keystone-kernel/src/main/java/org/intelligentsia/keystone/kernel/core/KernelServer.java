@@ -17,9 +17,10 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel;
+package org.intelligentsia.keystone.kernel.core;
 
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
+import org.intelligentsia.keystone.kernel.Kernel;
 
 /**
  * {@link KernelServer} declare methods to manage internal kernel 'server'.

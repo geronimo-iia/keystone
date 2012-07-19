@@ -17,22 +17,31 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel.service;
+package org.intelligentsia.keystone.kernel;
+
+import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
+import org.intelligentsia.keystone.kernel.service.Service;
+import org.intelligentsia.keystone.kernel.service.ServiceProvider;
 
 /**
- * {@link EventPublisher} define methods to publish an event.
+ * {@link KernelContext} see as an interface between client and micro kernel.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
  */
-public interface EventPublisher {
+public interface KernelContext {
+
 	/**
-	 * Sends a message on the bus which will be propagated to the appropriate
-	 * subscribers of the event type. Only subscribers which have elected to
-	 * subscribe to the same event type as the supplied event will be notified
-	 * of the event.
+	 * Find a {@link ServiceProvider} for specified service.
 	 * 
-	 * @param event
-	 *            The event to send out to the subscribers of the same type.
+	 * @param service
+	 *            service class name
+	 * @return ServiceProvider instance.
 	 */
-	public void publish(Object event);
+	public ServiceProvider find(Class<? extends Service> service) throws KeystoneRuntimeException;
+
+	/**
+	 * @return an {@link EventPublisher} instance.
+	 */
+	public EventPublisher getEventPublisher();
 }

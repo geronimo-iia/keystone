@@ -19,6 +19,8 @@
  */
 package org.intelligentsia.keystone.kernel.service;
 
+import org.intelligentsia.keystone.kernel.KernelContext;
+
 /**
  * Service declare methods to manage a 'service' in our system.
  * 

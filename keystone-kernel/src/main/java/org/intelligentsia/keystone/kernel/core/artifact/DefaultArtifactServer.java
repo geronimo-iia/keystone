@@ -20,7 +20,7 @@
 /**
  * 
  */
-package org.intelligentsia.keystone.kernel.core;
+package org.intelligentsia.keystone.kernel.core.artifact;
 
 import java.net.MalformedURLException;
 import java.util.HashMap;
@@ -35,6 +35,7 @@ import org.intelligentsia.keystone.api.artifacts.Resource;
 import org.intelligentsia.keystone.kernel.ArtifactContext;
 import org.intelligentsia.keystone.kernel.ArtifactServer;
 import org.intelligentsia.keystone.kernel.IsolationLevel;
+import org.intelligentsia.keystone.kernel.core.AbstractKernelServer;
 import org.intelligentsia.keystone.kernel.event.ArtifactContextChangeEvent;
 import org.xeustechnologies.jcl.CompositeProxyClassLoader;
 import org.xeustechnologies.jcl.DelegateProxyClassLoader;

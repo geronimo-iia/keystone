@@ -28,10 +28,10 @@ import org.intelligentsia.keystone.kernel.Kernel;
 import org.intelligentsia.keystone.kernel.RepositoryServer;
 import org.intelligentsia.keystone.kernel.ServiceServer;
 import org.intelligentsia.keystone.kernel.core.BaseKernel;
-import org.intelligentsia.keystone.kernel.core.DefaultArtifactServer;
 import org.intelligentsia.keystone.kernel.core.DefaultEventBusServer;
 import org.intelligentsia.keystone.kernel.core.DefaultRepositoryServer;
 import org.intelligentsia.keystone.kernel.core.DefaultServiceServer;
+import org.intelligentsia.keystone.kernel.core.artifact.DefaultArtifactServer;
 
 /**
  * KernelBuilder implement a builder fo {@link Kernel}.

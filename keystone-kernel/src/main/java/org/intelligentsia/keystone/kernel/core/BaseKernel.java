@@ -31,6 +31,7 @@ import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.kernel.ArtifactServer;
 import org.intelligentsia.keystone.kernel.EventBusServer;
 import org.intelligentsia.keystone.kernel.Kernel;
+import org.intelligentsia.keystone.kernel.KernelExecutor;
 import org.intelligentsia.keystone.kernel.KernelServer;
 import org.intelligentsia.keystone.kernel.RepositoryServer;
 import org.intelligentsia.keystone.kernel.ServiceServer;
@@ -69,11 +70,14 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 	 * {@link Runnable} instance : main kernel process.
 	 */
 	private final Runnable mainKernelProcess;
-
 	/**
 	 * Error Stream instance.
 	 */
 	private final PrintStream errStream;
+	/**
+	 * {@link KernelExecutor} instance.
+	 */
+	private final KernelExecutor kernelExecutor;
 
 	/**
 	 * Build a new instance of BaseKernel.java.
@@ -84,14 +88,16 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 	 * @param serviceServer
 	 * @param errStream
 	 * @param mainKernelProcess
+	 * @param kernelExecutor
 	 * @throws NullPointerException
 	 *             if one of server is null.
 	 */
-	public BaseKernel(final EventBusServer eventBusServer, final RepositoryServer repositoryServer, final ArtifactServer artifactServer, final ServiceServer serviceServer, final PrintStream errStream, final Runnable mainKernelProcess)
-			throws NullPointerException {
+	public BaseKernel(final EventBusServer eventBusServer, final RepositoryServer repositoryServer, final ArtifactServer artifactServer, final ServiceServer serviceServer, final PrintStream errStream, final Runnable mainKernelProcess,
+			final KernelExecutor kernelExecutor) throws NullPointerException {
 		super();
 		this.errStream = errStream;
 		this.mainKernelProcess = mainKernelProcess;
+		this.kernelExecutor = Preconditions.checkNotNull(kernelExecutor, "kernelExecutor");
 		// initialize base kernel server member
 		this.eventBusServer = register(EventBusServer.class, Preconditions.checkNotNull(eventBusServer, "eventBusServer"));
 		this.repositoryServer = register(RepositoryServer.class, Preconditions.checkNotNull(repositoryServer, "repositoryServer"));
@@ -117,6 +123,11 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 	@Override
 	public ServiceServer getServiceServer() {
 		return serviceServer;
+	}
+
+	@Override
+	public KernelExecutor getKernelExecutor() {
+		return kernelExecutor;
 	}
 
 	@Override

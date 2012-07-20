@@ -62,6 +62,11 @@ public interface Kernel extends Runnable {
 	public ServiceServer getServiceServer();
 
 	/**
+	 * @return a {@link KernelExecutor} instance.
+	 */
+	public KernelExecutor getKernelExecutor();
+
+	/**
 	 * Display a message in kernel message log.
 	 * 
 	 * @param message

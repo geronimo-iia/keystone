@@ -222,8 +222,13 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 				final ArtifactEntryPoint artifactEntryPoint = localize(artifactContext);
 				if (artifactEntryPoint != null) {
 					kernel.dmesg("find entry point for %s", artifactContextChangeEvent.getArtifactIdentifier());
-					// TODO run this
-
+					// execute
+					kernel.getKernelExecutor().execute(new Runnable() {
+						@Override
+						public void run() {
+							artifactEntryPoint.onLoad(getKernelContext());
+						}
+					});
 				}
 			}
 		}

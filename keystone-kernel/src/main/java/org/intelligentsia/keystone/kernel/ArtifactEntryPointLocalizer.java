@@ -30,8 +30,8 @@ import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
  */
 public interface ArtifactEntryPointLocalizer {
 	/**
-	 * Localize {@link ArtifactEntryPoint} for specified
-	 * {@link ArtifactContext}.
+	 * Localize {@link ArtifactEntryPoint} for specified {@link ArtifactContext}
+	 * .
 	 * 
 	 * @param artifactContext
 	 * @return an {@link ArtifactEntryPoint} instance or null if none is found.

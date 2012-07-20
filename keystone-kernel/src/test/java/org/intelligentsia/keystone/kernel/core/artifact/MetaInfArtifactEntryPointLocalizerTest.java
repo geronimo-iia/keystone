@@ -17,15 +17,31 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel;
+package org.intelligentsia.keystone.kernel.core.artifact;
 
-import java.util.concurrent.ExecutorService;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
+
+import org.junit.Test;
 
 /**
- * KernelExecutor declare methods to excute some task at kernel level.
+ * 
+ * MetaInfArtifactEntryPointLocalizerTest.
+ * 
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface KernelExecutor extends ExecutorService {
+public class MetaInfArtifactEntryPointLocalizerTest {
+
+	@Test
+	public void checkClassNameFormatter() {
+		final MetaInfArtifactEntryPointLocalizer localizer = new MetaInfArtifactEntryPointLocalizer();
+		assertNull(localizer.formatClassName(null));
+		assertNull(localizer.formatClassName(""));
+		assertEquals("com.Test", localizer.formatClassName("com.Test"));
+		assertEquals("com.Test", localizer.formatClassName(" com.Test "));
+		assertEquals("com.Test", localizer.formatClassName(" com.Test # kjkjkj \n sssssss"));
+		assertEquals("com.Test", localizer.formatClassName(" com.Test \n #sssssss"));
+	}
 
 }

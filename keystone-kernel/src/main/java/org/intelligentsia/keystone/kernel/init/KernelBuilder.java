@@ -114,7 +114,7 @@ public class KernelBuilder {
 		return this;
 	}
 
-	public KernelBuilder addArtifactEntryPointLocalizer(ArtifactEntryPointLocalizer artifactEntryPointLocalizer) {
+	public KernelBuilder addArtifactEntryPointLocalizer(final ArtifactEntryPointLocalizer artifactEntryPointLocalizer) {
 		getKernelServer(ArtifactServer.class).addArtifactEntryPointLocalizer(artifactEntryPointLocalizer);
 		return this;
 	}

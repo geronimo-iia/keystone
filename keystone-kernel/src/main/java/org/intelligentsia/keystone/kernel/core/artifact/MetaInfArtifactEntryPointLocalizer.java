@@ -54,30 +54,30 @@ public class MetaInfArtifactEntryPointLocalizer implements ArtifactEntryPointLoc
 	}
 
 	@Override
-	public ArtifactEntryPoint localize(ArtifactContext artifactContext) throws NullPointerException, KeystoneRuntimeException {
-		ArtifactEntryPoint artifactEntryPoint = null;
+	public ArtifactEntryPoint localize(final ArtifactContext artifactContext) throws NullPointerException, KeystoneRuntimeException {
+		final ArtifactEntryPoint artifactEntryPoint = null;
 		String className = null;
 		if (artifactContext != null) {
 			// build a resource finder
-			ResourceFinder finder = new ResourceFinder(artifactContext.getLocalResource());
+			final ResourceFinder finder = new ResourceFinder(artifactContext.getLocalResource());
 			try {
 				// find target ?
-				URL definition = finder.find("META-INF/services/org.intelligentsia.keystone.kernel.ArtifactEntryPoint");
+				final URL definition = finder.find("META-INF/services/org.intelligentsia.keystone.kernel.ArtifactEntryPoint");
 				className = formatClassName(readContents(definition));
 				if (className != null) {
-					Class<?> clazz = finder.findClass(className);
+					final Class<?> clazz = finder.findClass(className);
 					if (!ArtifactEntryPoint.class.isAssignableFrom(clazz)) {
 						throw new KeystoneRuntimeException(StringUtils.format("Specified class %s not implements org.intelligentsia.keystone.kernel.ArtifactEntryPoint", className));
 					}
 					return (ArtifactEntryPoint) clazz.newInstance();
 				}
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				// no resource => nothing to do
-			} catch (ClassNotFoundException e) {
+			} catch (final ClassNotFoundException e) {
 				throw new KeystoneRuntimeException(StringUtils.format("Specified class %s not found", className));
-			} catch (InstantiationException e) {
+			} catch (final InstantiationException e) {
 				throw new KeystoneRuntimeException(StringUtils.format("Cannot instantiate class '%s'. %s", className, e.getMessage()));
-			} catch (IllegalAccessException e) {
+			} catch (final IllegalAccessException e) {
 				throw new KeystoneRuntimeException(StringUtils.format("Cannot instantiate class '%s'. %s", className, e.getMessage()));
 			}
 		}
@@ -90,16 +90,20 @@ public class MetaInfArtifactEntryPointLocalizer implements ArtifactEntryPointLoc
 	 * @param value
 	 * @return formated value
 	 */
-	public String formatClassName(String value) {
+	public String formatClassName(final String value) {
 		String line = value;
 		if (line != null) {
 			// remove comment
-			int index = line.indexOf("#");
+			final int index = line.indexOf("#");
 			if (index > -1) {
-				line.substring(0, index - 1);
+				line = line.substring(0, index - 1);
 			}
 			// remove white space
 			line = line.trim();
+			// empty is null
+			if ("".equals(line)) {
+				line = null;
+			}
 		}
 		return line;
 	}
@@ -122,14 +126,15 @@ public class MetaInfArtifactEntryPointLocalizer implements ArtifactEntryPointLoc
 				builder.append(line);
 			}
 			return builder.toString();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new KeystoneRuntimeException("error when reading content of " + resource.toString(), e);
 		} finally {
-			if (bufferedReader != null)
+			if (bufferedReader != null) {
 				try {
 					bufferedReader.close();
-				} catch (IOException e) {
+				} catch (final IOException e) {
 				}
+			}
 		}
 	}
 }

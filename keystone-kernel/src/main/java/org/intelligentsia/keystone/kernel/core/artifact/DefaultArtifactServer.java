@@ -218,7 +218,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 		if (!isDestroying() && (artifactContextChangeEvent != null)) {
 			// intialization ?
 			if (ArtifactContextChangeEvent.State.INITIALIZED.equals(artifactContextChangeEvent.getState())) {
-				ArtifactContext artifactContext = find(artifactContextChangeEvent.getArtifactIdentifier());
+				final ArtifactContext artifactContext = find(artifactContextChangeEvent.getArtifactIdentifier());
 				final ArtifactEntryPoint artifactEntryPoint = localize(artifactContext);
 				if (artifactEntryPoint != null) {
 					kernel.dmesg("find entry point for %s", artifactContextChangeEvent.getArtifactIdentifier());

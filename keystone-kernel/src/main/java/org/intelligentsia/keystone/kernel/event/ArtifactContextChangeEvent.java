@@ -21,6 +21,7 @@ package org.intelligentsia.keystone.kernel.event;
 
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.kernel.ArtifactContext;
+import org.intelligentsia.utilities.Preconditions;
 
 /**
  * ArtifactContextChangeEvent is raised when an {@link ArtifactContext} is
@@ -49,14 +50,8 @@ public class ArtifactContextChangeEvent {
 	 */
 	public ArtifactContextChangeEvent(final ArtifactIdentifier artifactIdentifier, final State state) throws NullPointerException {
 		super();
-		if (artifactIdentifier == null) {
-			throw new NullPointerException("artifactIdentifier");
-		}
-		if (state == null) {
-			throw new NullPointerException("state");
-		}
-		this.artifactIdentifier = artifactIdentifier;
-		this.state = state;
+		this.artifactIdentifier = Preconditions.checkNotNull(artifactIdentifier,"artifactIdentifier");
+		this.state =  Preconditions.checkNotNull(state,"state");
 	}
 
 	/**

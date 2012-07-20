@@ -37,6 +37,7 @@ import org.intelligentsia.keystone.kernel.ArtifactServer;
 import org.intelligentsia.keystone.kernel.IsolationLevel;
 import org.intelligentsia.keystone.kernel.core.AbstractKernelServer;
 import org.intelligentsia.keystone.kernel.event.ArtifactContextChangeEvent;
+import org.intelligentsia.utilities.Preconditions;
 import org.xeustechnologies.jcl.CompositeProxyClassLoader;
 import org.xeustechnologies.jcl.DelegateProxyClassLoader;
 import org.xeustechnologies.jcl.JarClassLoader;
@@ -98,10 +99,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	 */
 	@Override
 	protected void onInitialize() {
-		if (kernel.getRepositoryServer() == null) {
-			throw new KeystoneRuntimeException("Repository Server cannot be null");
-		}
-		this.artifactsService = new DefaultArtifactsService(kernel.getRepositoryServer());
+		this.artifactsService = new DefaultArtifactsService(Preconditions.checkNotNull(kernel.getRepositoryServer(), "Repository Server cannot be null"));
 	}
 
 	/**
@@ -128,10 +126,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	 */
 	@Override
 	public boolean contains(final ArtifactIdentifier artifactIdentifier) throws NullPointerException {
-		if (artifactIdentifier == null) {
-			throw new NullPointerException("artifactIdentifier");
-		}
-		return artifacts.containsKey(artifactIdentifier);
+		return artifacts.containsKey(Preconditions.checkNotNull(artifactIdentifier, "artifactIdentifier"));
 	}
 
 	/**
@@ -140,10 +135,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	 */
 	@Override
 	public ArtifactContext find(final ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException, NullPointerException {
-		if (artifactIdentifier == null) {
-			throw new NullPointerException("artifactIdentifier");
-		}
-		return artifacts.get(artifactIdentifier);
+		return artifacts.get(Preconditions.checkNotNull(artifactIdentifier, "artifactIdentifier"));
 	}
 
 	/**
@@ -153,16 +145,11 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	 */
 	@Override
 	public ArtifactContext load(final ArtifactIdentifier artifactIdentifier, final IsolationLevel isolationLevel) throws KeystoneRuntimeException, NullPointerException {
-		if (artifactIdentifier == null) {
-			throw new NullPointerException("artifactIdentifier");
-		}
-		if (isolationLevel == null) {
-			throw new NullPointerException("isolationLevel");
-		}
 		if (isDestroying()) {
 			throw new KeystoneRuntimeException("Cannot load artifact when destroying server");
 		}
-		final DefaultArtifactContext result = new DefaultArtifactContext(artifactIdentifier);
+		final DefaultArtifactContext result = new DefaultArtifactContext(Preconditions.checkNotNull(artifactIdentifier, "artifactIdentifier"));
+		Preconditions.checkNotNull(isolationLevel, "isolationLevel");
 		// get resource
 		final Resource resource = artifactsService.get(artifactIdentifier);
 		try {

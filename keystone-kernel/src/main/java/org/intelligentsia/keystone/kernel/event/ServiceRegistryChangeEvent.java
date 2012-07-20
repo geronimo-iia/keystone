@@ -22,6 +22,7 @@ package org.intelligentsia.keystone.kernel.event;
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.kernel.ServiceServer;
 import org.intelligentsia.keystone.kernel.service.Service;
+import org.intelligentsia.utilities.Preconditions;
 
 /**
  * ServiceRegistryChangeEvent raised when {@link Service} is
@@ -53,18 +54,9 @@ public class ServiceRegistryChangeEvent {
 	 */
 	public ServiceRegistryChangeEvent(final ArtifactIdentifier artifactIdentifier, final Class<Service> serviceClassName, final State state) throws NullPointerException {
 		super();
-		if (artifactIdentifier == null) {
-			throw new NullPointerException("artifactIdentifier");
-		}
-		if (serviceClassName == null) {
-			throw new NullPointerException("serviceClassName");
-		}
-		if (state == null) {
-			throw new NullPointerException("state");
-		}
-		this.artifactIdentifier = artifactIdentifier;
-		this.serviceClassName = serviceClassName;
-		this.state = state;
+		this.artifactIdentifier = Preconditions.checkNotNull(artifactIdentifier, "artifactIdentifier");
+		this.serviceClassName = Preconditions.checkNotNull(serviceClassName, "serviceClassName");
+		this.state = Preconditions.checkNotNull(state, "state");
 	}
 
 	/**

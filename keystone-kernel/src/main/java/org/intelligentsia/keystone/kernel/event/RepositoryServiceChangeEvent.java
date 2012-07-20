@@ -21,6 +21,7 @@ package org.intelligentsia.keystone.kernel.event;
 
 import org.intelligentsia.keystone.api.artifacts.repository.RepositoryService;
 import org.intelligentsia.keystone.kernel.RepositoryServer;
+import org.intelligentsia.utilities.Preconditions;
 
 /**
  * {@link RepositoryServiceChangeEvent} raised when {@link RepositoryService} is
@@ -46,14 +47,8 @@ public class RepositoryServiceChangeEvent {
 	 */
 	public RepositoryServiceChangeEvent(final RepositoryService repositoryService, final State state) {
 		super();
-		if (repositoryService == null) {
-			throw new NullPointerException("repositoryService");
-		}
-		if (state == null) {
-			throw new NullPointerException("state");
-		}
-		this.repositoryService = repositoryService;
-		this.state = state;
+		this.repositoryService = Preconditions.checkNotNull(repositoryService,"repositoryService");
+		this.state =  Preconditions.checkNotNull(state,"state");
 	}
 
 	/**

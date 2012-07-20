@@ -34,6 +34,7 @@ import org.intelligentsia.keystone.kernel.event.ServiceRegistryChangeEvent;
 import org.intelligentsia.keystone.kernel.service.Service;
 import org.intelligentsia.keystone.kernel.service.ServiceProvider;
 import org.intelligentsia.keystone.kernel.service.ServiceRegistryKey;
+import org.intelligentsia.utilities.Preconditions;
 
 /**
  * {@link DefaultServiceServer} extends {@link AbstractKernelServer} and
@@ -83,15 +84,9 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 		if (isDestroying()) {
 			throw new KeystoneRuntimeException("cannot register new service instance when destroying service");
 		}
-		if (artifactContext == null) {
-			throw new NullPointerException("artifactContext");
-		}
-		if (serviceClassName == null) {
-			throw new NullPointerException("serviceClassName");
-		}
-		if (service == null) {
-			throw new NullPointerException("service");
-		}
+		Preconditions.checkNotNull(artifactContext, "artifactContext");
+		Preconditions.checkNotNull(serviceClassName, "serviceClassName");
+		Preconditions.checkNotNull(service, "service");
 		// get registry entry.
 		final DefaultServiceProvider serviceProvider = (DefaultServiceProvider) find(serviceClassName);
 		// check if ever registered
@@ -108,12 +103,8 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 
 	@Override
 	public void unregister(final ArtifactContext artifactContext, final Class<Service> serviceClassName) throws KeystoneRuntimeException, NullPointerException {
-		if (artifactContext == null) {
-			throw new NullPointerException("artifactContext");
-		}
-		if (serviceClassName == null) {
-			throw new NullPointerException("serviceClassName");
-		}
+		Preconditions.checkNotNull(artifactContext, "artifactContext");
+		Preconditions.checkNotNull(serviceClassName, "serviceClassName");
 		// get registry
 		final DefaultServiceProvider serviceProvider = (DefaultServiceProvider) find(serviceClassName);
 		final ServiceRegistryKey key = serviceProvider.remove(artifactContext.getArtifactIdentifier());

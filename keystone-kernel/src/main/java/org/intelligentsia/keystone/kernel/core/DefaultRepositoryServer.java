@@ -32,6 +32,7 @@ import org.intelligentsia.keystone.api.artifacts.repository.GroupRepositoryServi
 import org.intelligentsia.keystone.api.artifacts.repository.RepositoryService;
 import org.intelligentsia.keystone.kernel.RepositoryServer;
 import org.intelligentsia.keystone.kernel.event.RepositoryServiceChangeEvent;
+import org.intelligentsia.utilities.Preconditions;
 
 /**
  * DefaultRepositoryServer implements {@link RepositoryServer} by delegating to
@@ -104,13 +105,10 @@ public class DefaultRepositoryServer extends AbstractKernelServer implements Rep
 	 */
 	@Override
 	public void add(final RepositoryService repositoryService) throws NullPointerException {
-		if (repositoryService == null) {
-			throw new NullPointerException("repositoryService");
-		}
 		if (isDestroying()) {
 			throw new KeystoneRuntimeException("Cannot add repositoryService when destroying server");
 		}
-		if (!this.groupRepositoryService.contains(repositoryService)) {
+		if (!this.groupRepositoryService.contains(Preconditions.checkNotNull(repositoryService, "repositoryService"))) {
 			this.groupRepositoryService.add(repositoryService);
 			kernel.getEventBus().publish(new RepositoryServiceChangeEvent(repositoryService, RepositoryServiceChangeEvent.State.ADDED));
 		}
@@ -121,10 +119,7 @@ public class DefaultRepositoryServer extends AbstractKernelServer implements Rep
 	 */
 	@Override
 	public void remove(final RepositoryService repositoryService) throws NullPointerException {
-		if (repositoryService == null) {
-			throw new NullPointerException("repositoryService");
-		}
-		this.groupRepositoryService.remove(repositoryService);
+		this.groupRepositoryService.remove(Preconditions.checkNotNull(repositoryService,"repositoryService"));
 		if (!isDestroying()) {
 			kernel.getEventBus().publish(new RepositoryServiceChangeEvent(repositoryService, RepositoryServiceChangeEvent.State.REMOVED));
 		}

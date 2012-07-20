@@ -24,6 +24,7 @@ import java.net.URL;
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.kernel.ArtifactContext;
 import org.intelligentsia.keystone.kernel.IsolationLevel;
+import org.intelligentsia.utilities.Preconditions;
 import org.xeustechnologies.jcl.JarClassLoader;
 
 /**
@@ -72,10 +73,7 @@ public class DefaultArtifactContext implements ArtifactContext {
 	 */
 	public DefaultArtifactContext(final ArtifactIdentifier artifactIdentifier) throws NullPointerException {
 		super();
-		if (artifactIdentifier == null) {
-			throw new NullPointerException("artifactIdentifier is null");
-		}
-		this.artifactIdentifier = artifactIdentifier;
+		this.artifactIdentifier = Preconditions.checkNotNull(artifactIdentifier,"artifactIdentifier");
 	}
 
 	/**

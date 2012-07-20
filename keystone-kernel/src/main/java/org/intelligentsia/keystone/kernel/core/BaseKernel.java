@@ -20,12 +20,20 @@
 package org.intelligentsia.keystone.kernel.core;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.kernel.ArtifactServer;
 import org.intelligentsia.keystone.kernel.EventBusServer;
 import org.intelligentsia.keystone.kernel.Kernel;
+import org.intelligentsia.keystone.kernel.KernelServer;
 import org.intelligentsia.keystone.kernel.RepositoryServer;
 import org.intelligentsia.keystone.kernel.ServiceServer;
+import org.intelligentsia.utilities.Preconditions;
 import org.intelligentsia.utilities.StringUtils;
 
 /**
@@ -35,31 +43,59 @@ import org.intelligentsia.utilities.StringUtils;
  */
 public class BaseKernel implements Kernel {
 
-	private final RepositoryServer repositoryServer;
-	private final ArtifactServer artifactServer;
-	private final EventBusServer eventBusServer;
-	private final PrintStream errStream;
-	private final ServiceServer serviceServer;
+	/**
+	 * {@link Map} of {@link KernelServer} instance.
+	 */
+	private final Map<Class<? extends KernelServer>, KernelServer> servers = new LinkedHashMap<Class<? extends KernelServer>, KernelServer>();
 
+	/**
+	 * Internal {@link RepositoryServer} instance.
+	 */
+	private final RepositoryServer repositoryServer;
+	/**
+	 * Internal {@link ArtifactServer} instance.
+	 */
+	private final ArtifactServer artifactServer;
+	/**
+	 * Internal {@link EventBusServer} instance.
+	 */
+	private final EventBusServer eventBusServer;
+	/**
+	 * Internal {@link ServiceServer} instance.
+	 */
+	private final ServiceServer serviceServer;
+	/**
+	 * {@link Runnable} instance : main kernel process.
+	 */
 	private final Runnable mainKernelProcess;
+
+	/**
+	 * Error Stream instance.
+	 */
+	private final PrintStream errStream;
 
 	/**
 	 * Build a new instance of BaseKernel.java.
 	 * 
+	 * @param eventBusServer
 	 * @param repositoryServer
 	 * @param artifactServer
-	 * @param eventBusServer
-	 * @param errStream
 	 * @param serviceServer
+	 * @param errStream
+	 * @param mainKernelProcess
+	 * @throws NullPointerException
+	 *             if one of server is null.
 	 */
-	public BaseKernel(final RepositoryServer repositoryServer, final ArtifactServer artifactServer, final EventBusServer eventBusServer, final PrintStream errStream, final ServiceServer serviceServer, final Runnable mainKernelProcess) {
+	public BaseKernel(final EventBusServer eventBusServer, final RepositoryServer repositoryServer, final ArtifactServer artifactServer, final ServiceServer serviceServer, final PrintStream errStream, final Runnable mainKernelProcess)
+			throws NullPointerException {
 		super();
-		this.repositoryServer = repositoryServer;
-		this.artifactServer = artifactServer;
-		this.eventBusServer = eventBusServer;
 		this.errStream = errStream;
-		this.serviceServer = serviceServer;
 		this.mainKernelProcess = mainKernelProcess;
+		// initialize base kernel server member
+		this.eventBusServer = register(EventBusServer.class, Preconditions.checkNotNull(eventBusServer, "eventBusServer"));
+		this.repositoryServer = register(RepositoryServer.class, Preconditions.checkNotNull(repositoryServer, "repositoryServer"));
+		this.artifactServer = register(ArtifactServer.class, Preconditions.checkNotNull(artifactServer, "artifactServer"));
+		this.serviceServer = register(ServiceServer.class, Preconditions.checkNotNull(serviceServer, "serviceServer"));
 	}
 
 	@Override
@@ -85,6 +121,7 @@ public class BaseKernel implements Kernel {
 	@Override
 	public void dmesg(final String message, final Object... args) {
 		if (errStream != null) {
+			// TODO add time info
 			errStream.println(StringUtils.format(message, args));
 		}
 	}
@@ -93,21 +130,80 @@ public class BaseKernel implements Kernel {
 	public void run() {
 		try {
 			// initializing all server resource
-			eventBusServer.initialize(this);
-			repositoryServer.initialize(this);
-			artifactServer.initialize(this);
-			serviceServer.initialize(this);
-
+			initializeKernelServer();
 			// do something
-			mainKernelProcess.run();
+			if (mainKernelProcess != null) {
+				mainKernelProcess.run();
+			}
 		} finally {
 			// destroy all server resource
-			serviceServer.destroy();
-			artifactServer.destroy();
-			repositoryServer.destroy();
-			eventBusServer.destroy();
+			destroyKernelServer();
 		}
+	}
 
+	/**
+	 * Register a new {@link KernelServer} with specified class name.
+	 * 
+	 * @param className
+	 * @param instance
+	 * @return registerd instance.
+	 * @throws KeystoneRuntimeException
+	 *             if a {@link KernelServer} is ever registered with specified
+	 *             class name.
+	 */
+	public <K extends KernelServer> K register(Class<K> className, K instance) throws KeystoneRuntimeException {
+		if (servers.containsKey(className)) {
+			throw new KeystoneRuntimeException(className + " is ever registered");
+		}
+		servers.put(className, instance);
+		return instance;
+	}
+
+	/**
+	 * Un register a {@link KernelServer} instance associated with specified
+	 * class name.
+	 * 
+	 * @param className
+	 * @return removed {@link KernelServer}.
+	 */
+	public KernelServer unregister(Class<? extends KernelServer> className) {
+		return servers.remove(className);
+	}
+
+	/**
+	 * Initialize kernel server in registration order.
+	 * 
+	 * @throws KeystoneRuntimeException
+	 *             if error occurs.
+	 */
+	protected void initializeKernelServer() throws KeystoneRuntimeException {
+		dmesg("initialize kernel server");
+		for (KernelServer kernelServer : servers.values()) {
+			try {
+				kernelServer.initialize(this);
+			} catch (KeystoneRuntimeException e) {
+				dmesg("error when initializing %s: %s", kernelServer.getClass().getSimpleName(), e.getMessage());
+				throw e;
+			}
+		}
+	}
+
+	/**
+	 * Destroy kernel server in reverse registration order.
+	 */
+	protected void destroyKernelServer() {
+		dmesg("destroy kernel server");
+		// reverse order
+		List<KernelServer> list = new ArrayList<KernelServer>(servers.values());
+		Collections.reverse(list);
+		// destroy
+		for (KernelServer kernelServer : list) {
+			try {
+				kernelServer.destroy();
+			} catch (Throwable e) {
+				dmesg("error when destroying %s: %s", kernelServer.getClass().getSimpleName(), e.getMessage());
+			}
+		}
 	}
 
 }

@@ -20,11 +20,15 @@
 package org.intelligentsia.keystone.kernel.init;
 
 import java.io.PrintStream;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
+import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.api.artifacts.repository.RepositoryService;
 import org.intelligentsia.keystone.kernel.ArtifactServer;
 import org.intelligentsia.keystone.kernel.EventBusServer;
 import org.intelligentsia.keystone.kernel.Kernel;
+import org.intelligentsia.keystone.kernel.KernelServer;
 import org.intelligentsia.keystone.kernel.RepositoryServer;
 import org.intelligentsia.keystone.kernel.ServiceServer;
 import org.intelligentsia.keystone.kernel.core.BaseKernel;
@@ -40,34 +44,55 @@ import org.intelligentsia.keystone.kernel.core.artifact.DefaultArtifactServer;
  */
 public class KernelBuilder {
 
-	private RepositoryServer repositoryServer;
-	private ArtifactServer artifactServer;
-	private EventBusServer eventBusServer;
 	private PrintStream errStream;
-	private ServiceServer serviceServer;
 	private Runnable mainKernelProcess;
+	private final Map<Class<? extends KernelServer>, KernelServer> servers = new LinkedHashMap<Class<? extends KernelServer>, KernelServer>();
 
 	/**
 	 * Build a new instance of KernelBuilder with all default server.
 	 */
-	public KernelBuilder(Runnable mainKernelProcess) {
-		eventBusServer = new DefaultEventBusServer();
-		repositoryServer = new DefaultRepositoryServer();
-		artifactServer = new DefaultArtifactServer();
-		errStream = System.err;
-		serviceServer = new DefaultServiceServer();
-		this.mainKernelProcess = mainKernelProcess;
+	public KernelBuilder() {
+		addKernelServer(EventBusServer.class, new DefaultEventBusServer());
+		addKernelServer(RepositoryServer.class, new DefaultRepositoryServer());
+		addKernelServer(ArtifactServer.class, new DefaultArtifactServer());
+		addKernelServer(ServiceServer.class, new DefaultServiceServer());
+		this.errStream = System.err;
 	}
 
 	/**
 	 * @return a new {@link Kernel} instance.
 	 */
 	public Kernel build() {
-		return new BaseKernel(repositoryServer, artifactServer, eventBusServer, errStream, serviceServer, mainKernelProcess);
+		return build(this.mainKernelProcess);
+	}
+
+	/**
+	 * @param mainKernelProcess
+	 *            main kernel process
+	 * @return a new {@link Kernel} instance.
+	 */
+	public Kernel build(Runnable mainKernelProcess) {
+		return new BaseKernel(getKernelServer(EventBusServer.class), getKernelServer(RepositoryServer.class), getKernelServer(ArtifactServer.class), getKernelServer(ServiceServer.class), errStream, mainKernelProcess);
 	}
 
 	public KernelBuilder setEventBusServer(final EventBusServer eventBusServer) {
-		this.eventBusServer = eventBusServer;
+		return addKernelServer(EventBusServer.class, eventBusServer);
+	}
+
+	public KernelBuilder setRepositoryServer(final RepositoryServer repositoryServer) {
+		return addKernelServer(RepositoryServer.class, repositoryServer);
+	}
+
+	public KernelBuilder setArtifactServer(final ArtifactServer artifactServer) {
+		return addKernelServer(ArtifactServer.class, artifactServer);
+	}
+
+	public KernelBuilder setServiceServer(final ServiceServer serviceServer) {
+		return addKernelServer(ServiceServer.class, serviceServer);
+	}
+
+	public KernelBuilder setErrStream(final PrintStream errStream) {
+		this.errStream = errStream;
 		return this;
 	}
 
@@ -76,30 +101,20 @@ public class KernelBuilder {
 		return this;
 	}
 
-	public KernelBuilder setRepositoryServer(final RepositoryServer repositoryServer) {
-		this.repositoryServer = repositoryServer;
-		return this;
-	}
-
 	public KernelBuilder addRepositoryService(final RepositoryService... repositoryServices) {
 		for (final RepositoryService repositoryService : repositoryServices) {
-			repositoryServer.add(repositoryService);
+			getKernelServer(RepositoryServer.class).add(repositoryService);
 		}
 		return this;
 	}
 
-	public KernelBuilder setArtifactServer(final ArtifactServer artifactServer) {
-		this.artifactServer = artifactServer;
+	public <K extends KernelServer> KernelBuilder addKernelServer(Class<K> className, K instance) throws KeystoneRuntimeException {
+		servers.put(className, instance);
 		return this;
 	}
 
-	public KernelBuilder setErrStream(final PrintStream errStream) {
-		this.errStream = errStream;
-		return this;
-	}
-
-	public KernelBuilder setServiceServer(final ServiceServer serviceServer) {
-		this.serviceServer = serviceServer;
-		return this;
+	@SuppressWarnings("unchecked")
+	protected <T extends KernelServer> T getKernelServer(Class<T> className) {
+		return (T) servers.get(className);
 	}
 }

@@ -188,7 +188,7 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 			try {
 				kernelServer.initialize(this);
 			} catch (final KeystoneRuntimeException e) {
-				dmesg("error when initializing %s: %s", kernelServer.getClass().getSimpleName(), e.getMessage());
+				dmesg("error when initializing %s: %s", kernelServer.getName(), e.getMessage());
 				throw e;
 			}
 		}
@@ -207,7 +207,7 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 			try {
 				kernelServer.destroy();
 			} catch (final Throwable e) {
-				dmesg("error when destroying %s: %s", kernelServer.getClass().getSimpleName(), e.getMessage());
+				dmesg("error when destroying %s: %s", kernelServer.getName(), e.getMessage());
 			}
 		}
 	}

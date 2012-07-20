@@ -47,7 +47,7 @@ public class DefaultEventBusServer extends AbstractKernelServer implements Event
 	 * {@link BasicEventBus} underlaying instance.
 	 */
 	public DefaultEventBusServer() {
-		super();
+		super("event-bus-server");
 		this.eventBus = new BasicEventBus();
 	}
 

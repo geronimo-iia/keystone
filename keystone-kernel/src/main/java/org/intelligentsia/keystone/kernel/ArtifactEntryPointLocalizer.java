@@ -19,76 +19,26 @@
  */
 package org.intelligentsia.keystone.kernel;
 
+import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 
 /**
- * {@link KernelServer} declare methods to manage internal kernel 'server'.
+ * {@link ArtifactEntryPointLocalizer} declare method to localize an
+ * {@link ArtifactEntryPoint} for specified {@link ArtifactIdentifier}.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface KernelServer {
+public interface ArtifactEntryPointLocalizer {
 	/**
+	 * Localize {@link ArtifactEntryPoint} for specified
+	 * {@link ArtifactIdentifier}.
 	 * 
-	 * KernelServer State declaration.
-	 * 
-	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
-	 * 
-	 */
-	public enum State {
-		/**
-		 * Just created instance.
-		 */
-		CREATED,
-		/**
-		 * Initialization processing.
-		 */
-		INITIALIZING,
-		/**
-		 * Ready to serve.
-		 */
-		READY,
-		/**
-		 * Destroy processing.
-		 */
-		DESTROYING,
-		/**
-		 * End of life.
-		 */
-		EOL
-	}
-
-	/**
-	 * @return friendly name
-	 */
-	public String getName();
-
-	/**
-	 * @return author information.
-	 */
-	public String getAuthor();
-
-	/**
-	 * @return description information.
-	 */
-	public String getDescription();
-
-	/**
-	 * Initialize kernel server instance.
-	 * 
-	 * @param kernel
-	 *            internal kernel instance.
+	 * @param artifactIdentifier
+	 * @return an {@link ArtifactEntryPoint} instance or null if none is found.
+	 * @throws NullPointerException
+	 *             if artifactIdentifier is null
 	 * @throws KeystoneRuntimeException
 	 *             if error occurs
 	 */
-	public void initialize(Kernel kernel) throws KeystoneRuntimeException;
-
-	/**
-	 * Detroy kernel server instance (all resources should be closed).
-	 */
-	public void destroy();
-
-	/**
-	 * @return current State.
-	 */
-	public State getState();
+	public ArtifactEntryPoint localize(ArtifactIdentifier artifactIdentifier) throws NullPointerException, KeystoneRuntimeException;
 }

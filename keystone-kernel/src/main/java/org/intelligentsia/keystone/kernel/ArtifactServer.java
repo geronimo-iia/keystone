@@ -83,4 +83,28 @@ public interface ArtifactServer extends Iterable<ArtifactIdentifier>, KernelServ
 	 *             if artifactIdentifier is null
 	 */
 	public void unload(ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException, NullPointerException;
+
+	/**
+	 * Add an {@link ArtifactEntryPointLocalizer} instance.
+	 * 
+	 * @param artifactEntryPointLocalizer
+	 *            {@link ArtifactEntryPointLocalizer} instance to add.
+	 * @throws NullPointerException
+	 *             if artifactEntryPointLocalizer is null
+	 * @return true if {@link ArtifactEntryPointLocalizer} was not already
+	 *         present.
+	 */
+	public boolean addArtifactEntryPointLocalizer(ArtifactEntryPointLocalizer artifactEntryPointLocalizer) throws NullPointerException;
+
+	/**
+	 * Remove specified {@link ArtifactEntryPointLocalizer} instance.
+	 * 
+	 * @param artifactEntryPointLocalizer
+	 *            {@link ArtifactEntryPointLocalizer} instance to remove.
+	 * @throws NullPointerException
+	 *             if artifactEntryPointLocalizer is null
+	 * @return true if {@link ArtifactEntryPointLocalizer} instance was found and removed.
+	 */
+	public boolean removeArtifactEntryPointLocalizer(ArtifactEntryPointLocalizer artifactEntryPointLocalizer) throws NullPointerException;
+
 }

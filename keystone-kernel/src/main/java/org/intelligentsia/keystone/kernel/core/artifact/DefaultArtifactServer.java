@@ -25,7 +25,9 @@ package org.intelligentsia.keystone.kernel.core.artifact;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.api.artifacts.ArtifactsService;
@@ -33,6 +35,8 @@ import org.intelligentsia.keystone.api.artifacts.DefaultArtifactsService;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.api.artifacts.Resource;
 import org.intelligentsia.keystone.kernel.ArtifactContext;
+import org.intelligentsia.keystone.kernel.ArtifactEntryPoint;
+import org.intelligentsia.keystone.kernel.ArtifactEntryPointLocalizer;
 import org.intelligentsia.keystone.kernel.ArtifactServer;
 import org.intelligentsia.keystone.kernel.IsolationLevel;
 import org.intelligentsia.keystone.kernel.core.AbstractKernelServer;
@@ -77,6 +81,12 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	private final Map<ArtifactIdentifier, ArtifactContext> artifacts = new HashMap<ArtifactIdentifier, ArtifactContext>();
 
 	/**
+	 * Set of {@link ArtifactEntryPointLocalizer} which implement a chain of
+	 * responsability.
+	 */
+	private final Set<ArtifactEntryPointLocalizer> artifactEntryPointLocalizers = new LinkedHashSet<ArtifactEntryPointLocalizer>();
+
+	/**
 	 * Build a new instance of DefaultArtifactServer.java.
 	 * 
 	 * @param artifactsService
@@ -85,7 +95,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	 *             if artifactsService is null
 	 */
 	public DefaultArtifactServer() {
-		super();
+		super("artifact-server");
 		this.parent = JarClassLoaderFactory.initialize();
 		compositeProxyClassLoader = new CompositeProxyClassLoader();
 		compositeProxyClassLoader.setOrder(15);
@@ -138,6 +148,11 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 		return artifacts.get(Preconditions.checkNotNull(artifactIdentifier, "artifactIdentifier"));
 	}
 
+	@Override
+	public Iterator<ArtifactIdentifier> iterator() {
+		return artifacts.keySet().iterator();
+	}
+
 	/**
 	 * @see org.intelligentsia.keystone.kernel.ArtifactServer#load(org.intelligentsia
 	 *      .keystone.api.artifacts.ArtifactIdentifier,
@@ -181,6 +196,54 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 		throw new KeystoneRuntimeException("not yet implemented");
 	}
 
+	@Override
+	public boolean addArtifactEntryPointLocalizer(ArtifactEntryPointLocalizer artifactEntryPointLocalizer) throws NullPointerException {
+		Preconditions.checkNotNull(artifactEntryPointLocalizer, "artifactEntryPointLocalizer");
+		return artifactEntryPointLocalizers.add(artifactEntryPointLocalizer);
+	}
+
+	@Override
+	public boolean removeArtifactEntryPointLocalizer(ArtifactEntryPointLocalizer artifactEntryPointLocalizer) throws NullPointerException {
+		Preconditions.checkNotNull(artifactEntryPointLocalizer, "artifactEntryPointLocalizer");
+		return artifactEntryPointLocalizers.remove(artifactEntryPointLocalizer);
+	}
+
+	/**
+	 * Handle {@link ArtifactContextChangeEvent} event.
+	 * 
+	 * @param artifactContextChangeEvent
+	 */
+	public void onArtifactContextChange(final ArtifactContextChangeEvent artifactContextChangeEvent) {
+		// not destroying state
+		if (!isDestroying() && artifactContextChangeEvent != null) {
+			// intialization ?
+			if (ArtifactContextChangeEvent.State.INITIALIZED.equals(artifactContextChangeEvent.getState())) {
+				ArtifactEntryPoint artifactEntryPoint = localize(artifactContextChangeEvent.getArtifactIdentifier());
+				if (artifactEntryPoint != null) {
+					kernel.dmesg("find entry point for %s", artifactContextChangeEvent.getArtifactIdentifier());
+					// TODO run this
+
+				}
+			}
+		}
+	}
+
+	/**
+	 * Localize {@link ArtifactEntryPoint} for specified
+	 * {@link ArtifactIdentifier}.
+	 * 
+	 * @param artifactIdentifier
+	 * @return an {@link ArtifactEntryPoint} instance or null if none is found.
+	 */
+	private ArtifactEntryPoint localize(ArtifactIdentifier artifactIdentifier) {
+		ArtifactEntryPoint artifactEntryPoint = null;
+		Iterator<ArtifactEntryPointLocalizer> iterator = artifactEntryPointLocalizers.iterator();
+		while (artifactEntryPoint == null && iterator.hasNext()) {
+			artifactEntryPoint = iterator.next().localize(artifactIdentifier);
+		}
+		return artifactEntryPoint;
+	}
+
 	/**
 	 * Build a new instance of JarClassLoader with only local loader activated.
 	 * <p>
@@ -209,11 +272,6 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 			compositeProxyClassLoader.add(classLoader.getLocalLoader());
 		}
 		return classLoader;
-	}
-
-	@Override
-	public Iterator<ArtifactIdentifier> iterator() {
-		return artifacts.keySet().iterator();
 	}
 
 	/**

@@ -55,6 +55,7 @@ public class DefaultRepositoryServer extends AbstractKernelServer implements Rep
 	 * Build a new instance of DefaultRepositoryServer.java.
 	 */
 	public DefaultRepositoryServer() {
+		super("repository-server");
 		groupRepositoryService = new GroupRepositoryService();
 	}
 

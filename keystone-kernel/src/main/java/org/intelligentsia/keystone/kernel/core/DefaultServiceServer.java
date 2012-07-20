@@ -53,7 +53,7 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 	 * Build a new instance of DefaultServiceServer.java.
 	 */
 	public DefaultServiceServer() {
-		super();
+		super("service-server");
 	}
 
 	@Override

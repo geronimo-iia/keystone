@@ -34,8 +34,9 @@ import org.intelligentsia.keystone.kernel.service.ServiceProvider;
  */
 public abstract class AbstractKernelServer implements KernelServer {
 
-	protected String author = "";
-	protected String description = "";
+	protected String name;
+	protected String author;
+	protected String description;
 	protected Kernel kernel;
 	private State state = State.CREATED;
 
@@ -43,19 +44,35 @@ public abstract class AbstractKernelServer implements KernelServer {
 	 * Build a new instance of AbstractKernelServer.java.
 	 */
 	public AbstractKernelServer() {
-		super();
+		this("", "", "");
 	}
 
 	/**
 	 * Build a new instance of AbstractKernelServer.java.
 	 * 
+	 * @param name
+	 */
+	public AbstractKernelServer(final String name) {
+		this(name, "", "");
+	}
+
+	/**
+	 * Build a new instance of AbstractKernelServer.java.
+	 * 
+	 * @param name
 	 * @param author
 	 * @param description
 	 */
-	public AbstractKernelServer(final String author, final String description) {
+	public AbstractKernelServer(final String name, final String author, final String description) {
 		super();
+		this.name = name;
 		this.author = author;
 		this.description = description;
+	}
+
+	@Override
+	public String getName() {
+		return name;
 	}
 
 	@Override

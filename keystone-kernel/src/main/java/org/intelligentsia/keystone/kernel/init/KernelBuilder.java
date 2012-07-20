@@ -25,6 +25,7 @@ import java.util.Map;
 
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.api.artifacts.repository.RepositoryService;
+import org.intelligentsia.keystone.kernel.ArtifactEntryPointLocalizer;
 import org.intelligentsia.keystone.kernel.ArtifactServer;
 import org.intelligentsia.keystone.kernel.EventBusServer;
 import org.intelligentsia.keystone.kernel.Kernel;
@@ -110,6 +111,11 @@ public class KernelBuilder {
 
 	public <K extends KernelServer> KernelBuilder addKernelServer(final Class<K> className, final K instance) throws KeystoneRuntimeException {
 		servers.put(className, instance);
+		return this;
+	}
+
+	public KernelBuilder addArtifactEntryPointLocalizer(ArtifactEntryPointLocalizer artifactEntryPointLocalizer) {
+		getKernelServer(ArtifactServer.class).addArtifactEntryPointLocalizer(artifactEntryPointLocalizer);
 		return this;
 	}
 

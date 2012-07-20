@@ -218,7 +218,8 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 		if (!isDestroying() && (artifactContextChangeEvent != null)) {
 			// intialization ?
 			if (ArtifactContextChangeEvent.State.INITIALIZED.equals(artifactContextChangeEvent.getState())) {
-				final ArtifactEntryPoint artifactEntryPoint = localize(artifactContextChangeEvent.getArtifactIdentifier());
+				ArtifactContext artifactContext = find(artifactContextChangeEvent.getArtifactIdentifier());
+				final ArtifactEntryPoint artifactEntryPoint = localize(artifactContext);
 				if (artifactEntryPoint != null) {
 					kernel.dmesg("find entry point for %s", artifactContextChangeEvent.getArtifactIdentifier());
 					// TODO run this
@@ -229,17 +230,19 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	}
 
 	/**
-	 * Localize {@link ArtifactEntryPoint} for specified
-	 * {@link ArtifactIdentifier}.
+	 * Localize {@link ArtifactEntryPoint} for specified {@link ArtifactContext}
+	 * .
 	 * 
-	 * @param artifactIdentifier
+	 * @param artifactContext
 	 * @return an {@link ArtifactEntryPoint} instance or null if none is found.
 	 */
-	private ArtifactEntryPoint localize(final ArtifactIdentifier artifactIdentifier) {
+	private ArtifactEntryPoint localize(final ArtifactContext artifactContext) {
 		ArtifactEntryPoint artifactEntryPoint = null;
-		final Iterator<ArtifactEntryPointLocalizer> iterator = artifactEntryPointLocalizers.iterator();
-		while ((artifactEntryPoint == null) && iterator.hasNext()) {
-			artifactEntryPoint = iterator.next().localize(artifactIdentifier);
+		if (artifactContext != null) {
+			final Iterator<ArtifactEntryPointLocalizer> iterator = artifactEntryPointLocalizers.iterator();
+			while ((artifactEntryPoint == null) && iterator.hasNext()) {
+				artifactEntryPoint = iterator.next().localize(artifactContext);
+			}
 		}
 		return artifactEntryPoint;
 	}

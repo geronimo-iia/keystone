@@ -19,26 +19,14 @@
  */
 package org.intelligentsia.keystone.kernel;
 
-import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
-import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
+import java.util.concurrent.ExecutorService;
 
 /**
- * {@link ArtifactEntryPointLocalizer} declare method to localize an
- * {@link ArtifactEntryPoint} for specified {@link ArtifactIdentifier}.
+ * KernelExecutor declare methods to excute some task at kernel level.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface ArtifactEntryPointLocalizer {
-	/**
-	 * Localize {@link ArtifactEntryPoint} for specified
-	 * {@link ArtifactContext}.
-	 * 
-	 * @param artifactContext
-	 * @return an {@link ArtifactEntryPoint} instance or null if none is found.
-	 * @throws NullPointerException
-	 *             if artifactContext is null
-	 * @throws KeystoneRuntimeException
-	 *             if error occurs
-	 */
-	public ArtifactEntryPoint localize(ArtifactContext artifactContext) throws NullPointerException, KeystoneRuntimeException;
+public interface KernelExecutor extends ExecutorService {
+
+	
 }

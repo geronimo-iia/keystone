@@ -22,6 +22,7 @@ package org.intelligentsia.keystone.kernel.core;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,7 @@ import org.intelligentsia.utilities.StringUtils;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class BaseKernel implements Kernel {
+public class BaseKernel implements Kernel, Iterable<KernelServer> {
 
 	/**
 	 * {@link Map} of {@link KernelServer} instance.
@@ -151,7 +152,7 @@ public class BaseKernel implements Kernel {
 	 *             if a {@link KernelServer} is ever registered with specified
 	 *             class name.
 	 */
-	public <K extends KernelServer> K register(Class<K> className, K instance) throws KeystoneRuntimeException {
+	public <K extends KernelServer> K register(final Class<K> className, final K instance) throws KeystoneRuntimeException {
 		if (servers.containsKey(className)) {
 			throw new KeystoneRuntimeException(className + " is ever registered");
 		}
@@ -166,8 +167,13 @@ public class BaseKernel implements Kernel {
 	 * @param className
 	 * @return removed {@link KernelServer}.
 	 */
-	public KernelServer unregister(Class<? extends KernelServer> className) {
+	public KernelServer unregister(final Class<? extends KernelServer> className) {
 		return servers.remove(className);
+	}
+
+	@Override
+	public Iterator<KernelServer> iterator() {
+		return servers.values().iterator();
 	}
 
 	/**
@@ -178,10 +184,10 @@ public class BaseKernel implements Kernel {
 	 */
 	protected void initializeKernelServer() throws KeystoneRuntimeException {
 		dmesg("initialize kernel server");
-		for (KernelServer kernelServer : servers.values()) {
+		for (final KernelServer kernelServer : servers.values()) {
 			try {
 				kernelServer.initialize(this);
-			} catch (KeystoneRuntimeException e) {
+			} catch (final KeystoneRuntimeException e) {
 				dmesg("error when initializing %s: %s", kernelServer.getClass().getSimpleName(), e.getMessage());
 				throw e;
 			}
@@ -194,13 +200,13 @@ public class BaseKernel implements Kernel {
 	protected void destroyKernelServer() {
 		dmesg("destroy kernel server");
 		// reverse order
-		List<KernelServer> list = new ArrayList<KernelServer>(servers.values());
+		final List<KernelServer> list = new ArrayList<KernelServer>(servers.values());
 		Collections.reverse(list);
 		// destroy
-		for (KernelServer kernelServer : list) {
+		for (final KernelServer kernelServer : list) {
 			try {
 				kernelServer.destroy();
-			} catch (Throwable e) {
+			} catch (final Throwable e) {
 				dmesg("error when destroying %s: %s", kernelServer.getClass().getSimpleName(), e.getMessage());
 			}
 		}

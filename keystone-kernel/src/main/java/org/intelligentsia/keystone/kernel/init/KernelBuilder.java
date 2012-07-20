@@ -71,7 +71,7 @@ public class KernelBuilder {
 	 *            main kernel process
 	 * @return a new {@link Kernel} instance.
 	 */
-	public Kernel build(Runnable mainKernelProcess) {
+	public Kernel build(final Runnable mainKernelProcess) {
 		return new BaseKernel(getKernelServer(EventBusServer.class), getKernelServer(RepositoryServer.class), getKernelServer(ArtifactServer.class), getKernelServer(ServiceServer.class), errStream, mainKernelProcess);
 	}
 
@@ -108,13 +108,13 @@ public class KernelBuilder {
 		return this;
 	}
 
-	public <K extends KernelServer> KernelBuilder addKernelServer(Class<K> className, K instance) throws KeystoneRuntimeException {
+	public <K extends KernelServer> KernelBuilder addKernelServer(final Class<K> className, final K instance) throws KeystoneRuntimeException {
 		servers.put(className, instance);
 		return this;
 	}
 
 	@SuppressWarnings("unchecked")
-	protected <T extends KernelServer> T getKernelServer(Class<T> className) {
+	protected <T extends KernelServer> T getKernelServer(final Class<T> className) {
 		return (T) servers.get(className);
 	}
 }

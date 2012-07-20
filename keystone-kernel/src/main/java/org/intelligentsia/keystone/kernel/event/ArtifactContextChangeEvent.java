@@ -50,8 +50,8 @@ public class ArtifactContextChangeEvent {
 	 */
 	public ArtifactContextChangeEvent(final ArtifactIdentifier artifactIdentifier, final State state) throws NullPointerException {
 		super();
-		this.artifactIdentifier = Preconditions.checkNotNull(artifactIdentifier,"artifactIdentifier");
-		this.state =  Preconditions.checkNotNull(state,"state");
+		this.artifactIdentifier = Preconditions.checkNotNull(artifactIdentifier, "artifactIdentifier");
+		this.state = Preconditions.checkNotNull(state, "state");
 	}
 
 	/**

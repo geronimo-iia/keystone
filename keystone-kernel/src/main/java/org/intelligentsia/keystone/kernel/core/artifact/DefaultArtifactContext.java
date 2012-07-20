@@ -73,7 +73,7 @@ public class DefaultArtifactContext implements ArtifactContext {
 	 */
 	public DefaultArtifactContext(final ArtifactIdentifier artifactIdentifier) throws NullPointerException {
 		super();
-		this.artifactIdentifier = Preconditions.checkNotNull(artifactIdentifier,"artifactIdentifier");
+		this.artifactIdentifier = Preconditions.checkNotNull(artifactIdentifier, "artifactIdentifier");
 	}
 
 	/**

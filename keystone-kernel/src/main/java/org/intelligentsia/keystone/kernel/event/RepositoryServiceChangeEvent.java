@@ -47,8 +47,8 @@ public class RepositoryServiceChangeEvent {
 	 */
 	public RepositoryServiceChangeEvent(final RepositoryService repositoryService, final State state) {
 		super();
-		this.repositoryService = Preconditions.checkNotNull(repositoryService,"repositoryService");
-		this.state =  Preconditions.checkNotNull(state,"state");
+		this.repositoryService = Preconditions.checkNotNull(repositoryService, "repositoryService");
+		this.state = Preconditions.checkNotNull(state, "state");
 	}
 
 	/**

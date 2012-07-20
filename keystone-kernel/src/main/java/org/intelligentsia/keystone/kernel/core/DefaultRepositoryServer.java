@@ -119,7 +119,7 @@ public class DefaultRepositoryServer extends AbstractKernelServer implements Rep
 	 */
 	@Override
 	public void remove(final RepositoryService repositoryService) throws NullPointerException {
-		this.groupRepositoryService.remove(Preconditions.checkNotNull(repositoryService,"repositoryService"));
+		this.groupRepositoryService.remove(Preconditions.checkNotNull(repositoryService, "repositoryService"));
 		if (!isDestroying()) {
 			kernel.getEventBus().publish(new RepositoryServiceChangeEvent(repositoryService, RepositoryServiceChangeEvent.State.REMOVED));
 		}

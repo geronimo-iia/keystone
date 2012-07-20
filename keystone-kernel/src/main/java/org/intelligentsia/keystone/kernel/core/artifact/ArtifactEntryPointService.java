@@ -37,14 +37,14 @@ public class ArtifactEntryPointService implements Service {
 	}
 
 	@Override
-	public void initialize(KernelContext context) {
+	public void initialize(final KernelContext context) {
 	}
 
 	@Override
 	public void destroy() {
 	}
 
-	public void onArtifactContextChange(ArtifactContextChangeEvent artifactContextChangeEvent) {
+	public void onArtifactContextChange(final ArtifactContextChangeEvent artifactContextChangeEvent) {
 
 	}
 }

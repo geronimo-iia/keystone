@@ -103,7 +103,8 @@ public interface ArtifactServer extends Iterable<ArtifactIdentifier>, KernelServ
 	 *            {@link ArtifactEntryPointLocalizer} instance to remove.
 	 * @throws NullPointerException
 	 *             if artifactEntryPointLocalizer is null
-	 * @return true if {@link ArtifactEntryPointLocalizer} instance was found and removed.
+	 * @return true if {@link ArtifactEntryPointLocalizer} instance was found
+	 *         and removed.
 	 */
 	public boolean removeArtifactEntryPointLocalizer(ArtifactEntryPointLocalizer artifactEntryPointLocalizer) throws NullPointerException;
 

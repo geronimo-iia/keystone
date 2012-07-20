@@ -197,13 +197,13 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	}
 
 	@Override
-	public boolean addArtifactEntryPointLocalizer(ArtifactEntryPointLocalizer artifactEntryPointLocalizer) throws NullPointerException {
+	public boolean addArtifactEntryPointLocalizer(final ArtifactEntryPointLocalizer artifactEntryPointLocalizer) throws NullPointerException {
 		Preconditions.checkNotNull(artifactEntryPointLocalizer, "artifactEntryPointLocalizer");
 		return artifactEntryPointLocalizers.add(artifactEntryPointLocalizer);
 	}
 
 	@Override
-	public boolean removeArtifactEntryPointLocalizer(ArtifactEntryPointLocalizer artifactEntryPointLocalizer) throws NullPointerException {
+	public boolean removeArtifactEntryPointLocalizer(final ArtifactEntryPointLocalizer artifactEntryPointLocalizer) throws NullPointerException {
 		Preconditions.checkNotNull(artifactEntryPointLocalizer, "artifactEntryPointLocalizer");
 		return artifactEntryPointLocalizers.remove(artifactEntryPointLocalizer);
 	}
@@ -215,10 +215,10 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	 */
 	public void onArtifactContextChange(final ArtifactContextChangeEvent artifactContextChangeEvent) {
 		// not destroying state
-		if (!isDestroying() && artifactContextChangeEvent != null) {
+		if (!isDestroying() && (artifactContextChangeEvent != null)) {
 			// intialization ?
 			if (ArtifactContextChangeEvent.State.INITIALIZED.equals(artifactContextChangeEvent.getState())) {
-				ArtifactEntryPoint artifactEntryPoint = localize(artifactContextChangeEvent.getArtifactIdentifier());
+				final ArtifactEntryPoint artifactEntryPoint = localize(artifactContextChangeEvent.getArtifactIdentifier());
 				if (artifactEntryPoint != null) {
 					kernel.dmesg("find entry point for %s", artifactContextChangeEvent.getArtifactIdentifier());
 					// TODO run this
@@ -235,10 +235,10 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	 * @param artifactIdentifier
 	 * @return an {@link ArtifactEntryPoint} instance or null if none is found.
 	 */
-	private ArtifactEntryPoint localize(ArtifactIdentifier artifactIdentifier) {
+	private ArtifactEntryPoint localize(final ArtifactIdentifier artifactIdentifier) {
 		ArtifactEntryPoint artifactEntryPoint = null;
-		Iterator<ArtifactEntryPointLocalizer> iterator = artifactEntryPointLocalizers.iterator();
-		while (artifactEntryPoint == null && iterator.hasNext()) {
+		final Iterator<ArtifactEntryPointLocalizer> iterator = artifactEntryPointLocalizers.iterator();
+		while ((artifactEntryPoint == null) && iterator.hasNext()) {
 			artifactEntryPoint = iterator.next().localize(artifactIdentifier);
 		}
 		return artifactEntryPoint;

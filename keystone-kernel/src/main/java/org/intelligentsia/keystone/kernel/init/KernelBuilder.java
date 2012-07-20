@@ -39,6 +39,7 @@ import org.intelligentsia.keystone.kernel.core.DefaultKernelExecutor;
 import org.intelligentsia.keystone.kernel.core.DefaultRepositoryServer;
 import org.intelligentsia.keystone.kernel.core.DefaultServiceServer;
 import org.intelligentsia.keystone.kernel.core.artifact.DefaultArtifactServer;
+import org.intelligentsia.keystone.kernel.core.artifact.MetaInfArtifactEntryPointLocalizer;
 
 /**
  * KernelBuilder implement a builder fo {@link Kernel}.
@@ -62,6 +63,7 @@ public class KernelBuilder {
 		addKernelServer(ServiceServer.class, new DefaultServiceServer());
 		this.errStream = System.err;
 		this.kernelExecutor = new DefaultKernelExecutor();
+		addArtifactEntryPointLocalizer(new MetaInfArtifactEntryPointLocalizer());
 	}
 
 	/**

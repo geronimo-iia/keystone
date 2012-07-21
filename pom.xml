@@ -70,40 +70,11 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>2.1.2</version>
-					<executions>
-						<execution>
-							<id>attach-sources</id>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>2.5</version>
 					<configuration>
 						<encoding>UTF-8</encoding>
 					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.8</version>
-					<configuration>
-						<nohelp>true</nohelp>
-					</configuration>
-					<executions>
-						<execution>
-							<id>attach-sources</id>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
 				</plugin>
 				<!-- ******************************************************************* -->
 				<!-- LICENCE CHECK -->
@@ -121,6 +92,7 @@
 							<exclude>LICENSE.txt</exclude>
 							<exclude>README.md</exclude>
 							<exclude>**/NOTES</exclude>
+							<exclude>**/src/doc/**</exclude>
 							<exclude>**/src/test/resources/**</exclude>
 							<exclude>**/src/repository/**</exclude>
 							<exclude>**/src/test/data/**</exclude>
@@ -155,7 +127,7 @@
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-ftp</artifactId>
-				<version>1.0</version>
+				<version>2.2</version>
 			</extension>
 		</extensions>
 	</build>

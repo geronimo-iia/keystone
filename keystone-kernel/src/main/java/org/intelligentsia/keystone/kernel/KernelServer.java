@@ -24,6 +24,14 @@ import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 /**
  * {@link KernelServer} declare methods to manage internal kernel 'server'.
  * 
+ * 
+ * State:
+ * <ul>
+ * <li>CREATED -> INITIALIZING</li>
+ * <li>INITIALIZING -> READY</li>
+ * <li>READY -> DESTROYING</li>
+ * <li>DESTROYING -> EOL</li> 
+ * </ul>
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public interface KernelServer {

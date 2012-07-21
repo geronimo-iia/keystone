@@ -133,7 +133,6 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 	@Override
 	public void dmesg(final String message, final Object... args) {
 		if (errStream != null) {
-			// TODO add time info
 			errStream.println(StringUtils.format(message, args));
 		}
 	}

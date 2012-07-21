@@ -109,7 +109,8 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	 */
 	@Override
 	protected void onInitialize() {
-		this.artifactsService = new DefaultArtifactsService(Preconditions.checkNotNull(kernel.getRepositoryServer(), "Repository Server cannot be null"));
+		this.artifactsService = new DefaultArtifactsService(Preconditions.checkNotNull(kernel.getRepositoryServer(),
+				"Repository Server cannot be null"));
 	}
 
 	/**
@@ -144,7 +145,8 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	 *      .keystone.api.artifacts.ArtifactIdentifier)
 	 */
 	@Override
-	public ArtifactContext find(final ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException, NullPointerException {
+	public ArtifactContext find(final ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException,
+			NullPointerException {
 		return artifacts.get(Preconditions.checkNotNull(artifactIdentifier, "artifactIdentifier"));
 	}
 
@@ -155,15 +157,16 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 
 	/**
 	 * @see org.intelligentsia.keystone.kernel.ArtifactServer#load(org.intelligentsia
-	 *      .keystone.api.artifacts.ArtifactIdentifier,
-	 *      org.intelligentsia.keystone.kernel.IsolationLevel)
+	 *      .keystone.api.artifacts.ArtifactIdentifier, org.intelligentsia.keystone.kernel.IsolationLevel)
 	 */
 	@Override
-	public ArtifactContext load(final ArtifactIdentifier artifactIdentifier, final IsolationLevel isolationLevel) throws KeystoneRuntimeException, NullPointerException {
+	public ArtifactContext load(final ArtifactIdentifier artifactIdentifier, final IsolationLevel isolationLevel)
+			throws KeystoneRuntimeException, NullPointerException {
 		if (isDestroying()) {
 			throw new KeystoneRuntimeException("Cannot load artifact when destroying server");
 		}
-		final DefaultArtifactContext result = new DefaultArtifactContext(Preconditions.checkNotNull(artifactIdentifier, "artifactIdentifier"));
+		final DefaultArtifactContext result = new DefaultArtifactContext(Preconditions.checkNotNull(artifactIdentifier,
+				"artifactIdentifier"));
 		Preconditions.checkNotNull(isolationLevel, "isolationLevel");
 		// get resource
 		final Resource resource = artifactsService.get(artifactIdentifier);
@@ -178,7 +181,8 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 		}
 		artifacts.put(artifactIdentifier, result);
 		// raise event
-		kernel.getEventBus().publish(new ArtifactContextChangeEvent(artifactIdentifier, ArtifactContextChangeEvent.State.INITIALIZED));
+		kernel.getEventBus().publish(
+				new ArtifactContextChangeEvent(artifactIdentifier, ArtifactContextChangeEvent.State.INITIALIZED));
 		return result;
 	}
 
@@ -187,23 +191,45 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	 *      .keystone.api.artifacts.ArtifactIdentifier)
 	 */
 	@Override
-	public void unload(final ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException, NullPointerException {
-		// TODO implements unload
-		if (!isDestroying()) {
-			// now we could change behavior with lifecycle and not raising event
-			kernel.getEventBus().publish(new ArtifactContextChangeEvent(artifactIdentifier, ArtifactContextChangeEvent.State.DESTROYED));
+	public void unload(final ArtifactIdentifier artifactIdentifier) throws KeystoneRuntimeException,
+			NullPointerException {
+		ArtifactContext artifactContext = artifacts.remove(Preconditions.checkNotNull(artifactIdentifier,
+				"artifactIdentifier"));
+		if (artifactContext != null) {
+			// remove loader from composite
+			if (artifactContext.getIsolationLevel().equals(IsolationLevel.NONE)) {
+				compositeProxyClassLoader.remove(((JarClassLoader) artifactContext.getClassLoader()).getLocalLoader());
+			}
+			artifactContext = null;
+			// launch garbage collector
+			kernel.getKernelExecutor().execute(new Runnable() {
+
+				@Override
+				public void run() {
+					// Get the Java runtime
+					Runtime runtime = Runtime.getRuntime();
+					// Run the garbage collector
+					runtime.gc();
+				}
+			});
+			if (!isDestroying()) {
+				// now we could change behavior with life cycle and not raising event
+				kernel.getEventBus().publish(
+						new ArtifactContextChangeEvent(artifactIdentifier, ArtifactContextChangeEvent.State.DESTROYED));
+			}
 		}
-		throw new KeystoneRuntimeException("not yet implemented");
 	}
 
 	@Override
-	public boolean addArtifactEntryPointLocalizer(final ArtifactEntryPointLocalizer artifactEntryPointLocalizer) throws NullPointerException {
+	public boolean addArtifactEntryPointLocalizer(final ArtifactEntryPointLocalizer artifactEntryPointLocalizer)
+			throws NullPointerException {
 		Preconditions.checkNotNull(artifactEntryPointLocalizer, "artifactEntryPointLocalizer");
 		return artifactEntryPointLocalizers.add(artifactEntryPointLocalizer);
 	}
 
 	@Override
-	public boolean removeArtifactEntryPointLocalizer(final ArtifactEntryPointLocalizer artifactEntryPointLocalizer) throws NullPointerException {
+	public boolean removeArtifactEntryPointLocalizer(final ArtifactEntryPointLocalizer artifactEntryPointLocalizer)
+			throws NullPointerException {
 		Preconditions.checkNotNull(artifactEntryPointLocalizer, "artifactEntryPointLocalizer");
 		return artifactEntryPointLocalizers.remove(artifactEntryPointLocalizer);
 	}
@@ -216,7 +242,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	public void onArtifactContextChange(final ArtifactContextChangeEvent artifactContextChangeEvent) {
 		// not destroying state
 		if (!isDestroying() && (artifactContextChangeEvent != null)) {
-			// intialization ?
+			// Initialization ?
 			if (ArtifactContextChangeEvent.State.INITIALIZED.equals(artifactContextChangeEvent.getState())) {
 				final ArtifactContext artifactContext = find(artifactContextChangeEvent.getArtifactIdentifier());
 				final ArtifactEntryPoint artifactEntryPoint = localize(artifactContext);
@@ -235,8 +261,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	}
 
 	/**
-	 * Localize {@link ArtifactEntryPoint} for specified {@link ArtifactContext}
-	 * .
+	 * Localize {@link ArtifactEntryPoint} for specified {@link ArtifactContext} .
 	 * 
 	 * @param artifactContext
 	 * @return an {@link ArtifactEntryPoint} instance or null if none is found.
@@ -255,9 +280,8 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	/**
 	 * Build a new instance of JarClassLoader with only local loader activated.
 	 * <p>
-	 * All instance have a common parent {@link JarClassLoader} instance. If
-	 * {@link IsolationLevel#NONE} then newly classloader is added by
-	 * composition to parent.
+	 * All instance have a common parent {@link JarClassLoader} instance. If {@link IsolationLevel#NONE} then newly
+	 * classloader is added by composition to parent.
 	 * </p>
 	 * 
 	 * @param isolationLevel

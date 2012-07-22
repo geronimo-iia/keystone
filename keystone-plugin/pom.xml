@@ -39,18 +39,10 @@
 			<version>${maven-dependency-tree.version}</version>
 		</dependency>
 	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>com.mycila.maven-license-plugin</groupId>
-				<artifactId>maven-license-plugin</artifactId>
-				<configuration>
-					<header>${basedir}/../header.txt</header>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 	<properties>
+		<!-- License Header path -->
+		<maven-license-plugin.header>${basedir}/../header.txt</maven-license-plugin.header>
+		<!-- dependencies version -->
 		<maven-plugin-api.version>2.0</maven-plugin-api.version>
 		<maven-archiver.version>2.2</maven-archiver.version>
 		<maven-project.version>2.0</maven-project.version>

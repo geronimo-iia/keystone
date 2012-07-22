@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.intelligents-ia.keystone</groupId>
 		<artifactId>keystone</artifactId>
@@ -58,13 +59,10 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>com.mycila.maven-license-plugin</groupId>
-				<artifactId>maven-license-plugin</artifactId>
-				<configuration>
-					<header>${basedir}/../header.txt</header>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
+	<properties>
+		<!-- License Header path -->
+		<maven-license-plugin.header>${basedir}/../header.txt</maven-license-plugin.header>
+	</properties>
 </project>

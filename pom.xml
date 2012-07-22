@@ -88,7 +88,7 @@
 					<artifactId>maven-license-plugin</artifactId>
 					<version>1.9.0</version>
 					<configuration>
-						<header>${basedir}/header.txt</header>
+						<header>${maven-license-plugin.header}</header>
 						<failIfMissing>true</failIfMissing>
 						<aggregate>true</aggregate>
 						<encoding>UTF-8</encoding>
@@ -210,10 +210,15 @@
 	<!-- ******************************************************************* -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- License Header path -->
+		<maven-license-plugin.header>${basedir}/header.txt</maven-license-plugin.header>
+		<!-- Intelligents-ia project -->
+		<org.intelligents-ia.event-bus.version>1.3.0</org.intelligents-ia.event-bus.version>
+		<!-- JCL Version  -->
+		<jcl.version>2.4</jcl.version>
+		<!-- dependencies version -->
 		<com.ning.version>1.6.5</com.ning.version>
 		<org.codehaus.jackson.version>1.9.0</org.codehaus.jackson.version>
 		<com.fasterxml.version>0.6.1</com.fasterxml.version>
-		<jcl.version>2.4</jcl.version>
-		<org.intelligents-ia.event-bus.version>1.3.0</org.intelligents-ia.event-bus.version>
 	</properties>
 </project>

@@ -139,10 +139,7 @@
 	<!-- MODULE LIST -->
 	<!-- ******************************************************************* -->
 	<modules>
-		<module>keystone-boot</module>
-		<module>keystone-plugin</module>
-		<module>keystone-api</module>
-		<module>keystone-kernel</module>
+		<module>modules</module>
 	</modules>
 	<!-- ******************************************************************* -->
 	<!-- DISTRIBUTION -->
@@ -211,7 +208,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- License Header path -->
-		<maven-license-plugin.header>${basedir}/header.txt</maven-license-plugin.header>
+		<maven-license-plugin.header>header.txt</maven-license-plugin.header>
 		<!-- Intelligents-ia project -->
 		<org.intelligents-ia.event-bus.version>1.3.0</org.intelligents-ia.event-bus.version>
 		<!-- JCL Version  -->

@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.intelligents-ia.keystone</groupId>
-		<artifactId>keystone</artifactId>
+		<artifactId>keystone-modules</artifactId>
 		<version>2.6.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
@@ -61,8 +61,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<properties>
-		<!-- License Header path -->
-		<maven-license-plugin.header>${basedir}/../header.txt</maven-license-plugin.header>
-	</properties>
 </project>

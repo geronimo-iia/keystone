@@ -43,7 +43,7 @@ public interface ServiceServer extends Iterable<Class<? extends Service>>, Kerne
 	 * @throws KeystoneRuntimeException
 	 *             if error occurs
 	 */
-	public void register(ArtifactContext artifactContext, Class<Service> serviceClassName, Service service) throws KeystoneRuntimeException;
+	public <S extends Service> void register(ArtifactContext artifactContext, Class<S> serviceClassName, S service) throws KeystoneRuntimeException;
 
 	/**
 	 * Unregister specified {@link Service}.
@@ -55,7 +55,7 @@ public interface ServiceServer extends Iterable<Class<? extends Service>>, Kerne
 	 * @throws KeystoneRuntimeException
 	 *             if error occurs
 	 */
-	public void unregister(ArtifactContext artifactContext, Class<Service> serviceClassName) throws KeystoneRuntimeException;
+	public <S extends Service> void unregister(ArtifactContext artifactContext, Class<S> serviceClassName) throws KeystoneRuntimeException;
 
 	/**
 	 * Find a {@link ServiceProvider} for specified service class.

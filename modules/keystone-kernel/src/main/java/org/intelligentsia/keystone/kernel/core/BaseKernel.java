@@ -20,6 +20,7 @@
 package org.intelligentsia.keystone.kernel.core;
 
 import java.io.PrintStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -27,11 +28,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
+import org.intelligentsia.keystone.kernel.ArtifactContext;
 import org.intelligentsia.keystone.kernel.ArtifactServer;
 import org.intelligentsia.keystone.kernel.EventBusServer;
+import org.intelligentsia.keystone.kernel.IsolationLevel;
 import org.intelligentsia.keystone.kernel.Kernel;
+import org.intelligentsia.keystone.kernel.KernelContext;
 import org.intelligentsia.keystone.kernel.KernelExecutor;
+import org.intelligentsia.keystone.kernel.KernelProviderService;
 import org.intelligentsia.keystone.kernel.KernelServer;
 import org.intelligentsia.keystone.kernel.RepositoryServer;
 import org.intelligentsia.keystone.kernel.ServiceServer;
@@ -142,14 +148,44 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 		try {
 			// initializing all server resource
 			initializeKernelServer();
+			// register kernel service
+			getServiceServer().register(getKernekArtifactContext(), KernelProviderService.class, new DefaultKernelProviderService(this));
 			// do something
 			if (mainKernelProcess != null) {
 				mainKernelProcess.run();
 			}
+			// unregister service
+			getServiceServer().unregister(getKernekArtifactContext(), KernelProviderService.class);
 		} finally {
 			// destroy all server resource
 			destroyKernelServer();
 		}
+	}
+
+	// todo extends this things...
+	private ArtifactContext getKernekArtifactContext() {
+		return new ArtifactContext() {
+
+			@Override
+			public URL getLocalResource() {
+				return null;
+			}
+
+			@Override
+			public IsolationLevel getIsolationLevel() {
+				return IsolationLevel.NONE;
+			}
+
+			@Override
+			public ClassLoader getClassLoader() {
+				return null;
+			}
+
+			@Override
+			public ArtifactIdentifier getArtifactIdentifier() {
+				return new ArtifactIdentifier("org.intelligents-ia.keystone:keystone-kernel");
+			}
+		};
 	}
 
 	/**
@@ -220,6 +256,51 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 				dmesg("error when destroying %s: %s", kernelServer.getName(), e.getMessage());
 			}
 		}
+	}
+
+	/**
+	 * DefaultKernelProviderService implements {@link KernelProviderService}
+	 * that check only if {@link ArtifactContext} is not isloated from thie
+	 * {@link Kernel} instance.
+	 * 
+	 * 
+	 */
+	private class DefaultKernelProviderService implements KernelProviderService {
+
+		private final Kernel kernel;
+
+		/**
+		 * Build a new instance of BaseKernel.java.
+		 * 
+		 * @param kernel
+		 */
+		public DefaultKernelProviderService(Kernel kernel) {
+			super();
+			this.kernel = kernel;
+		}
+
+		@Override
+		public Kernel getKernel(ArtifactContext artifactContext) throws KeystoneRuntimeException {
+			// just check Isolation Level
+			if (!IsolationLevel.NONE.equals(artifactContext.getIsolationLevel())) {
+				throw new KeystoneRuntimeException("Not allowed");
+			}
+			return kernel;
+		}
+
+		@Override
+		public String getName() {
+			return "kernel-provider-service";
+		}
+
+		@Override
+		public void initialize(KernelContext context) {
+		}
+
+		@Override
+		public void destroy() {
+		}
+
 	}
 
 }

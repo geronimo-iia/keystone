@@ -39,7 +39,7 @@ public class ServiceRegistryChangeEvent {
 
 	private final ArtifactIdentifier artifactIdentifier;
 
-	private final Class<Service> serviceClassName;
+	private final Class<? extends Service> serviceClassName;
 
 	private final State state;
 
@@ -52,7 +52,7 @@ public class ServiceRegistryChangeEvent {
 	 * @NullPointerException if artifactIdentifier, serviceClassName or state is
 	 *                       null
 	 */
-	public ServiceRegistryChangeEvent(final ArtifactIdentifier artifactIdentifier, final Class<Service> serviceClassName, final State state) throws NullPointerException {
+	public ServiceRegistryChangeEvent(final ArtifactIdentifier artifactIdentifier, final Class<? extends Service> serviceClassName, final State state) throws NullPointerException {
 		super();
 		this.artifactIdentifier = Preconditions.checkNotNull(artifactIdentifier, "artifactIdentifier");
 		this.serviceClassName = Preconditions.checkNotNull(serviceClassName, "serviceClassName");
@@ -69,7 +69,7 @@ public class ServiceRegistryChangeEvent {
 	/**
 	 * @return the serviceClassName
 	 */
-	public final Class<Service> getServiceClassName() {
+	public final Class<? extends Service> getServiceClassName() {
 		return serviceClassName;
 	}
 

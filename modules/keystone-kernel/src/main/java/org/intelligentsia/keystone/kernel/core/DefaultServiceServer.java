@@ -80,7 +80,7 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 	}
 
 	@Override
-	public void register(final ArtifactContext artifactContext, final Class<Service> serviceClassName, final Service service) throws KeystoneRuntimeException, NullPointerException {
+	public <S extends Service> void register(final ArtifactContext artifactContext, final Class<S> serviceClassName, final S service) throws KeystoneRuntimeException, NullPointerException {
 		if (isDestroying()) {
 			throw new KeystoneRuntimeException("cannot register new service instance when destroying service");
 		}
@@ -102,7 +102,7 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 	}
 
 	@Override
-	public void unregister(final ArtifactContext artifactContext, final Class<Service> serviceClassName) throws KeystoneRuntimeException, NullPointerException {
+	public <S extends Service> void unregister(final ArtifactContext artifactContext, final Class<S> serviceClassName) throws KeystoneRuntimeException, NullPointerException {
 		Preconditions.checkNotNull(artifactContext, "artifactContext");
 		Preconditions.checkNotNull(serviceClassName, "serviceClassName");
 		// get registry

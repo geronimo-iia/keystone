@@ -29,7 +29,7 @@ import org.intelligentsia.keystone.api.artifacts.TransferFailedException;
 
 /**
  * 
- * GroupRepositoryService implement a Read Only composite of RepositoryService.
+ * GroupRepositoryService implement a composite of RepositoryService.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 

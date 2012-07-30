@@ -45,12 +45,7 @@ public enum Launchers {
 	 *            kernel to launch
 	 */
 	public static Launcher launchAndWait(final Kernel kernel) {
-		return launchUntil(kernel, new Predicate() {
-			@Override
-			public boolean evaluate(final Kernel kernel) {
-				return false;
-			}
-		}, 10000);
+		return launchUntil(kernel, Predicates.falsePredicate() , 10000);
 	}
 
 	/**

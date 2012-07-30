@@ -249,7 +249,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 					kernel.getKernelExecutor().execute(new Runnable() {
 						@Override
 						public void run() {
-							artifactEntryPoint.onLoad(getKernelContext());
+							artifactEntryPoint.onLoad(artifactContext, getKernelContext());
 						}
 					});
 				}

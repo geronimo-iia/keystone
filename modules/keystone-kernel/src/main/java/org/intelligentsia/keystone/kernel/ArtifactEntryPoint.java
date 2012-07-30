@@ -35,10 +35,12 @@ public interface ArtifactEntryPoint {
 	 * The entry point method, called automatically by loading an artifact that
 	 * declares an implementing class as an entry point.
 	 * 
+	 * @param artifactContext
+	 *            {@link ArtifactContext} instance
 	 * @param kernelContext
 	 *            {@link KernelContext} instance
 	 * @throws KeystoneRuntimeException
 	 *             iof an error occurs
 	 */
-	public void onLoad(KernelContext kernelContext) throws KeystoneRuntimeException;
+	public void onLoad(ArtifactContext artifactContext, KernelContext kernelContext) throws KeystoneRuntimeException;
 }

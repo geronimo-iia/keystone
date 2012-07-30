@@ -19,6 +19,8 @@
  */
 package org.intelligentsia.keystone.kernel;
 
+import java.util.Iterator;
+
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 
@@ -108,4 +110,8 @@ public interface ArtifactServer extends Iterable<ArtifactIdentifier>, KernelServ
 	 */
 	public boolean removeArtifactEntryPointLocalizer(ArtifactEntryPointLocalizer artifactEntryPointLocalizer) throws NullPointerException;
 
+	/**
+	 * @return an {@link Iterator} on {@link ArtifactEntryPointLocalizer}.
+	 */
+	public Iterator<ArtifactEntryPointLocalizer> artifactEntryPointLocalizers();
 }

@@ -223,7 +223,7 @@
 		<!-- JCL Version -->
 		<jcl.version>2.4</jcl.version>
 		<!-- dependencies version -->
-		<com.ning.version>1.6.5</com.ning.version>
+		<com.ning.version>1.7.5</com.ning.version>
 		<org.codehaus.jackson.version>1.9.0</org.codehaus.jackson.version>
 		<com.fasterxml.version>0.6.1</com.fasterxml.version>
 	</properties>

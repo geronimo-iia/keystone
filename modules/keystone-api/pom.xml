@@ -25,7 +25,6 @@
 			<groupId>com.ning</groupId>
 			<artifactId>async-http-client</artifactId>
 			<version>${com.ning.version}</version>
-			<optional>true</optional>
 		</dependency>
 		<!-- ******************************************************************* -->
 		<!-- JACKSON -->
@@ -34,7 +33,6 @@
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>${org.codehaus.jackson.version}</version>
-			<optional>true</optional>
 		</dependency>
 		<!-- ******************************************************************* -->
 		<!-- FASTER XML -->
@@ -43,7 +41,6 @@
 			<groupId>com.fasterxml</groupId>
 			<artifactId>jackson-xml-databind</artifactId>
 			<version>${com.fasterxml.version}</version>
-			<optional>true</optional>
 		</dependency>
 	</dependencies>
 	<!-- ******************************************************************* -->

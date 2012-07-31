@@ -1,16 +1,17 @@
-# Bootstrap your java application
+h1. Bootstrap your java application
 
-Keystone [project][prj] is a bootstrap that loads your application and its dependencies into a single archive.
+Keystone "project":http://intelligents-ia.com/index.php/category/technique/keystone is a bootstrap that loads your application and its dependencies into a single archive.
 With his maven plugin, its use is very easy!
 
-[prj]: http://intelligents-ia.com/index.php/category/technique/keystone
+h1. Configure your project
 
-## Configure your project
+See more "doc":https://github.com/geronimo-iia/keystone/wiki on wiki.
 
-See more [doc][dc-wiki] on wiki.
 
-1. Configure Your POM
-```xml
+h2. Configure Your POM
+
+<pre>
+<code>
 	<build>
 	    <plugins>
 	        <plugin>
@@ -32,11 +33,15 @@ See more [doc][dc-wiki] on wiki.
 	        </plugin>
 	    </plugins>
 	</build>
-```
+</code>
+</pre>
 
-2. Add some repositories
+h2. Add some repositories
 
-```xml
+h3. Releases Repository
+
+<pre>
+<code>
 	<repositories>
 		<repository>
 			<id>intelligents-ia-releases</id>
@@ -47,17 +52,6 @@ See more [doc][dc-wiki] on wiki.
 			</releases>
 			<snapshots>
 				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>intelligents-ia-snapshot</id>
-			<name>Intelligents-ia snapshot repository</name>
-			<url>http://mvn.intelligents-ia.com/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
 			</snapshots>
 		</repository>
 	</repositories>
@@ -73,6 +67,28 @@ See more [doc][dc-wiki] on wiki.
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
+	</pluginRepositories>
+</code>
+</pre>
+
+h3. Snapshot Repository
+
+<pre>
+<code>
+	<repositories>
+		<repository>
+			<id>intelligents-ia-snapshot</id>
+			<name>Intelligents-ia snapshot repository</name>
+			<url>http://mvn.intelligents-ia.com/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
 		<pluginRepository>
 			<id>intelligents-ia-snapshot</id>
 			<name>Intelligents-ia snapshot repository</name>
@@ -85,26 +101,31 @@ See more [doc][dc-wiki] on wiki.
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-```
+</code>
+</pre>
 
-[dc-wiki]: https://github.com/geronimo-iia/keystone/wiki
 
+h1. Use extra features: Restart your application when needed!
 
-## Use extra features: Restart your application when needed!
+h2. Add a new dependency on your project
 
-1. Add a new dependency on your project
-```xml
+<pre>
+<code>
 <dependency>
 	<groupId>org.intelligents-ia.keystone</groupId>
 	<artifactId>keystone-boot</artifactId>
 	<version>2.5</version>
 </dependency>
-``` 
+</code>
+</pre>
 
 
-2. When you want to restart, simply throw this exception
-```java
+h2. When you want to restart, simply throw this exception
+
+<pre>
+<code>
 throw new KeystoneException(KeystoneException.Operation.RESTART);
-```
+</code>
+</pre>
 
 

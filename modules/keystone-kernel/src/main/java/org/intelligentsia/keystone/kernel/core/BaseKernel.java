@@ -37,7 +37,6 @@ import org.intelligentsia.keystone.kernel.ArtifactServer;
 import org.intelligentsia.keystone.kernel.EventBusServer;
 import org.intelligentsia.keystone.kernel.IsolationLevel;
 import org.intelligentsia.keystone.kernel.Kernel;
-import org.intelligentsia.keystone.kernel.KernelContext;
 import org.intelligentsia.keystone.kernel.KernelExecutor;
 import org.intelligentsia.keystone.kernel.KernelProviderService;
 import org.intelligentsia.keystone.kernel.KernelServer;
@@ -256,51 +255,6 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 				dmesg("error when destroying %s: %s", kernelServer.getName(), e.getMessage());
 			}
 		}
-	}
-
-	/**
-	 * DefaultKernelProviderService implements {@link KernelProviderService}
-	 * that check only if {@link ArtifactContext} is not isloated from thie
-	 * {@link Kernel} instance.
-	 * 
-	 * 
-	 */
-	private class DefaultKernelProviderService implements KernelProviderService {
-
-		private final Kernel kernel;
-
-		/**
-		 * Build a new instance of BaseKernel.java.
-		 * 
-		 * @param kernel
-		 */
-		public DefaultKernelProviderService(Kernel kernel) {
-			super();
-			this.kernel = kernel;
-		}
-
-		@Override
-		public Kernel getKernel(ArtifactContext artifactContext) throws KeystoneRuntimeException {
-			// just check Isolation Level
-			if (!IsolationLevel.NONE.equals(artifactContext.getIsolationLevel())) {
-				throw new KeystoneRuntimeException("Not allowed");
-			}
-			return kernel;
-		}
-
-		@Override
-		public String getName() {
-			return "kernel-provider-service";
-		}
-
-		@Override
-		public void initialize(KernelContext context) {
-		}
-
-		@Override
-		public void destroy() {
-		}
-
 	}
 
 }

@@ -19,7 +19,8 @@
  */
 package org.intelligentsia.keystone.api;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 
 import org.junit.Test;
 
@@ -36,7 +37,7 @@ public class PreconditionsTest {
 		try {
 			Preconditions.checkNotNull(null);
 			fail("Wait NullPointerException");
-		} catch (NullPointerException e) {
+		} catch (final NullPointerException e) {
 			// ok
 		}
 	}
@@ -47,7 +48,7 @@ public class PreconditionsTest {
 		try {
 			Preconditions.checkNotNull(null, "aa");
 			fail("Wait NullPointerException");
-		} catch (NullPointerException e) {
+		} catch (final NullPointerException e) {
 			// ok
 			assertEquals("aa", e.getMessage());
 		}

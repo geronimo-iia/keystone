@@ -27,10 +27,25 @@ package org.intelligentsia.keystone.api;
 public enum Preconditions {
 	;
 
+	/**
+	 * @param argument
+	 * @return argument if not null
+	 * @throws NullPointerException
+	 *             if argument is null
+	 */
 	public static <T> T checkNotNull(final T argument) throws NullPointerException {
 		return checkNotNull(argument, "");
 	}
 
+	/**
+	 * 
+	 * @param argument
+	 * @param message
+	 *            message to throw if argument is null
+	 * @return argument if not null
+	 * @throws NullPointerException
+	 *             if argument is null
+	 */
 	public static <T> T checkNotNull(final T argument, final String message) throws NullPointerException {
 		if (argument == null) {
 			throw new NullPointerException(String.valueOf(message));

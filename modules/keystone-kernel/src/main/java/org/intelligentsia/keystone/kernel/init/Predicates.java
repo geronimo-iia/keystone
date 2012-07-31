@@ -43,7 +43,7 @@ public enum Predicates {
 		return new Predicate() {
 
 			@Override
-			public boolean evaluate(Kernel kernel) {
+			public boolean evaluate(final Kernel kernel) {
 				return false;
 			}
 		};
@@ -59,11 +59,11 @@ public enum Predicates {
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
 			@Override
-			public boolean evaluate(Kernel kernel) {
+			public boolean evaluate(final Kernel kernel) {
 				String line = "";
 				try {
 					line = bufferedReader.readLine();
-				} catch (IOException e) {
+				} catch (final IOException e) {
 				}
 				return (line.equals("quit"));
 			}

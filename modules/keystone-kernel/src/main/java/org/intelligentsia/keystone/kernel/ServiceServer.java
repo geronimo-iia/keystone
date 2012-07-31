@@ -20,8 +20,6 @@
 package org.intelligentsia.keystone.kernel;
 
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
-import org.intelligentsia.keystone.kernel.service.Service;
-import org.intelligentsia.keystone.kernel.service.ServiceProvider;
 
 /**
  * {@link ServiceServer} manage a collection of {@link Service} class name.

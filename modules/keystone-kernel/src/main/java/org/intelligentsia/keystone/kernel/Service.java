@@ -17,9 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel.service;
-
-import org.intelligentsia.keystone.kernel.KernelContext;
+package org.intelligentsia.keystone.kernel;
 
 /**
  * Service declare methods to manage a 'service' in our system.

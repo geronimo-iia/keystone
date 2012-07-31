@@ -20,7 +20,6 @@
 package org.intelligentsia.keystone.kernel.core;
 
 import java.io.PrintStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -42,6 +41,8 @@ import org.intelligentsia.keystone.kernel.KernelProviderService;
 import org.intelligentsia.keystone.kernel.KernelServer;
 import org.intelligentsia.keystone.kernel.RepositoryServer;
 import org.intelligentsia.keystone.kernel.ServiceServer;
+import org.intelligentsia.keystone.kernel.core.artifact.DefaultArtifactContext;
+import org.xeustechnologies.jcl.JarClassLoader;
 
 /**
  * BaseKernel implementation.
@@ -83,26 +84,44 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 	 * {@link KernelExecutor} instance.
 	 */
 	private final KernelExecutor kernelExecutor;
+	/**
+	 * {@link ArtifactContext} kernel instance.
+	 */
+	private final ArtifactContext kernelArtifactContext;
 
 	/**
 	 * Build a new instance of BaseKernel.java.
 	 * 
 	 * @param eventBusServer
+	 *            {@link EventBusServer} instance
 	 * @param repositoryServer
+	 *            {@link RepositoryServer} instance
 	 * @param artifactServer
+	 *            {@link ArtifactServer} instance
 	 * @param serviceServer
+	 *            {@link ServiceServer} instance
 	 * @param errStream
+	 *            {@link PrintStream} instance to output message
 	 * @param mainKernelProcess
+	 *            {@link Runnable} optional runnable process
 	 * @param kernelExecutor
+	 *            {@link KernelExecutor} instance
+	 * @param classLoader
+	 *            {@link JarClassLoader} instance
 	 * @throws NullPointerException
-	 *             if one of server is null.
+	 *             if one of server, kernelExecutor or classLoader is null.
 	 */
 	public BaseKernel(final EventBusServer eventBusServer, final RepositoryServer repositoryServer, final ArtifactServer artifactServer, final ServiceServer serviceServer, final PrintStream errStream, final Runnable mainKernelProcess,
-			final KernelExecutor kernelExecutor) throws NullPointerException {
+			final KernelExecutor kernelExecutor, final JarClassLoader classLoader) throws NullPointerException {
 		super();
+		// create context
+		this.kernelArtifactContext = loadKernelArtifactContext(Preconditions.checkNotNull(classLoader, "classLoader"));
+
+		// basic kernel element
 		this.errStream = errStream;
 		this.mainKernelProcess = mainKernelProcess;
 		this.kernelExecutor = Preconditions.checkNotNull(kernelExecutor, "kernelExecutor");
+
 		// initialize base kernel server member
 		this.eventBusServer = register(EventBusServer.class, Preconditions.checkNotNull(eventBusServer, "eventBusServer"));
 		this.repositoryServer = register(RepositoryServer.class, Preconditions.checkNotNull(repositoryServer, "repositoryServer"));
@@ -148,43 +167,24 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 			// initializing all server resource
 			initializeKernelServer();
 			// register kernel service
-			getServiceServer().register(getKernekArtifactContext(), KernelProviderService.class, new DefaultKernelProviderService(this));
+			getServiceServer().register(kernelArtifactContext, KernelProviderService.class, new DefaultKernelProviderService(this));
 			// do something
 			if (mainKernelProcess != null) {
 				mainKernelProcess.run();
 			}
 			// unregister service
-			getServiceServer().unregister(getKernekArtifactContext(), KernelProviderService.class);
+			getServiceServer().unregister(kernelArtifactContext, KernelProviderService.class);
 		} finally {
 			// destroy all server resource
 			destroyKernelServer();
 		}
 	}
 
-	// todo extends this things...
-	private ArtifactContext getKernekArtifactContext() {
-		return new ArtifactContext() {
-
-			@Override
-			public URL getLocalResource() {
-				return null;
-			}
-
-			@Override
-			public IsolationLevel getIsolationLevel() {
-				return IsolationLevel.NONE;
-			}
-
-			@Override
-			public ClassLoader getClassLoader() {
-				return null;
-			}
-
-			@Override
-			public ArtifactIdentifier getArtifactIdentifier() {
-				return new ArtifactIdentifier("org.intelligents-ia.keystone:keystone-kernel");
-			}
-		};
+	/**
+	 * @return kernel {@link ArtifactContext} instance.
+	 */
+	public ArtifactContext getArtifactContext() {
+		return kernelArtifactContext;
 	}
 
 	/**
@@ -255,6 +255,27 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 				dmesg("error when destroying %s: %s", kernelServer.getName(), e.getMessage());
 			}
 		}
+	}
+
+	/**
+	 * Instanciate Kernel {@link ArtifactContext} instance by loading version
+	 * information from maven. If an error occur, no version will be available.
+	 * 
+	 * @param classLoader
+	 * @return kernel {@link ArtifactContext} instance.
+	 */
+	private ArtifactContext loadKernelArtifactContext(final JarClassLoader classLoader) {
+		ArtifactIdentifier artifactIdentifier;
+		try {
+			artifactIdentifier = ArtifactIdentifier.parse(classLoader, "org.intelligents-ia.keystone", "keystone-kernel");
+		} catch (final KeystoneRuntimeException e) {
+			dmesg("Error when loading maven information on artifact identifier, continue without version information (%s).", e.getMessage());
+			artifactIdentifier = ArtifactIdentifier.parse("org.intelligents-ia.keystone:keystone-kernel");
+		}
+		final DefaultArtifactContext artifactContext = new DefaultArtifactContext(artifactIdentifier);
+		artifactContext.setClassLoader(classLoader);
+		artifactContext.setIsolationLevel(IsolationLevel.ISOLATED);
+		return artifactContext;
 	}
 
 }

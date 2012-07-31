@@ -89,17 +89,18 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	/**
 	 * Build a new instance of DefaultArtifactServer.java.
 	 * 
-	 * @param artifactsService
-	 *            artifacts Service instance
+	 * @param parent
+	 *            parent classloader (usually kernel clas loader)
 	 * @throws NullPointerException
-	 *             if artifactsService is null
+	 *             if parent is null
 	 */
-	public DefaultArtifactServer() {
+	public DefaultArtifactServer(final JarClassLoader parent) {
 		super("artifact-server");
-		this.parent = JarClassLoaderFactory.initialize();
+		this.parent = Preconditions.checkNotNull(parent, "parent");
+		// add composite proxy loader
 		compositeProxyClassLoader = new CompositeProxyClassLoader();
 		compositeProxyClassLoader.setOrder(15);
-		parent.addLoader(compositeProxyClassLoader);
+		this.parent.addLoader(compositeProxyClassLoader);
 	}
 
 	/**
@@ -201,7 +202,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 				@Override
 				public void run() {
 					// Get the Java runtime
-					Runtime runtime = Runtime.getRuntime();
+					final Runtime runtime = Runtime.getRuntime();
 					// Run the garbage collector
 					runtime.gc();
 				}

@@ -46,13 +46,13 @@ public class DefaultKernelProviderService implements KernelProviderService {
 	 * @throws NullPointerException
 	 *             if kernel is null
 	 */
-	public DefaultKernelProviderService(Kernel kernel) throws NullPointerException {
+	public DefaultKernelProviderService(final Kernel kernel) throws NullPointerException {
 		super();
 		this.kernel = Preconditions.checkNotNull(kernel, "kernel");
 	}
 
 	@Override
-	public Kernel getKernel(ArtifactContext artifactContext) throws KeystoneRuntimeException {
+	public Kernel getKernel(final ArtifactContext artifactContext) throws KeystoneRuntimeException {
 		// just check Isolation Level
 		if (!IsolationLevel.NONE.equals(artifactContext.getIsolationLevel())) {
 			throw new KeystoneRuntimeException("Not allowed");
@@ -66,7 +66,7 @@ public class DefaultKernelProviderService implements KernelProviderService {
 	}
 
 	@Override
-	public void initialize(KernelContext context) {
+	public void initialize(final KernelContext context) {
 		// nothing to do
 	}
 

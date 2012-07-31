@@ -22,8 +22,13 @@
  */
 package org.intelligentsia.keystone.api.artifacts;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.util.Properties;
 import java.util.StringTokenizer;
+
+import org.intelligentsia.keystone.api.StringUtils;
 
 /**
  * ArtifactIdentifier manage the 2B3...
@@ -116,6 +121,31 @@ public class ArtifactIdentifier implements Serializable, Comparable<ArtifactIden
 		final String a = tokenizer.nextToken();
 		final String v = tokenizer.hasMoreElements() ? tokenizer.nextToken() : null;
 		return new ArtifactIdentifier(g, a, v);
+	}
+
+	/**
+	 * Parse maven information from file
+	 * 'META-INF/maven/groupId/artifactId/pom.properties'.
+	 * 
+	 * @param classLoader
+	 * @param groupId
+	 * @param artifactId
+	 * @return {@link ArtifactIdentifier} instance.
+	 * @throws KeystoneRuntimeException
+	 *             if an error occurs
+	 */
+	public static final ArtifactIdentifier parse(final ClassLoader classLoader, final String groupId, final String artifactId) throws KeystoneRuntimeException {
+		final Properties props = new Properties();
+		final InputStream is = classLoader.getResourceAsStream("META-INF/maven/" + groupId + "/" + artifactId + "/pom.properties");
+		if (is != null) {
+			try {
+				props.load(is);
+			} catch (final IOException e) {
+				throw new KeystoneRuntimeException(StringUtils.format("Cannot load information for %s:%s", groupId, artifactId), e);
+			}
+			return new ArtifactIdentifier(props.getProperty("groupId"), props.getProperty("artifactId"), props.getProperty("version"));
+		}
+		throw new KeystoneRuntimeException(StringUtils.format("Cannot load information for %s:%s", groupId, artifactId));
 	}
 
 	@Override

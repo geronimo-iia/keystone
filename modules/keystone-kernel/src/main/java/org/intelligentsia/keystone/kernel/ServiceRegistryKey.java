@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.keystone.kernel.service;
+package org.intelligentsia.keystone.kernel;
 
 import java.io.Serializable;
 

@@ -18,13 +18,39 @@
 
 ====
 
+May step should be:
+A/ Obtain a kernel which :
+  - can download artefact in a local repository
+  - create a default class loader context
+  - can add artefact on this class loader (without restart)
+  - list all artefact loaded
+  - instanciate class, manager proxy and cast ?
+
+B/ Add Artefact loader:
+ - build with ArtefactLoaderHandler:
+	- LibrairyHandler: load inner librairie META-INF/lib if exist (should using keystone-boot classes)
+ 	- MainClassHandler: use Main-Class manifest: launch this main class in a dedicated thread.
+ - may use a internal event bus based on guava ?
+ 
+C/ Extends Handler:
+ - add Spring DM handler
+ - add Jetty Handler => webapp loader
+
+D/ work on Kernel Internal Service ?
+ - Jndi provider
+ - VFS provider
+ - Database provider aka h2  
+ 
+E/ Extends capacity:
+ - Save configuration of kernel for restart
+    
+  
 
 - create KernelConfiguration as
   {g:a:v}+ loader as no isolated artifact
   home ?
   [repository definition}*
   
-- manage ArtifactContext for Kernel instance
 
 - fix exception managment on kernel service register/unregister
 

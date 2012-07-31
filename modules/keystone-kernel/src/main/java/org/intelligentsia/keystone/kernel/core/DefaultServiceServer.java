@@ -30,11 +30,11 @@ import org.intelligentsia.keystone.api.Preconditions;
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.kernel.ArtifactContext;
+import org.intelligentsia.keystone.kernel.Service;
+import org.intelligentsia.keystone.kernel.ServiceProvider;
+import org.intelligentsia.keystone.kernel.ServiceRegistryKey;
 import org.intelligentsia.keystone.kernel.ServiceServer;
 import org.intelligentsia.keystone.kernel.event.ServiceRegistryChangeEvent;
-import org.intelligentsia.keystone.kernel.service.Service;
-import org.intelligentsia.keystone.kernel.service.ServiceProvider;
-import org.intelligentsia.keystone.kernel.service.ServiceRegistryKey;
 
 /**
  * {@link DefaultServiceServer} extends {@link AbstractKernelServer} and

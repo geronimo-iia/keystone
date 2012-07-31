@@ -24,8 +24,8 @@ import org.intelligentsia.keystone.kernel.EventPublisher;
 import org.intelligentsia.keystone.kernel.Kernel;
 import org.intelligentsia.keystone.kernel.KernelContext;
 import org.intelligentsia.keystone.kernel.KernelServer;
-import org.intelligentsia.keystone.kernel.service.Service;
-import org.intelligentsia.keystone.kernel.service.ServiceProvider;
+import org.intelligentsia.keystone.kernel.Service;
+import org.intelligentsia.keystone.kernel.ServiceProvider;
 
 /**
  * {@link AbstractKernelServer} class.

@@ -20,14 +20,13 @@
 package org.intelligentsia.keystone.kernel;
 
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
-import org.intelligentsia.keystone.kernel.service.Service;
 
 /**
  * KernelProviderService define method to access on {@link Kernel} instance.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface KernelProviderService extends Service{
+public interface KernelProviderService extends Service {
 
 	/**
 	 * @param artifactContext

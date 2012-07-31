@@ -1,89 +1,29 @@
----------------------------------------------------------------------------------
-KeyStone API Notes
----------------------------------------------------------------------------------
+====
+           Licensed to the Apache Software Foundation (ASF) under one
+           or more contributor license agreements.  See the NOTICE file
+           distributed with this work for additional information
+           regarding copyright ownership.  The ASF licenses this file
+           to you under the Apache License, Version 2.0 (the
+           "License"); you may not use this file except in compliance
+           with the License.  You may obtain a copy of the License at
 
-http://blogs.sun.com/nickstephen/entry/java_redirecting_system_out_and
+             http://www.apache.org/licenses/LICENSE-2.0
 
----------------------------------------------------------------------------------
+           Unless required by applicable law or agreed to in writing,
+           software distributed under the License is distributed on an
+           "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+           KIND, either express or implied.  See the License for the
+           specific language governing permissions and limitations
+           under the License.
+
+====
+
 Upgrade file copy
----------------------------------------------------------------------------------
 http://www.baptiste-wicht.com/2010/08/file-copy-in-java-benchmark/4/
 
-
----------------------------------------------------------------------------------
 Timer and Scheduler:
----------------------------------------------------------------------------------
 http://stackoverflow.com/questions/409932/java-timer-vs-executorservice
 => use executor service
 
-
----------------------------------------------------------------------------------
-Kernel Study
----------------------------------------------------------------------------------
-
-Kernel:
-- life cycle: initialize/dispose
-- registry of service
-- context initial de JCL
-
- Service / Module:
-- all basic method to declare a service into kernel
-- defined by maven triplet g:a:v:c
-- life cycle: initialize/dispose
-
-Internal Service (aka Static Linked Module):
-In same Class loader as kernel
-Sample:
- - Inner event bus
- - Timer and scheduler task
- - JNDI + Provider (URl, DataSource, Mail, etc)
- 
-
-External Service (aka Dynamic Module):
-In separate class loader
-
-
-Component JAR model:
- - list of artefact dependencies (pom.xml)
- - librairies check under META-INF/lib
- - Manifest declaration: 
-   - Main-class
-   - Service-classes: comma separated
-
-We have :
-- a Kernel which load Module (Static/Dynamic classloader). 
-- Module expose Service (or not)
-	
-May step should be:
-A/ Obtain a kernel which :
-  - can download artefact in a local repository
-  - create a default class loader context
-  - can add artefact on this class loader (without restart)
-  - list all artefact loaded
-  - instanciate class, manager proxy and cast ?
-
-B/ Add Artefact loader:
- - build with ArtefactLoaderHandler:
-	- LibrairyHandler: load inner librairie META-INF/lib if exist (should using keystone-boot classes)
- 	- MainClassHandler: use Main-Class manifest: launch this main class in a dedicated thread.
- - may use a internal event bus based on guava ?
- 
-C/ Extends Handler:
- - add Spring DM handler
- - add Jetty Handler => webapp loader
-
-D/ work on Kernel Internal Service ?
- - Jndi provider
- - VFS provider
- - Database provider aka h2  
- 
-E/ Extends capacity:
- - Unload artefact at runtime
- - Save configuration of kernel for restart
-    
-  
-  
-  
-  
   
 

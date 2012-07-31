@@ -20,30 +20,27 @@
 package org.intelligentsia.keystone.kernel.core.artifact;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.assertNotNull;
 
+import java.io.IOException;
+
+import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.junit.Test;
-import org.xeustechnologies.jcl.JarClassLoader;
 
 /**
  * 
- * JarClassLoaderFactoryTest.
+ * ArtifactIdentifierTest check parse from maven information.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
-public class JarClassLoaderFactoryTest {
+public class ArtifactIdentifierTest {
 
 	@Test
-	public void checkOrder() {
-		final JarClassLoader classLoader = JarClassLoaderFactory.initialize();
-
-		assertEquals(50, classLoader.getSystemLoader().getOrder());
-		assertEquals(40, classLoader.getThreadLoader().getOrder());
-		assertEquals(30, classLoader.getParentLoader().getOrder());
-		assertEquals(20, classLoader.getCurrentLoader().getOrder());
-		assertEquals(10, classLoader.getLocalLoader().getOrder());
-		assertEquals(0, classLoader.getOsgiBootLoader().getOrder());
-		assertTrue(!classLoader.getOsgiBootLoader().isEnabled());
+	public void checkArtifactIdentifierParseFromMavenInformation() throws IOException {
+		final ArtifactIdentifier artifactIdentifier = ArtifactIdentifier.parse(this.getClass().getClassLoader(), "org.intelligents-ia.keystone", "keystone-api");
+		assertNotNull(artifactIdentifier);
+		assertEquals("org.intelligents-ia.keystone", artifactIdentifier.getGroupId());
+		assertEquals("keystone-api", artifactIdentifier.getArtifactId());
+		assertNotNull(artifactIdentifier.getVersion());
 	}
 }

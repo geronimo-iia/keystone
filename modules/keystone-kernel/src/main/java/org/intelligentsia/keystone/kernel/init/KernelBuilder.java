@@ -39,7 +39,9 @@ import org.intelligentsia.keystone.kernel.core.DefaultKernelExecutor;
 import org.intelligentsia.keystone.kernel.core.DefaultRepositoryServer;
 import org.intelligentsia.keystone.kernel.core.DefaultServiceServer;
 import org.intelligentsia.keystone.kernel.core.artifact.DefaultArtifactServer;
+import org.intelligentsia.keystone.kernel.core.artifact.JarClassLoaderFactory;
 import org.intelligentsia.keystone.kernel.core.artifact.MetaInfArtifactEntryPointLocalizer;
+import org.xeustechnologies.jcl.JarClassLoader;
 
 /**
  * KernelBuilder implement a builder fo {@link Kernel}.
@@ -51,15 +53,17 @@ public class KernelBuilder {
 	private PrintStream errStream;
 	private Runnable mainKernelProcess;
 	private KernelExecutor kernelExecutor;
+	private final JarClassLoader classLoader;
 	private final Map<Class<? extends KernelServer>, KernelServer> servers = new LinkedHashMap<Class<? extends KernelServer>, KernelServer>();
 
 	/**
 	 * Build a new instance of KernelBuilder with all default server.
 	 */
 	public KernelBuilder() {
+		classLoader = JarClassLoaderFactory.initialize();
 		addKernelServer(EventBusServer.class, new DefaultEventBusServer());
 		addKernelServer(RepositoryServer.class, new DefaultRepositoryServer());
-		addKernelServer(ArtifactServer.class, new DefaultArtifactServer());
+		addKernelServer(ArtifactServer.class, new DefaultArtifactServer(classLoader));
 		addKernelServer(ServiceServer.class, new DefaultServiceServer());
 		this.errStream = System.err;
 		this.kernelExecutor = new DefaultKernelExecutor();
@@ -79,7 +83,7 @@ public class KernelBuilder {
 	 * @return a new {@link Kernel} instance.
 	 */
 	public Kernel build(final Runnable mainKernelProcess) {
-		return new BaseKernel(getKernelServer(EventBusServer.class), getKernelServer(RepositoryServer.class), getKernelServer(ArtifactServer.class), getKernelServer(ServiceServer.class), errStream, mainKernelProcess, kernelExecutor);
+		return new BaseKernel(getKernelServer(EventBusServer.class), getKernelServer(RepositoryServer.class), getKernelServer(ArtifactServer.class), getKernelServer(ServiceServer.class), errStream, mainKernelProcess, kernelExecutor, classLoader);
 	}
 
 	public KernelBuilder setEventBusServer(final EventBusServer eventBusServer) {

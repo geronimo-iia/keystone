@@ -21,8 +21,8 @@ package org.intelligentsia.keystone.kernel.event;
 
 import org.intelligentsia.keystone.api.Preconditions;
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
+import org.intelligentsia.keystone.kernel.Service;
 import org.intelligentsia.keystone.kernel.ServiceServer;
-import org.intelligentsia.keystone.kernel.service.Service;
 
 /**
  * ServiceRegistryChangeEvent raised when {@link Service} is

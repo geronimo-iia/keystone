@@ -46,14 +46,14 @@ public class DefaultArtifactContext implements ArtifactContext {
 	 * 
 	 * @uml.property name="localResource"
 	 */
-	private URL localResource;
+	protected URL localResource;
 
 	/**
 	 * Classloader instance used to load this artifact.
 	 * 
 	 * @uml.property name="classLoader"
 	 */
-	private JarClassLoader classLoader;
+	protected JarClassLoader classLoader;
 
 	/**
 	 * Isolation Level used.
@@ -61,7 +61,7 @@ public class DefaultArtifactContext implements ArtifactContext {
 	 * @uml.property name="isolationLevel"
 	 * @uml.associationEnd
 	 */
-	private IsolationLevel isolationLevel;
+	protected IsolationLevel isolationLevel;
 
 	/**
 	 * Build a new instance of ArtifactContext.java.

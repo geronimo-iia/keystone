@@ -29,8 +29,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.intelligentsia.keystone.api.Preconditions;
 import org.intelligentsia.keystone.kernel.KernelExecutor;
-import org.intelligentsia.utilities.Preconditions;
 
 /**
  * 

@@ -28,6 +28,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.intelligentsia.keystone.api.Preconditions;
+import org.intelligentsia.keystone.api.StringUtils;
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.kernel.ArtifactContext;
@@ -41,8 +43,6 @@ import org.intelligentsia.keystone.kernel.KernelProviderService;
 import org.intelligentsia.keystone.kernel.KernelServer;
 import org.intelligentsia.keystone.kernel.RepositoryServer;
 import org.intelligentsia.keystone.kernel.ServiceServer;
-import org.intelligentsia.utilities.Preconditions;
-import org.intelligentsia.utilities.StringUtils;
 
 /**
  * BaseKernel implementation.

@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.utilities;
+package org.intelligentsia.keystone.api;
 
 import java.io.BufferedOutputStream;
 import java.io.Closeable;
@@ -34,6 +34,7 @@ import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
+
 
 /**
  * FileUtils class group some utilities methods around file management.

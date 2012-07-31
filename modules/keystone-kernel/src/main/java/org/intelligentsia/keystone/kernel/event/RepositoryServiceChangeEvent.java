@@ -19,9 +19,9 @@
  */
 package org.intelligentsia.keystone.kernel.event;
 
+import org.intelligentsia.keystone.api.Preconditions;
 import org.intelligentsia.keystone.api.artifacts.repository.RepositoryService;
 import org.intelligentsia.keystone.kernel.RepositoryServer;
-import org.intelligentsia.utilities.Preconditions;
 
 /**
  * {@link RepositoryServiceChangeEvent} raised when {@link RepositoryService} is

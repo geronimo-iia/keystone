@@ -31,10 +31,10 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import org.intelligentsia.keystone.api.StringUtils;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.api.artifacts.ResourceDoesNotExistException;
 import org.intelligentsia.keystone.api.artifacts.TransferFailedException;
-import org.intelligentsia.utilities.StringUtils;
 
 import com.ning.http.client.AsyncHandler;
 import com.ning.http.client.AsyncHttpClient;

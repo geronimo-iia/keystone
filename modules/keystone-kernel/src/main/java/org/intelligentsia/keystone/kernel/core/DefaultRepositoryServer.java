@@ -25,6 +25,7 @@ package org.intelligentsia.keystone.kernel.core;
 import java.io.File;
 import java.util.Iterator;
 
+import org.intelligentsia.keystone.api.Preconditions;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.api.artifacts.ResourceDoesNotExistException;
 import org.intelligentsia.keystone.api.artifacts.TransferFailedException;
@@ -32,7 +33,6 @@ import org.intelligentsia.keystone.api.artifacts.repository.GroupRepositoryServi
 import org.intelligentsia.keystone.api.artifacts.repository.RepositoryService;
 import org.intelligentsia.keystone.kernel.RepositoryServer;
 import org.intelligentsia.keystone.kernel.event.RepositoryServiceChangeEvent;
-import org.intelligentsia.utilities.Preconditions;
 
 /**
  * DefaultRepositoryServer implements {@link RepositoryServer} by delegating to

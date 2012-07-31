@@ -21,10 +21,10 @@ package org.intelligentsia.keystone.kernel.core.artifact;
 
 import java.net.URL;
 
+import org.intelligentsia.keystone.api.Preconditions;
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.kernel.ArtifactContext;
 import org.intelligentsia.keystone.kernel.IsolationLevel;
-import org.intelligentsia.utilities.Preconditions;
 import org.xeustechnologies.jcl.JarClassLoader;
 
 /**

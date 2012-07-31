@@ -31,10 +31,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.intelligentsia.keystone.api.FileUtils;
+import org.intelligentsia.keystone.api.StringUtils;
 import org.intelligentsia.keystone.api.artifacts.ResourceDoesNotExistException;
 import org.intelligentsia.keystone.api.artifacts.TransferFailedException;
-import org.intelligentsia.utilities.FileUtils;
-import org.intelligentsia.utilities.StringUtils;
 
 /**
  * A FileRepository class.

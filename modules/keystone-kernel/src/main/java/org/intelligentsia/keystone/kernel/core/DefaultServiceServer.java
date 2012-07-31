@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.intelligentsia.keystone.api.Preconditions;
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.kernel.ArtifactContext;
@@ -34,7 +35,6 @@ import org.intelligentsia.keystone.kernel.event.ServiceRegistryChangeEvent;
 import org.intelligentsia.keystone.kernel.service.Service;
 import org.intelligentsia.keystone.kernel.service.ServiceProvider;
 import org.intelligentsia.keystone.kernel.service.ServiceRegistryKey;
-import org.intelligentsia.utilities.Preconditions;
 
 /**
  * {@link DefaultServiceServer} extends {@link AbstractKernelServer} and

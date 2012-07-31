@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.utilities;
+package org.intelligentsia.keystone.api;
 
 /**
  * Preconditions waiting for guava integration decision.

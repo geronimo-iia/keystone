@@ -29,6 +29,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.intelligentsia.keystone.api.Preconditions;
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.api.artifacts.ArtifactsService;
 import org.intelligentsia.keystone.api.artifacts.DefaultArtifactsService;
@@ -41,7 +42,6 @@ import org.intelligentsia.keystone.kernel.ArtifactServer;
 import org.intelligentsia.keystone.kernel.IsolationLevel;
 import org.intelligentsia.keystone.kernel.core.AbstractKernelServer;
 import org.intelligentsia.keystone.kernel.event.ArtifactContextChangeEvent;
-import org.intelligentsia.utilities.Preconditions;
 import org.xeustechnologies.jcl.CompositeProxyClassLoader;
 import org.xeustechnologies.jcl.DelegateProxyClassLoader;
 import org.xeustechnologies.jcl.JarClassLoader;

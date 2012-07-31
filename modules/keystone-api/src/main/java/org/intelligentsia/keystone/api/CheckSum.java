@@ -17,7 +17,7 @@
  *        under the License.
  *
  */
-package org.intelligentsia.utilities;
+package org.intelligentsia.keystone.api;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

@@ -24,12 +24,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import org.intelligentsia.keystone.api.StringUtils;
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
 import org.intelligentsia.keystone.kernel.ArtifactContext;
 import org.intelligentsia.keystone.kernel.ArtifactEntryPoint;
 import org.intelligentsia.keystone.kernel.ArtifactEntryPointLocalizer;
 import org.intelligentsia.keystone.kernel.core.ResourceFinder;
-import org.intelligentsia.utilities.StringUtils;
 
 /**
  * {@link MetaInfArtifactEntryPointLocalizer} implements

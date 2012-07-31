@@ -30,10 +30,10 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig.Feature;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.intelligentsia.keystone.api.StringUtils;
 import org.intelligentsia.keystone.api.artifacts.pom.Pom;
 import org.intelligentsia.keystone.api.artifacts.repository.RepositoryService;
 import org.intelligentsia.keystone.api.artifacts.repository.metadata.Metadata;
-import org.intelligentsia.utilities.StringUtils;
 
 import com.fasterxml.jackson.xml.XmlMapper;
 

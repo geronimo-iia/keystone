@@ -20,7 +20,7 @@
 /**
  * 
  */
-package org.intelligentsia.utilities;
+package org.intelligentsia.keystone.api;
 
 /**
  * String Utils.

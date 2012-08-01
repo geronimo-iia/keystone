@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.intelligentsia.keystone.api.Preconditions;
 import org.intelligentsia.keystone.api.StringUtils;
@@ -88,6 +89,13 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 	 * {@link ArtifactContext} kernel instance.
 	 */
 	private final ArtifactContext kernelArtifactContext;
+
+	/**
+	 * awaitTermination time out and unit. Every seconde per default.
+	 */
+	private long awaitTerminationTimeout = 1;
+
+	private TimeUnit awaitTerminationTimeUnit = TimeUnit.SECONDS;
 
 	/**
 	 * Build a new instance of BaseKernel.java.
@@ -168,10 +176,19 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 			initializeKernelServer();
 			// register kernel service
 			getServiceServer().register(kernelArtifactContext, KernelProviderService.class, new DefaultKernelProviderService(this));
-			// do something
+
+			// add main task to scheduler
 			if (mainKernelProcess != null) {
-				mainKernelProcess.run();
+				kernelExecutor.execute(mainKernelProcess);
 			}
+			// waiting termination
+			try {
+				while (!kernelExecutor.awaitTermination(awaitTerminationTimeout, awaitTerminationTimeUnit)) {
+					// do something ?
+				}
+			} catch (InterruptedException e) {
+			}
+
 			// unregister service
 			getServiceServer().unregister(kernelArtifactContext, KernelProviderService.class);
 		} finally {
@@ -278,4 +295,14 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 		return artifactContext;
 	}
 
+	/**
+	 * Set wait terminaison frequency.
+	 * 
+	 * @param awaitTerminationTimeout
+	 * @param timeUnit
+	 */
+	public void setAwaitTerminationFrequency(long awaitTerminationTimeout, TimeUnit timeUnit) {
+		this.awaitTerminationTimeout = awaitTerminationTimeout;
+		this.awaitTerminationTimeUnit = timeUnit;
+	}
 }

@@ -19,20 +19,13 @@
  */
 package org.intelligentsia.keystone.kernel.init;
 
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
-import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.api.artifacts.repository.Repository;
-
-import com.ning.http.client.ProxyServer;
 
 /**
  * KernelConfiguration.
- * 
- * <code>
- * {g:a:v}+ loader as no isolated artifact
- * [repository definition}*
- * </code>
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
@@ -41,48 +34,72 @@ public class KernelConfiguration {
 	/**
 	 * Artifact to load
 	 */
-	private ArtifactIdentifier artifactIdentifier;
+	private String artifactIdentifier;
 
 	/**
-	 * {@link Set} of {@link RepositoryConfiguration}.
+	 * List of {@link Repository}
 	 */
-	private Set<RepositoryConfiguration> repositories;
+	private List<Repository> repositories = new LinkedList<Repository>();
 
 	/**
-	 * RepositoryConfiguration.
+	 * Build a new instance of KernelConfiguration.java.
+	 */
+	public KernelConfiguration() {
+		super();
+	}
+
+	/**
+	 * Build a new instance of KernelConfiguration.java.
 	 * 
-	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+	 * @param artifactIdentifier
+	 * @param repositories
+	 * @param proxyServer
 	 */
-	public class RepositoryConfiguration {
-		private final Repository repository;
-		private final ProxyServer proxy;
-
-		/**
-		 * Build a new instance of KernelConfiguration.java.
-		 * 
-		 * @param repository
-		 * @param proxy
-		 */
-		public RepositoryConfiguration(Repository repository, ProxyServer proxy) {
-			super();
-			this.repository = repository;
-			this.proxy = proxy;
+	public KernelConfiguration(String artifactIdentifier, List<Repository> repositories) {
+		super();
+		this.artifactIdentifier = artifactIdentifier;
+		if (repositories != null && !repositories.isEmpty()) {
+			this.repositories.addAll(repositories);
 		}
+	}
 
-		/**
-		 * @return the repository
-		 */
-		public final Repository getRepository() {
-			return repository;
-		}
+	/**
+	 * @return the artifactIdentifier
+	 */
+	public final String getArtifactIdentifier() {
+		return artifactIdentifier;
+	}
 
-		/**
-		 * @return the proxy
-		 */
-		public final ProxyServer getProxy() {
-			return proxy;
-		}
+	/**
+	 * @param artifactIdentifier
+	 *            the artifactIdentifier to set
+	 */
+	public final void setArtifactIdentifier(String artifactIdentifier) {
+		this.artifactIdentifier = artifactIdentifier;
+	}
 
+	/**
+	 * @return the repositories
+	 */
+	public final List<Repository> getRepositories() {
+		return repositories;
+	}
+
+	/**
+	 * @param repositories
+	 *            the repositories to set
+	 */
+	public final void setRepositories(List<Repository> repositories) {
+		this.repositories = repositories;
+	}
+
+	/**
+	 * @param repository
+	 * @return
+	 * @see java.util.List#add(java.lang.Object)
+	 */
+	public boolean add(Repository repository) {
+		return repositories.add(repository);
 	}
 
 }

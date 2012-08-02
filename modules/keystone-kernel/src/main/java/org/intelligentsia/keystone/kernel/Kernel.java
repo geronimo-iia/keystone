@@ -40,6 +40,14 @@ package org.intelligentsia.keystone.kernel;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public interface Kernel extends Runnable {
+	/**
+	 * Kernel State.
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+	 */
+	public enum State {
+		SOL, READY, EOL
+	}
 
 	/**
 	 * @return a {@link RepositoryServer} instance.
@@ -76,4 +84,8 @@ public interface Kernel extends Runnable {
 	 */
 	public void dmesg(final String message, final Object... args);
 
+	/**
+	 * @return Kernel {@link State}.
+	 */
+	public State geState();
 }

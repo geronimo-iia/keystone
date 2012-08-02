@@ -23,6 +23,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -74,14 +75,14 @@ public enum Launchers {
 		return new Launcher() {
 			@Override
 			public void launch(final Kernel kernel) throws KeystoneRuntimeException {
-				final ExecutorService executor = Executors.newFixedThreadPool(1);
+				final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 				// set the executor thread working
-				final Future<?> future = executor.submit(new Runnable() {
+				final Future<?> future = executor.schedule(new Runnable() {
 					@Override
 					public void run() {
 						kernel.run();
 					}
-				});
+				}, millis, TimeUnit.MILLISECONDS);
 				do {
 					try {
 						future.get(millis, TimeUnit.MILLISECONDS);

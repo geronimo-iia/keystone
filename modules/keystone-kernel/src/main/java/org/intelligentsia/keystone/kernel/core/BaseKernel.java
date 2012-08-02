@@ -98,6 +98,11 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 	private TimeUnit awaitTerminationTimeUnit = TimeUnit.SECONDS;
 
 	/**
+	 * {@link State}.
+	 */
+	private State state = State.SOL;
+
+	/**
 	 * Build a new instance of BaseKernel.java.
 	 * 
 	 * @param eventBusServer
@@ -169,18 +174,45 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 		}
 	}
 
-	@Override
-	public void run() {
-		try {
+	/**
+	 * Initialize kernel instance.
+	 * 
+	 */
+	public void initialize() {
+		if (State.SOL.equals(state)) {
 			// initializing all server resource
 			initializeKernelServer();
 			// register kernel service
 			getServiceServer().register(kernelArtifactContext, KernelProviderService.class, new DefaultKernelProviderService(this));
+			// up state
+			state = State.READY;
+		}
+	}
+
+	/**
+	 * Dispose kernel instance.
+	 */
+	public void dispose() {
+		if (State.READY.equals(state)) {
+			// unregister service
+			getServiceServer().unregister(kernelArtifactContext, KernelProviderService.class);
+			// destroy all server resource
+			destroyKernelServer();
+			// up state
+			state = State.EOL;
+		}
+	}
+
+	@Override
+	public void run() {
+		try {
+			initialize();
 
 			// add main task to scheduler
 			if (mainKernelProcess != null) {
 				kernelExecutor.execute(mainKernelProcess);
 			}
+
 			// waiting termination
 			try {
 				while (!kernelExecutor.awaitTermination(awaitTerminationTimeout, awaitTerminationTimeUnit)) {
@@ -189,11 +221,8 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 			} catch (InterruptedException e) {
 			}
 
-			// unregister service
-			getServiceServer().unregister(kernelArtifactContext, KernelProviderService.class);
 		} finally {
-			// destroy all server resource
-			destroyKernelServer();
+			dispose();
 		}
 	}
 
@@ -304,5 +333,12 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 	public void setAwaitTerminationFrequency(long awaitTerminationTimeout, TimeUnit timeUnit) {
 		this.awaitTerminationTimeout = awaitTerminationTimeout;
 		this.awaitTerminationTimeUnit = timeUnit;
+	}
+
+	/**
+	 * @return Kernel {@link State}.
+	 */
+	public State geState() {
+		return state;
 	}
 }

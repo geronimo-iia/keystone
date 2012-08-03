@@ -66,4 +66,11 @@ public interface EventBusServer extends KernelServer {
 	 *            The event to send out to the subscribers of the same type.
 	 */
 	public void publish(Object event);
+
+	/**
+	 * Returns if the event bus has pending events.
+	 * 
+	 * @return Returns true if the event bus has pending events to publish.
+	 */
+	public boolean hasPendingEvents();
 }

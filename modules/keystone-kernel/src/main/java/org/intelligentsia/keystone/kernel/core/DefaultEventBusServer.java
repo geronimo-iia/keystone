@@ -89,4 +89,8 @@ public class DefaultEventBusServer extends AbstractKernelServer implements Event
 		}
 	}
 
+	@Override
+	public boolean hasPendingEvents() {
+		return eventBus.hasPendingEvents();
+	}
 }

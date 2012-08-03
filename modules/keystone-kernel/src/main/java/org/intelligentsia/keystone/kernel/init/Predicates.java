@@ -75,7 +75,7 @@ public enum Predicates {
 	 * @param timeout
 	 * @param timeUnit
 	 * @return a {@link Predicate} instance which evaluate to
-	 *         {@link Boolean#TRUE} when all kernel task are done.
+	 *         {@link Boolean#TRUE} when all kernel task are done and all event are processed.
 	 */
 	public static Predicate awaitTerminaison(final long timeout, final TimeUnit timeUnit) {
 		return new Predicate() {
@@ -84,7 +84,7 @@ public enum Predicates {
 			public boolean evaluate(final Kernel kernel) {
 				// waiting termination
 				try {
-					return kernel.getKernelExecutor().awaitTermination(timeout, timeUnit);
+					return kernel.getKernelExecutor().awaitTermination(timeout, timeUnit) && !kernel.getEventBus().hasPendingEvents();
 				} catch (InterruptedException e) {
 					return true;
 				}

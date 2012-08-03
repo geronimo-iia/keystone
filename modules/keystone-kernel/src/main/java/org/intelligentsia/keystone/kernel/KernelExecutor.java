@@ -20,6 +20,8 @@
 package org.intelligentsia.keystone.kernel;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -29,7 +31,6 @@ import java.util.concurrent.TimeUnit;
  */
 public interface KernelExecutor {
 
- 
 	void execute(Runnable command);
 
 	void shutdown();
@@ -37,4 +38,13 @@ public interface KernelExecutor {
 	boolean awaitTermination(long awaitTerminationTimeout, TimeUnit awaitTerminationTimeUnit) throws InterruptedException;
 
 	List<Runnable> shutdownNow();
+
+	//Submits a value-returning task for execution and returns a Future representing the pending results of the task
+	//Upon completion, this task may be taken or polled.
+	<V> Future<V> submit(Callable<V> task);
+	// Submits a Runnable task for execution and returns a Future representing
+	// that task.
+	//result the result to return upon successful completion
+	<V> Future<V> submit(Runnable task, V result);
+
 }

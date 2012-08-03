@@ -19,11 +19,18 @@
  */
 package org.intelligentsia.keystone.kernel.init;
 
+import java.io.File;
 import java.io.PrintStream;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
+import org.intelligentsia.keystone.api.artifacts.repository.ClientHttpRepository;
+import org.intelligentsia.keystone.api.artifacts.repository.FileRepository;
+import org.intelligentsia.keystone.api.artifacts.repository.ProxyRepositoryService;
+import org.intelligentsia.keystone.api.artifacts.repository.Repository;
 import org.intelligentsia.keystone.api.artifacts.repository.RepositoryService;
 import org.intelligentsia.keystone.kernel.ArtifactEntryPointLocalizer;
 import org.intelligentsia.keystone.kernel.ArtifactServer;
@@ -137,5 +144,23 @@ public class KernelBuilder {
 	@SuppressWarnings("unchecked")
 	protected <T extends KernelServer> T getKernelServer(final Class<T> className) {
 		return (T) servers.get(className);
+	}
+
+	public KernelBuilder setKernelConfiguration(KernelConfiguration configuration) throws IllegalArgumentException, URISyntaxException, MalformedURLException {
+		// local repository
+		FileRepository local = configuration.getLocalRepository() != null ? new FileRepository(new File(configuration.getLocalRepository().toURI())) : null;
+		// for each
+		for (Repository repository : configuration.getRepositories()) {
+			if (repository.getUrl().startsWith("file")) {
+				addRepositoryService(new FileRepository(repository));
+			} else {
+				if (local != null) {
+					addRepositoryService(new ProxyRepositoryService(local, new ClientHttpRepository(repository)));
+				} else {
+					addRepositoryService(new ClientHttpRepository(repository));
+				}
+			}
+		}
+		return this;
 	}
 }

@@ -48,6 +48,23 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.intelligents-ia.keystone</groupId>
+				<artifactId>keystone-plugin</artifactId>
+				<version>${project.version}</version>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<configuration>
+							<mainClass>org.intelligentsia.keystone.kernel.init.KeystoneApplication</mainClass>
+						</configuration>
+						<goals>
+							<goal>custom</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>

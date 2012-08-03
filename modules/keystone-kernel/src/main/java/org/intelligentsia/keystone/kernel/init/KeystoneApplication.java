@@ -19,10 +19,17 @@
  */
 package org.intelligentsia.keystone.kernel.init;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
 import org.intelligentsia.keystone.kernel.IsolationLevel;
+
+import com.fasterxml.jackson.xml.XmlMapper;
 
 /**
  * KeystoneApplication.
@@ -84,8 +91,41 @@ public class KeystoneApplication implements Runnable {
 	 * @return a {@link KernelConfiguration}.
 	 */
 	protected KernelConfiguration loadKernelConfiguration() {
-		// final ObjectMapper mapper = new XmlMapper();
-		return new KernelConfiguration();
+		KernelConfiguration configuration = loadFrom("file:keystone.xml");
+		if (configuration == null) {
+			configuration = loadFrom("META-INF/" + "keystone.xml");
+		}
+		if (configuration == null) {
+			configuration = loadFrom("/keystone.xml");
+		}
+		if (configuration == null) {
+			configuration = loadFrom("keystone.xml");
+		}
+		return configuration;
+	}
+
+	protected KernelConfiguration loadFrom(String name) {
+		InputStream is = null;
+		try {
+			is = KeystoneApplication.class.getClassLoader().getResourceAsStream(name);
+			if (is != null) {
+				final ObjectMapper mapper = new XmlMapper();
+				try {
+					return mapper.readValue(is, KernelConfiguration.class);
+				} catch (JsonParseException e) {
+				} catch (JsonMappingException e) {
+				} catch (IOException e) {
+				}
+			}
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (final IOException exception) {
+				}
+			}
+		}
+		return null;
 	}
 
 }

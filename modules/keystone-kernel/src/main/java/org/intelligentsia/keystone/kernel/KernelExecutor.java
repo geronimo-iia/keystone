@@ -19,13 +19,22 @@
  */
 package org.intelligentsia.keystone.kernel;
 
-import java.util.concurrent.ExecutorService;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * KernelExecutor declare methods to excute some task at kernel level.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface KernelExecutor extends ExecutorService {
+public interface KernelExecutor {
 
+ 
+	void execute(Runnable command);
+
+	void shutdown();
+
+	boolean awaitTermination(long awaitTerminationTimeout, TimeUnit awaitTerminationTimeUnit) throws InterruptedException;
+
+	List<Runnable> shutdownNow();
 }

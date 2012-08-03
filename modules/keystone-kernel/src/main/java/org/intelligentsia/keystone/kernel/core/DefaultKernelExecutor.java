@@ -39,7 +39,7 @@ import org.intelligentsia.keystone.kernel.KernelExecutor;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class DefaultKernelExecutor implements KernelExecutor {
+public class DefaultKernelExecutor implements KernelExecutor, ExecutorService {
 
 	private final ExecutorService executorService;
 

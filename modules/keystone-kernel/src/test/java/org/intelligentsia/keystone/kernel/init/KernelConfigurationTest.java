@@ -26,6 +26,8 @@ import static junit.framework.Assert.assertTrue;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -51,8 +53,6 @@ public class KernelConfigurationTest {
 		StringWriter writer = new StringWriter();
 		mapper.writeValue(writer, configuration);
 
-		System.err.println(writer.toString());
-
 		KernelConfiguration configuration2 = mapper.readValue(new StringReader(writer.toString()), KernelConfiguration.class);
 		assertNotNull(configuration2);
 		assertNotNull(configuration2.getArtifactIdentifier());
@@ -61,13 +61,15 @@ public class KernelConfigurationTest {
 		assertTrue(!configuration2.getRepositories().isEmpty());
 		assertEquals(configuration.getRepositories().size(), configuration2.getRepositories().size());
 		assertEquals(configuration.getRepositories().get(0), configuration2.getRepositories().get(0));
-
+		assertNotNull(configuration2.getLocalRepository());
+		assertEquals(new URL("file://home"), configuration2.getLocalRepository());
 	}
 
-	public KernelConfiguration getConfiguration() {
+	public KernelConfiguration getConfiguration() throws MalformedURLException {
 		KernelConfiguration configuration = new KernelConfiguration();
 		configuration.setArtifactIdentifier("org.intelligents-ia.keystone:keystone-kernel:1.0.0-SNAPSHOT");
 		configuration.add(new Repository("repository-maven-uk", "http://uk.maven.org/maven2"));
+		configuration.setLocalRepository(new URL("file://home"));
 		return configuration;
 	}
 }

@@ -19,6 +19,7 @@
  */
 package org.intelligentsia.keystone.kernel.init;
 
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,6 +41,11 @@ public class KernelConfiguration {
 	 * List of {@link Repository}
 	 */
 	private List<Repository> repositories = new LinkedList<Repository>();
+
+	/**
+	 * Local repository.
+	 */
+	private URL localRepository;
 
 	/**
 	 * Build a new instance of KernelConfiguration.java.
@@ -100,6 +106,21 @@ public class KernelConfiguration {
 	 */
 	public boolean add(Repository repository) {
 		return repositories.add(repository);
+	}
+
+	/**
+	 * @return the localRepository
+	 */
+	public final URL getLocalRepository() {
+		return localRepository;
+	}
+
+	/**
+	 * @param localRepository
+	 *            the localRepository to set
+	 */
+	public final void setLocalRepository(URL localRepository) {
+		this.localRepository = localRepository;
 	}
 
 }

@@ -20,7 +20,6 @@
 package org.intelligentsia.keystone.kernel.init;
 
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
@@ -46,7 +45,7 @@ public enum Launchers {
 	 *            kernel to launch
 	 */
 	public static Launcher launchAndWait(final Kernel kernel) {
-		return launchUntil(kernel, Predicates.falsePredicate(), 10000);
+		return launchUntil(kernel, Predicates.falsePredicate(), 1000);
 	}
 
 	/**

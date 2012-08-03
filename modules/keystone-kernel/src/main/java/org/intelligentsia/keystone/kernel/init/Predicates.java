@@ -22,6 +22,7 @@ package org.intelligentsia.keystone.kernel.init;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.concurrent.TimeUnit;
 
 import org.intelligentsia.keystone.kernel.Kernel;
 
@@ -66,6 +67,27 @@ public enum Predicates {
 				} catch (final IOException e) {
 				}
 				return (line.equals("quit"));
+			}
+		};
+	}
+
+	/**
+	 * @param timeout
+	 * @param timeUnit
+	 * @return a {@link Predicate} instance which evaluate to
+	 *         {@link Boolean#TRUE} when all kernel task are done.
+	 */
+	public static Predicate awaitTerminaison(final long timeout, final TimeUnit timeUnit) {
+		return new Predicate() {
+
+			@Override
+			public boolean evaluate(final Kernel kernel) {
+				// waiting termination
+				try {
+					return kernel.getKernelExecutor().awaitTermination(timeout, timeUnit);
+				} catch (InterruptedException e) {
+					return true;
+				}
 			}
 		};
 	}

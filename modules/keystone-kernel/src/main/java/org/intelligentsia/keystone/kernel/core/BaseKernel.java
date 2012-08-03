@@ -43,10 +43,22 @@ import org.intelligentsia.keystone.kernel.KernelServer;
 import org.intelligentsia.keystone.kernel.RepositoryServer;
 import org.intelligentsia.keystone.kernel.ServiceServer;
 import org.intelligentsia.keystone.kernel.core.artifact.DefaultArtifactContext;
+import org.intelligentsia.keystone.kernel.init.Predicate;
 import org.xeustechnologies.jcl.JarClassLoader;
 
 /**
  * BaseKernel implementation.
+ * 
+ * 
+ * <p>
+ * if no termination {@link Predicate} is set, a default one will be created
+ * with this paremeters
+ * </p>
+ * <ul>
+ * <li>create a {@link Predicate} instance which evaluate to
+ * {@link Boolean#TRUE} when all kernel task are done.</li>
+ * <li>Time out is et to 1 second</li>
+ * </ul>
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
@@ -140,6 +152,7 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 		this.repositoryServer = register(RepositoryServer.class, Preconditions.checkNotNull(repositoryServer, "repositoryServer"));
 		this.artifactServer = register(ArtifactServer.class, Preconditions.checkNotNull(artifactServer, "artifactServer"));
 		this.serviceServer = register(ServiceServer.class, Preconditions.checkNotNull(serviceServer, "serviceServer"));
+
 	}
 
 	@Override
@@ -180,6 +193,7 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 	 */
 	public void initialize() {
 		if (State.SOL.equals(state)) {
+			dmesg("Initializing Kernel");
 			// initializing all server resource
 			initializeKernelServer();
 			// register kernel service
@@ -194,6 +208,7 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 	 */
 	public void dispose() {
 		if (State.READY.equals(state)) {
+			dmesg("Dispose Kernel");
 			// unregister service
 			getServiceServer().unregister(kernelArtifactContext, KernelProviderService.class);
 			// destroy all server resource

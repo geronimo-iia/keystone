@@ -82,7 +82,7 @@ public class KeystoneApplication implements Runnable {
 		}));
 
 		// launch
-		Launchers.launchUntil(holder.getKernel(), Predicates.awaitTerminaison(1, TimeUnit.SECONDS));
+		Launchers.launchUntil(holder.getKernel(), Predicates.awaitTerminaison(1, TimeUnit.SECONDS)).launch(holder.getKernel());
 	}
 
 	/**

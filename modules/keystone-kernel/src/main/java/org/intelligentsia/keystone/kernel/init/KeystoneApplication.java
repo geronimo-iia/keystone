@@ -101,6 +101,9 @@ public class KeystoneApplication implements Runnable {
 		if (configuration == null) {
 			configuration = loadFrom("keystone.xml");
 		}
+		if (configuration == null) {
+			configuration = new KernelConfiguration();
+		}
 		return configuration;
 	}
 

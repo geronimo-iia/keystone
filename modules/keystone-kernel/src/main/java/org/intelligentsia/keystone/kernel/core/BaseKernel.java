@@ -209,6 +209,18 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 	public void dispose() {
 		if (State.READY.equals(state)) {
 			dmesg("Dispose Kernel");
+			// shutdown executor
+			kernelExecutor.shutdown();
+			dmesg("KernelExecutor Request Shutdown");
+			try {
+				if (!kernelExecutor.awaitTermination(awaitTerminationTimeout, awaitTerminationTimeUnit)) {
+					dmesg("KernelExecutor Force Shutdown");
+					kernelExecutor.shutdownNow();
+				} else {
+					dmesg("KernelExecutor is shutdown");
+				}
+			} catch (InterruptedException e) {
+			}
 			// unregister service
 			getServiceServer().unregister(kernelArtifactContext, KernelProviderService.class);
 			// destroy all server resource
@@ -228,6 +240,7 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 				kernelExecutor.execute(mainKernelProcess);
 			}
 
+			// kernelExecutor.invokeAll(tasks)
 			// waiting termination
 			try {
 				while (!kernelExecutor.awaitTermination(awaitTerminationTimeout, awaitTerminationTimeUnit)) {

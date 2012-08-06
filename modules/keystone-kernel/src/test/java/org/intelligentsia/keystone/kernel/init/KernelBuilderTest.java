@@ -46,10 +46,10 @@ public class KernelBuilderTest {
 	public void checkDefaultKernelServiceBuilder() {
 		final Kernel kernel = new KernelBuilder().build();
 		assertNotNull(kernel);
-		assertNotNull(kernel.getEventBus());
-		assertNotNull(kernel.getRepositoryServer());
-		assertNotNull(kernel.getArtifactServer());
-		assertNotNull(kernel.getServiceServer());
+		assertNotNull(kernel.eventBus());
+		assertNotNull(kernel.repositoryServer());
+		assertNotNull(kernel.artifactServer());
+		assertNotNull(kernel.serviceServer());
 	}
 
 	@Test
@@ -82,10 +82,10 @@ public class KernelBuilderTest {
 		holder.setKernel(new KernelBuilder().build(new Runnable() {
 			@Override
 			public void run() {
-				assertEquals(State.READY, holder.getKernel().getEventBus().getState());
-				assertEquals(State.READY, holder.getKernel().getRepositoryServer().getState());
-				assertEquals(State.READY, holder.getKernel().getArtifactServer().getState());
-				assertEquals(State.READY, holder.getKernel().getServiceServer().getState());
+				assertEquals(State.READY, holder.getKernel().eventBus().getState());
+				assertEquals(State.READY, holder.getKernel().repositoryServer().getState());
+				assertEquals(State.READY, holder.getKernel().artifactServer().getState());
+				assertEquals(State.READY, holder.getKernel().serviceServer().getState());
 			}
 		}));
 		Launchers.launchAndWait(holder.getKernel());

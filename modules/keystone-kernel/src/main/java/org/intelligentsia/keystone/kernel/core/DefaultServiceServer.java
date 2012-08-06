@@ -98,7 +98,7 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 		// add
 		serviceProvider.put(new ServiceRegistryKey(artifactContext.getArtifactIdentifier(), service));
 		// raise event
-		kernel.getEventBus().publish(new ServiceRegistryChangeEvent(artifactContext.getArtifactIdentifier(), serviceClassName, ServiceRegistryChangeEvent.State.REGISTERED));
+		kernel.eventBus().publish(new ServiceRegistryChangeEvent(artifactContext.getArtifactIdentifier(), serviceClassName, ServiceRegistryChangeEvent.State.REGISTERED));
 	}
 
 	@Override
@@ -113,7 +113,7 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 			key.getService().destroy();
 			// raise event
 			if (!isDestroying()) {
-				kernel.getEventBus().publish(new ServiceRegistryChangeEvent(artifactContext.getArtifactIdentifier(), serviceClassName, ServiceRegistryChangeEvent.State.UNREGISTERED));
+				kernel.eventBus().publish(new ServiceRegistryChangeEvent(artifactContext.getArtifactIdentifier(), serviceClassName, ServiceRegistryChangeEvent.State.UNREGISTERED));
 			}
 		}
 	}

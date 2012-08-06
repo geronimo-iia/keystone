@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import org.intelligentsia.keystone.api.Preconditions;
 import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
@@ -110,7 +111,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 	 */
 	@Override
 	protected void onInitialize() {
-		this.artifactsService = new DefaultArtifactsService(Preconditions.checkNotNull(kernel.getRepositoryServer(), "Repository Server cannot be null"));
+		this.artifactsService = new DefaultArtifactsService(Preconditions.checkNotNull(kernel.repositoryServer(), "Repository Server cannot be null"));
 	}
 
 	/**
@@ -179,7 +180,7 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 		}
 		artifacts.put(artifactIdentifier, result);
 		// raise event
-		kernel.getEventBus().publish(new ArtifactContextChangeEvent(artifactIdentifier, ArtifactContextChangeEvent.State.INITIALIZED));
+		kernel.eventBus().publish(new ArtifactContextChangeEvent(artifactIdentifier, ArtifactContextChangeEvent.State.INITIALIZED));
 		return result;
 	}
 
@@ -197,20 +198,20 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 			}
 			artifactContext = null;
 			// launch garbage collector
-			kernel.getKernelExecutor().execute(new Runnable() {
-
+			kernel.submit(new Callable<Boolean>() {
 				@Override
-				public void run() {
+				public Boolean call() throws Exception {
 					// Get the Java runtime
 					final Runtime runtime = Runtime.getRuntime();
 					// Run the garbage collector
 					runtime.gc();
+					return Boolean.TRUE;
 				}
 			});
 			if (!isDestroying()) {
 				// now we could change behavior with life cycle and not raising
 				// event
-				kernel.getEventBus().publish(new ArtifactContextChangeEvent(artifactIdentifier, ArtifactContextChangeEvent.State.DESTROYED));
+				kernel.eventBus().publish(new ArtifactContextChangeEvent(artifactIdentifier, ArtifactContextChangeEvent.State.DESTROYED));
 			}
 		}
 	}
@@ -247,10 +248,11 @@ public class DefaultArtifactServer extends AbstractKernelServer implements Artif
 				if (artifactEntryPoint != null) {
 					kernel.dmesg("find entry point for %s", artifactContextChangeEvent.getArtifactIdentifier());
 					// execute
-					kernel.getKernelExecutor().execute(new Runnable() {
+					kernel.submit(new Callable<Boolean>() {
 						@Override
-						public void run() {
+						public Boolean call() throws Exception {
 							artifactEntryPoint.onLoad(artifactContext, getKernelContext());
+							return Boolean.TRUE;
 						}
 					});
 				}

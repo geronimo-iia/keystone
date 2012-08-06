@@ -111,7 +111,7 @@ public class DefaultRepositoryServer extends AbstractKernelServer implements Rep
 		}
 		if (!this.groupRepositoryService.contains(Preconditions.checkNotNull(repositoryService, "repositoryService"))) {
 			this.groupRepositoryService.add(repositoryService);
-			kernel.getEventBus().publish(new RepositoryServiceChangeEvent(repositoryService, RepositoryServiceChangeEvent.State.ADDED));
+			kernel.eventBus().publish(new RepositoryServiceChangeEvent(repositoryService, RepositoryServiceChangeEvent.State.ADDED));
 		}
 	}
 
@@ -122,7 +122,7 @@ public class DefaultRepositoryServer extends AbstractKernelServer implements Rep
 	public void remove(final RepositoryService repositoryService) throws NullPointerException {
 		this.groupRepositoryService.remove(Preconditions.checkNotNull(repositoryService, "repositoryService"));
 		if (!isDestroying()) {
-			kernel.getEventBus().publish(new RepositoryServiceChangeEvent(repositoryService, RepositoryServiceChangeEvent.State.REMOVED));
+			kernel.eventBus().publish(new RepositoryServiceChangeEvent(repositoryService, RepositoryServiceChangeEvent.State.REMOVED));
 		}
 	}
 

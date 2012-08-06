@@ -36,7 +36,6 @@ import org.intelligentsia.keystone.kernel.ArtifactEntryPointLocalizer;
 import org.intelligentsia.keystone.kernel.ArtifactServer;
 import org.intelligentsia.keystone.kernel.EventBusServer;
 import org.intelligentsia.keystone.kernel.Kernel;
-import org.intelligentsia.keystone.kernel.KernelExecutor;
 import org.intelligentsia.keystone.kernel.KernelServer;
 import org.intelligentsia.keystone.kernel.RepositoryServer;
 import org.intelligentsia.keystone.kernel.ServiceServer;
@@ -45,6 +44,7 @@ import org.intelligentsia.keystone.kernel.core.DefaultEventBusServer;
 import org.intelligentsia.keystone.kernel.core.DefaultKernelExecutor;
 import org.intelligentsia.keystone.kernel.core.DefaultRepositoryServer;
 import org.intelligentsia.keystone.kernel.core.DefaultServiceServer;
+import org.intelligentsia.keystone.kernel.core.KernelExecutor;
 import org.intelligentsia.keystone.kernel.core.artifact.DefaultArtifactServer;
 import org.intelligentsia.keystone.kernel.core.artifact.JarClassLoaderFactory;
 import org.intelligentsia.keystone.kernel.core.artifact.MetaInfArtifactEntryPointLocalizer;
@@ -146,11 +146,11 @@ public class KernelBuilder {
 		return (T) servers.get(className);
 	}
 
-	public KernelBuilder setKernelConfiguration(KernelConfiguration configuration) throws IllegalArgumentException, URISyntaxException, MalformedURLException {
+	public KernelBuilder setKernelConfiguration(final KernelConfiguration configuration) throws IllegalArgumentException, URISyntaxException, MalformedURLException {
 		// local repository
-		FileRepository local = configuration.getLocalRepository() != null ? new FileRepository(new File(configuration.getLocalRepository().toURI())) : null;
+		final FileRepository local = configuration.getLocalRepository() != null ? new FileRepository(new File(configuration.getLocalRepository().toURI())) : null;
 		// for each
-		for (Repository repository : configuration.getRepositories()) {
+		for (final Repository repository : configuration.getRepositories()) {
 			if (repository.getUrl().startsWith("file")) {
 				addRepositoryService(new FileRepository(repository));
 			} else {

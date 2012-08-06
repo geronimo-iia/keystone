@@ -61,10 +61,10 @@ public class KernelConfiguration {
 	 * @param repositories
 	 * @param proxyServer
 	 */
-	public KernelConfiguration(String artifactIdentifier, List<Repository> repositories) {
+	public KernelConfiguration(final String artifactIdentifier, final List<Repository> repositories) {
 		super();
 		this.artifactIdentifier = artifactIdentifier;
-		if (repositories != null && !repositories.isEmpty()) {
+		if ((repositories != null) && !repositories.isEmpty()) {
 			this.repositories.addAll(repositories);
 		}
 	}
@@ -80,7 +80,7 @@ public class KernelConfiguration {
 	 * @param artifactIdentifier
 	 *            the artifactIdentifier to set
 	 */
-	public final void setArtifactIdentifier(String artifactIdentifier) {
+	public final void setArtifactIdentifier(final String artifactIdentifier) {
 		this.artifactIdentifier = artifactIdentifier;
 	}
 
@@ -95,7 +95,7 @@ public class KernelConfiguration {
 	 * @param repositories
 	 *            the repositories to set
 	 */
-	public final void setRepositories(List<Repository> repositories) {
+	public final void setRepositories(final List<Repository> repositories) {
 		this.repositories = repositories;
 	}
 
@@ -104,7 +104,7 @@ public class KernelConfiguration {
 	 * @return
 	 * @see java.util.List#add(java.lang.Object)
 	 */
-	public boolean add(Repository repository) {
+	public boolean add(final Repository repository) {
 		return repositories.add(repository);
 	}
 
@@ -119,7 +119,7 @@ public class KernelConfiguration {
 	 * @param localRepository
 	 *            the localRepository to set
 	 */
-	public final void setLocalRepository(URL localRepository) {
+	public final void setLocalRepository(final URL localRepository) {
 		this.localRepository = localRepository;
 	}
 

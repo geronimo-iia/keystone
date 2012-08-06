@@ -94,8 +94,8 @@ public abstract class AbstractKernelServer implements KernelServer {
 	public final void initialize(final Kernel kernel) throws KeystoneRuntimeException {
 		state = State.INITIALIZING;
 		this.kernel = kernel;
-		if (kernel.getEventBus() != null) {
-			kernel.getEventBus().subscribe(this);
+		if (kernel.eventBus() != null) {
+			kernel.eventBus().subscribe(this);
 		}
 		onInitialize();
 		state = State.READY;
@@ -104,11 +104,11 @@ public abstract class AbstractKernelServer implements KernelServer {
 	@Override
 	public final void destroy() {
 		state = State.DESTROYING;
-		this.kernel = null;
 		onDestroy();
-		if (kernel.getEventBus() != null) {
-			kernel.getEventBus().unsubscribe(this);
+		if (kernel.eventBus() != null) {
+			kernel.eventBus().unsubscribe(this);
 		}
+		this.kernel = null;
 		state = State.EOL;
 	}
 
@@ -151,7 +151,7 @@ public abstract class AbstractKernelServer implements KernelServer {
 
 				@Override
 				public void publish(final Object event) {
-					kernel.getEventBus().publish(event);
+					kernel.eventBus().publish(event);
 				}
 			};
 
@@ -162,7 +162,7 @@ public abstract class AbstractKernelServer implements KernelServer {
 
 			@Override
 			public ServiceProvider find(final Class<? extends Service> service) throws KeystoneRuntimeException {
-				return kernel.getServiceServer().find(service);
+				return kernel.serviceServer().find(service);
 			}
 
 		};

@@ -19,6 +19,9 @@
  */
 package org.intelligentsia.keystone.kernel;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+
 /**
  * Kernel interface which declare core methods.
  * <p>
@@ -52,27 +55,22 @@ public interface Kernel extends Runnable {
 	/**
 	 * @return a {@link RepositoryServer} instance.
 	 */
-	public RepositoryServer getRepositoryServer();
+	public RepositoryServer repositoryServer();
 
 	/**
 	 * @return a {@link ArtifactServer} instance.
 	 */
-	public ArtifactServer getArtifactServer();
+	public ArtifactServer artifactServer();
 
 	/**
 	 * @return a {@link EventBusServer} instance.
 	 */
-	public EventBusServer getEventBus();
+	public EventBusServer eventBus();
 
 	/**
 	 * @return a {@link ServiceServer} instance.
 	 */
-	public ServiceServer getServiceServer();
-
-	/**
-	 * @return a {@link KernelExecutor} instance.
-	 */
-	public KernelExecutor getKernelExecutor();
+	public ServiceServer serviceServer();
 
 	/**
 	 * Display a message in kernel message log.
@@ -87,5 +85,25 @@ public interface Kernel extends Runnable {
 	/**
 	 * @return Kernel {@link State}.
 	 */
-	public State geState();
+	public State state();
+
+	/**
+	 * Submits a value-returning task for execution.
+	 * 
+	 * @param task
+	 *            the task
+	 * @return a {@link Future} representing the pending results of the task
+	 */
+	public <V> Future<V> submit(Callable<V> task);
+
+	/**
+	 * Submits a Runnable task for execution.
+	 * 
+	 * @param task
+	 *            the task
+	 * @param result
+	 *            the result to return upon successful completion
+	 * @return a {@link Future} representing that task.
+	 */
+	public <V> Future<V> submit(Runnable task, V result);
 }

@@ -21,7 +21,6 @@ package org.intelligentsia.keystone.kernel.init;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.TimeUnit;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -45,7 +44,7 @@ public class KeystoneApplication implements Runnable {
 		super();
 	}
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		new KeystoneApplication().run();
 	}
 
@@ -58,7 +57,7 @@ public class KeystoneApplication implements Runnable {
 		KernelBuilder builder = null;
 		try {
 			builder = new KernelBuilder().setKernelConfiguration(configuration);
-		} catch (Throwable e) {
+		} catch (final Throwable e) {
 			throw new IllegalArgumentException(e);
 		}
 
@@ -70,19 +69,15 @@ public class KeystoneApplication implements Runnable {
 			public void run() {
 				// add artifact
 				if (configuration.getArtifactIdentifier() != null) {
-					ArtifactIdentifier artifactIdentifier = ArtifactIdentifier.parse(configuration.getArtifactIdentifier());
-					holder.getKernel().getArtifactServer().load(artifactIdentifier, IsolationLevel.NONE);
+					final ArtifactIdentifier artifactIdentifier = ArtifactIdentifier.parse(configuration.getArtifactIdentifier());
+					holder.getKernel().artifactServer().load(artifactIdentifier, IsolationLevel.NONE);
 					holder.getKernel().dmesg("loaded artifact '%s'", artifactIdentifier);
 				}
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-				}
+				holder.getKernel().dmesg("Hello world!!!");
 			}
 		}));
 
-		// launch
-		Launchers.launchUntil(holder.getKernel(), Predicates.awaitTerminaison(1, TimeUnit.SECONDS)).launch(holder.getKernel());
+		holder.getKernel().run();
 	}
 
 	/**
@@ -107,7 +102,7 @@ public class KeystoneApplication implements Runnable {
 		return configuration;
 	}
 
-	protected KernelConfiguration loadFrom(String name) {
+	protected KernelConfiguration loadFrom(final String name) {
 		InputStream is = null;
 		try {
 			is = KeystoneApplication.class.getClassLoader().getResourceAsStream(name);
@@ -115,9 +110,9 @@ public class KeystoneApplication implements Runnable {
 				final ObjectMapper mapper = new XmlMapper();
 				try {
 					return mapper.readValue(is, KernelConfiguration.class);
-				} catch (JsonParseException e) {
-				} catch (JsonMappingException e) {
-				} catch (IOException e) {
+				} catch (final JsonParseException e) {
+				} catch (final JsonMappingException e) {
+				} catch (final IOException e) {
 				}
 			}
 		} finally {

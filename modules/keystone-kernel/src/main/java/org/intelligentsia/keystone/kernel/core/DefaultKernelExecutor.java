@@ -19,190 +19,233 @@
  */
 package org.intelligentsia.keystone.kernel.core;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
-import org.intelligentsia.keystone.api.Preconditions;
-import org.intelligentsia.keystone.kernel.KernelExecutor;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 
- * DefaultKernelExecutor implements {@link KernelExecutor} y delagating to a
- * {@link ExecutorService} instance .
+ * DefaultKernelExecutor implements {@link KernelExecutor} y delegating to a
+ * {@link PausableThreadPoolExecutor} instance .
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class DefaultKernelExecutor implements KernelExecutor, ExecutorService {
-
-	private final ExecutorService executorService;
+public class DefaultKernelExecutor implements KernelExecutor {
+	/**
+	 * Inner {@link PausableThreadPoolExecutor} instance.
+	 */
+	private final PausableThreadPoolExecutor executorService;
+	/**
+	 * Inner {@link BlockingQueue} list of await task.
+	 */
+	private final BlockingQueue<Future<?>> awaitQueue;
+	/** lock to await termination */
+	private final ReentrantLock lock;
+	/** {@link Condition} to await termination */
+	final Condition awaitTerminationCondition;;
 
 	/**
 	 * Build a new instance of DefaultKernelExecutor.java.
 	 */
 	public DefaultKernelExecutor() {
-		this(Executors.newCachedThreadPool());
+		this(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS);
 	}
 
 	/**
 	 * Build a new instance of DefaultKernelExecutor.java.
 	 * 
-	 * @param executorService
+	 * @param corePoolSize
+	 * @param maximumPoolSize
+	 * @param keepAliveTime
+	 * @param unit
 	 * @throws NullPointerException
-	 *             if executorService is null
 	 */
-	public DefaultKernelExecutor(final ExecutorService executorService) throws NullPointerException {
+	public DefaultKernelExecutor(final int corePoolSize, final int maximumPoolSize, final long keepAliveTime, final TimeUnit unit) throws NullPointerException {
 		super();
-		this.executorService = Preconditions.checkNotNull(executorService, "executorService");
+		this.executorService = new PausableThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit, new SynchronousQueue<Runnable>(), new RejectedExecutionHandler() {
+
+			@Override
+			public void rejectedExecution(final Runnable r, final ThreadPoolExecutor executor) {
+				// remove Runnable from await queue
+				awaitQueue.remove(r);
+				// throw exception
+				throw new RejectedExecutionException("Kernel is shutdown");
+			}
+		});
+		this.awaitQueue = new LinkedBlockingQueue<Future<?>>();
+		lock = new ReentrantLock();
+		awaitTerminationCondition = lock.newCondition();
 	}
 
-	/**
-	 * @param command
-	 * @see java.util.concurrent.Executor#execute(java.lang.Runnable)
-	 */
 	@Override
-	public void execute(final Runnable command) {
-		executorService.execute(command);
+	public <V> Future<V> submit(final Callable<V> task) throws RejectedExecutionException {
+		final KernelFuture<V> f = new KernelFuture<V>(task);
+		executorService.execute(f);
+		return f;
 	}
 
-	/**
-	 * 
-	 * @see java.util.concurrent.ExecutorService#shutdown()
-	 */
+	@Override
+	public <V> Future<V> submit(final Runnable task, final V result) throws RejectedExecutionException {
+		final KernelFuture<V> f = new KernelFuture<V>(task, result);
+		executorService.execute(f);
+		return f;
+	}
+
 	@Override
 	public void shutdown() {
 		executorService.shutdown();
 	}
 
-	/**
-	 * @return
-	 * @see java.util.concurrent.ExecutorService#shutdownNow()
-	 */
+	@Override
+	public boolean awaitTermination() {
+		return awaitQueue.isEmpty();
+	}
+
+	@Override
+	public boolean awaitTermination(final long timeout, final TimeUnit unit) throws InterruptedException {
+		long nanos = unit.toNanos(timeout);
+		lock.lock();
+		try {
+			do {
+				if (awaitQueue.isEmpty()) {
+					return true;
+				}
+				if (nanos <= 0) {
+					return false;
+				}
+				nanos = awaitTerminationCondition.awaitNanos(nanos);
+			} while (true);
+		} finally {
+			lock.unlock();
+		}
+	}
+
 	@Override
 	public List<Runnable> shutdownNow() {
 		return executorService.shutdownNow();
 	}
 
-	/**
-	 * @return
-	 * @see java.util.concurrent.ExecutorService#isShutdown()
-	 */
 	@Override
-	public boolean isShutdown() {
-		return executorService.isShutdown();
+	public void pause() {
+		executorService.pause();
+	}
+
+	@Override
+	public void resume() {
+		executorService.resume();
 	}
 
 	/**
-	 * @return
-	 * @see java.util.concurrent.ExecutorService#isTerminated()
+	 * 
+	 * KernelFuture add task to await queue.
+	 * 
+	 * @param <V>
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
 	 */
-	@Override
-	public boolean isTerminated() {
-		return executorService.isTerminated();
+	private class KernelFuture<V> extends FutureTask<V> {
+
+		KernelFuture(final Callable<V> callable) {
+			super(callable);
+			awaitQueue.add(this);
+		}
+
+		KernelFuture(final Runnable runnable, final V result) {
+			super(runnable, result);
+			awaitQueue.add(this);
+		}
+
 	}
 
 	/**
-	 * @param timeout
-	 * @param unit
-	 * @return
-	 * @throws InterruptedException
-	 * @see java.util.concurrent.ExecutorService#awaitTermination(long,
-	 *      java.util.concurrent.TimeUnit)
+	 * 
+	 * PausableThreadPoolExecutor.
+	 * 
+	 * @see http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/
+	 *      ThreadPoolExecutor.html
+	 * 
+	 *      Remove task from List "awaitQueue" after execution.
+	 * 
+	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+	 * 
 	 */
-	@Override
-	public boolean awaitTermination(final long timeout, final TimeUnit unit) throws InterruptedException {
-		return executorService.awaitTermination(timeout, unit);
-	}
+	class PausableThreadPoolExecutor extends ThreadPoolExecutor {
+		private boolean isPaused;
+		private final ReentrantLock pauseLock = new ReentrantLock();
+		private final Condition unpaused = pauseLock.newCondition();
 
-	/**
-	 * @param task
-	 * @return
-	 * @see java.util.concurrent.ExecutorService#submit(java.util.concurrent.Callable)
-	 */
-	@Override
-	public <T> Future<T> submit(final Callable<T> task) {
-		return executorService.submit(task);
-	}
+		public PausableThreadPoolExecutor(final int corePoolSize, final int maximumPoolSize, final long keepAliveTime, final TimeUnit unit, final BlockingQueue<Runnable> workQueue, final RejectedExecutionHandler handler) {
+			super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, handler);
+		}
 
-	/**
-	 * @param task
-	 * @param result
-	 * @return
-	 * @see java.util.concurrent.ExecutorService#submit(java.lang.Runnable,
-	 *      java.lang.Object)
-	 */
-	@Override
-	public <T> Future<T> submit(final Runnable task, final T result) {
-		return executorService.submit(task, result);
-	}
+		public PausableThreadPoolExecutor(final int corePoolSize, final int maximumPoolSize, final long keepAliveTime, final TimeUnit unit, final BlockingQueue<Runnable> workQueue, final ThreadFactory threadFactory,
+				final RejectedExecutionHandler handler) {
+			super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
+		}
 
-	/**
-	 * @param task
-	 * @return
-	 * @see java.util.concurrent.ExecutorService#submit(java.lang.Runnable)
-	 */
-	@Override
-	public Future<?> submit(final Runnable task) {
-		return executorService.submit(task);
-	}
+		public PausableThreadPoolExecutor(final int corePoolSize, final int maximumPoolSize, final long keepAliveTime, final TimeUnit unit, final BlockingQueue<Runnable> workQueue, final ThreadFactory threadFactory) {
+			super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory);
+		}
 
-	/**
-	 * @param tasks
-	 * @return
-	 * @throws InterruptedException
-	 * @see java.util.concurrent.ExecutorService#invokeAll(java.util.Collection)
-	 */
-	@Override
-	public <T> List<Future<T>> invokeAll(final Collection<? extends Callable<T>> tasks) throws InterruptedException {
-		return executorService.invokeAll(tasks);
-	}
+		public PausableThreadPoolExecutor(final int corePoolSize, final int maximumPoolSize, final long keepAliveTime, final TimeUnit unit, final BlockingQueue<Runnable> workQueue) {
+			super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
+		}
 
-	/**
-	 * @param tasks
-	 * @param timeout
-	 * @param unit
-	 * @return
-	 * @throws InterruptedException
-	 * @see java.util.concurrent.ExecutorService#invokeAll(java.util.Collection,
-	 *      long, java.util.concurrent.TimeUnit)
-	 */
-	@Override
-	public <T> List<Future<T>> invokeAll(final Collection<? extends Callable<T>> tasks, final long timeout, final TimeUnit unit) throws InterruptedException {
-		return executorService.invokeAll(tasks, timeout, unit);
-	}
+		@Override
+		public boolean awaitTermination(final long timeout, final TimeUnit unit) throws InterruptedException {
+			return super.awaitTermination(timeout, unit);
+		}
 
-	/**
-	 * @param tasks
-	 * @return
-	 * @throws InterruptedException
-	 * @throws ExecutionException
-	 * @see java.util.concurrent.ExecutorService#invokeAny(java.util.Collection)
-	 */
-	@Override
-	public <T> T invokeAny(final Collection<? extends Callable<T>> tasks) throws InterruptedException, ExecutionException {
-		return executorService.invokeAny(tasks);
-	}
+		@Override
+		protected void beforeExecute(final Thread t, final Runnable r) {
+			super.beforeExecute(t, r);
+			pauseLock.lock();
+			try {
+				while (isPaused) {
+					unpaused.await();
+				}
+			} catch (final InterruptedException ie) {
+				t.interrupt();
+			} finally {
+				pauseLock.unlock();
+			}
+		}
 
-	/**
-	 * @param tasks
-	 * @param timeout
-	 * @param unit
-	 * @return
-	 * @throws InterruptedException
-	 * @throws ExecutionException
-	 * @throws TimeoutException
-	 * @see java.util.concurrent.ExecutorService#invokeAny(java.util.Collection,
-	 *      long, java.util.concurrent.TimeUnit)
-	 */
-	@Override
-	public <T> T invokeAny(final Collection<? extends Callable<T>> tasks, final long timeout, final TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-		return executorService.invokeAny(tasks, timeout, unit);
+		@Override
+		protected void afterExecute(final Runnable r, final Throwable t) {
+			super.afterExecute(r, t);
+			awaitQueue.remove(r);
+		}
+
+		public void pause() {
+			pauseLock.lock();
+			try {
+				isPaused = true;
+			} finally {
+				pauseLock.unlock();
+			}
+		}
+
+		public void resume() {
+			pauseLock.lock();
+			try {
+				isPaused = false;
+				unpaused.signalAll();
+			} finally {
+				pauseLock.unlock();
+			}
+		}
 	}
 
 }

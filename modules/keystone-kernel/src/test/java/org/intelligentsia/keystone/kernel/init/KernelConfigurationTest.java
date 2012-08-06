@@ -49,11 +49,11 @@ public class KernelConfigurationTest {
 	public void checkSerialization() throws JsonGenerationException, JsonMappingException, IOException {
 		final ObjectMapper mapper = new XmlMapper();
 
-		KernelConfiguration configuration = getConfiguration();
-		StringWriter writer = new StringWriter();
+		final KernelConfiguration configuration = getConfiguration();
+		final StringWriter writer = new StringWriter();
 		mapper.writeValue(writer, configuration);
 
-		KernelConfiguration configuration2 = mapper.readValue(new StringReader(writer.toString()), KernelConfiguration.class);
+		final KernelConfiguration configuration2 = mapper.readValue(new StringReader(writer.toString()), KernelConfiguration.class);
 		assertNotNull(configuration2);
 		assertNotNull(configuration2.getArtifactIdentifier());
 		assertEquals("org.intelligents-ia.keystone:keystone-kernel:1.0.0-SNAPSHOT", configuration2.getArtifactIdentifier());
@@ -66,7 +66,7 @@ public class KernelConfigurationTest {
 	}
 
 	public KernelConfiguration getConfiguration() throws MalformedURLException {
-		KernelConfiguration configuration = new KernelConfiguration();
+		final KernelConfiguration configuration = new KernelConfiguration();
 		configuration.setArtifactIdentifier("org.intelligents-ia.keystone:keystone-kernel:1.0.0-SNAPSHOT");
 		configuration.add(new Repository("repository-maven-uk", "http://uk.maven.org/maven2"));
 		configuration.setLocalRepository(new URL("file://home"));

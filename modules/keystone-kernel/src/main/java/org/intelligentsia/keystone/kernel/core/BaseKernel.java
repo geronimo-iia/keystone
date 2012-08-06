@@ -26,6 +26,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.intelligentsia.keystone.api.Preconditions;
@@ -37,7 +39,6 @@ import org.intelligentsia.keystone.kernel.ArtifactServer;
 import org.intelligentsia.keystone.kernel.EventBusServer;
 import org.intelligentsia.keystone.kernel.IsolationLevel;
 import org.intelligentsia.keystone.kernel.Kernel;
-import org.intelligentsia.keystone.kernel.KernelExecutor;
 import org.intelligentsia.keystone.kernel.KernelProviderService;
 import org.intelligentsia.keystone.kernel.KernelServer;
 import org.intelligentsia.keystone.kernel.RepositoryServer;
@@ -115,6 +116,11 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 	private State state = State.SOL;
 
 	/**
+	 * Flag to halt kernel.
+	 */
+	private boolean halt = Boolean.FALSE;
+
+	/**
 	 * Build a new instance of BaseKernel.java.
 	 * 
 	 * @param eventBusServer
@@ -156,28 +162,23 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 	}
 
 	@Override
-	public RepositoryServer getRepositoryServer() {
+	public RepositoryServer repositoryServer() {
 		return repositoryServer;
 	}
 
 	@Override
-	public ArtifactServer getArtifactServer() {
+	public ArtifactServer artifactServer() {
 		return artifactServer;
 	}
 
 	@Override
-	public EventBusServer getEventBus() {
+	public EventBusServer eventBus() {
 		return eventBusServer;
 	}
 
 	@Override
-	public ServiceServer getServiceServer() {
+	public ServiceServer serviceServer() {
 		return serviceServer;
-	}
-
-	@Override
-	public KernelExecutor getKernelExecutor() {
-		return kernelExecutor;
 	}
 
 	@Override
@@ -187,6 +188,21 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 		}
 	}
 
+	@Override
+	public State state() {
+		return state;
+	}
+
+	@Override
+	public <V> Future<V> submit(final Callable<V> task) {
+		return kernelExecutor.submit(task);
+	}
+
+	@Override
+	public <V> Future<V> submit(final Runnable task, final V result) {
+		return kernelExecutor.submit(task, result);
+	};
+
 	/**
 	 * Initialize kernel instance.
 	 * 
@@ -194,10 +210,18 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 	public void initialize() {
 		if (State.SOL.equals(state)) {
 			dmesg("Initializing Kernel");
+			// pause all futur submitted task
+			kernelExecutor.pause();
 			// initializing all server resource
 			initializeKernelServer();
 			// register kernel service
-			getServiceServer().register(kernelArtifactContext, KernelProviderService.class, new DefaultKernelProviderService(this));
+			serviceServer().register(kernelArtifactContext, KernelProviderService.class, new DefaultKernelProviderService(this));
+			// add main task to scheduler
+			if (mainKernelProcess != null) {
+				kernelExecutor.submit(mainKernelProcess, Boolean.TRUE);
+			}
+			// resume all submitted task
+			kernelExecutor.resume();
 			// up state
 			state = State.READY;
 		}
@@ -208,21 +232,15 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 	 */
 	public void dispose() {
 		if (State.READY.equals(state)) {
-			dmesg("Dispose Kernel");
+			dmesg("Disposing Kernel");
 			// shutdown executor
 			kernelExecutor.shutdown();
-			dmesg("KernelExecutor Request Shutdown");
-			try {
-				if (!kernelExecutor.awaitTermination(awaitTerminationTimeout, awaitTerminationTimeUnit)) {
-					dmesg("KernelExecutor Force Shutdown");
-					kernelExecutor.shutdownNow();
-				} else {
-					dmesg("KernelExecutor is shutdown");
-				}
-			} catch (InterruptedException e) {
+			if (!kernelExecutor.awaitTermination()) {
+				dmesg("Kernel executor: force Shutdown");
+				kernelExecutor.shutdownNow();
 			}
 			// unregister service
-			getServiceServer().unregister(kernelArtifactContext, KernelProviderService.class);
+			serviceServer().unregister(kernelArtifactContext, KernelProviderService.class);
 			// destroy all server resource
 			destroyKernelServer();
 			// up state
@@ -235,23 +253,27 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 		try {
 			initialize();
 
-			// add main task to scheduler
-			if (mainKernelProcess != null) {
-				kernelExecutor.execute(mainKernelProcess);
-			}
-
-			// kernelExecutor.invokeAll(tasks)
 			// waiting termination
 			try {
-				while (!kernelExecutor.awaitTermination(awaitTerminationTimeout, awaitTerminationTimeUnit)) {
-					// do something ?
+				while (halt || (!kernelExecutor.awaitTermination(awaitTerminationTimeout, awaitTerminationTimeUnit) && eventBusServer.hasPendingEvents())) {
+					// yield to another thread
+					Thread.yield();
 				}
-			} catch (InterruptedException e) {
+				if (halt) {
+					dmesg("Halt Kernel");
+				}
+			} catch (final InterruptedException e) {
 			}
-
 		} finally {
 			dispose();
 		}
+	}
+
+	/**
+	 * Halt Kernel.
+	 */
+	public void halt() {
+		halt = true;
 	}
 
 	/**
@@ -302,12 +324,12 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 	 *             if error occurs.
 	 */
 	protected void initializeKernelServer() throws KeystoneRuntimeException {
-		dmesg("initialize kernel server");
+		dmesg("Initialize kernel server.");
 		for (final KernelServer kernelServer : servers.values()) {
 			try {
 				kernelServer.initialize(this);
 			} catch (final KeystoneRuntimeException e) {
-				dmesg("error when initializing %s: %s", kernelServer.getName(), e.getMessage());
+				dmesg("Error when initializing %s: %s", kernelServer.getName(), e.getMessage());
 				throw e;
 			}
 		}
@@ -317,7 +339,7 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 	 * Destroy kernel server in reverse registration order.
 	 */
 	protected void destroyKernelServer() {
-		dmesg("destroy kernel server");
+		dmesg("Destroying all kernel server instance.");
 		// reverse order
 		final List<KernelServer> list = new ArrayList<KernelServer>(servers.values());
 		Collections.reverse(list);
@@ -326,7 +348,7 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 			try {
 				kernelServer.destroy();
 			} catch (final Throwable e) {
-				dmesg("error when destroying %s: %s", kernelServer.getName(), e.getMessage());
+				dmesg("Error when destroying %s: %s", kernelServer.getName(), e.getMessage());
 			}
 		}
 	}
@@ -358,15 +380,9 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 	 * @param awaitTerminationTimeout
 	 * @param timeUnit
 	 */
-	public void setAwaitTerminationFrequency(long awaitTerminationTimeout, TimeUnit timeUnit) {
+	public void setAwaitTerminationFrequency(final long awaitTerminationTimeout, final TimeUnit timeUnit) {
 		this.awaitTerminationTimeout = awaitTerminationTimeout;
 		this.awaitTerminationTimeUnit = timeUnit;
 	}
 
-	/**
-	 * @return Kernel {@link State}.
-	 */
-	public State geState() {
-		return state;
-	}
 }

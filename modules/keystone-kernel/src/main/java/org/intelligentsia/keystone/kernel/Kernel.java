@@ -49,7 +49,18 @@ public interface Kernel extends Runnable {
 	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
 	 */
 	public enum State {
-		SOL, READY, EOL
+		/**
+		 * Start of life.
+		 */
+		SOL,
+		/**
+		 * Kernel is ready to process some task.
+		 */
+		READY,
+		/**
+		 * End of life.
+		 */
+		EOL
 	}
 
 	/**

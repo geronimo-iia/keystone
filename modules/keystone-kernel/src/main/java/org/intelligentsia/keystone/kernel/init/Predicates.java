@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.intelligentsia.keystone.kernel.Kernel;
+import org.intelligentsia.keystone.kernel.Kernel.State;
 
 /**
  * 
@@ -70,4 +71,17 @@ public enum Predicates {
 		};
 	}
 
+	/**
+	 * @return a {@link Predicate} instance which evaluate to
+	 *         {@link Boolean#TRUE} when {@link Kernel} is in "End Of Life"
+	 *         state.
+	 */
+	public static Predicate endPredicate() {
+		return new Predicate() {
+			@Override
+			public boolean evaluate(final Kernel kernel) {
+				return kernel.state().equals(State.EOL);
+			}
+		};
+	}
 }

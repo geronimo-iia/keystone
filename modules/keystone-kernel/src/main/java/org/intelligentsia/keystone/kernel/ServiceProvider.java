@@ -57,4 +57,9 @@ public interface ServiceProvider<T extends Service> extends Iterable<ServiceRegi
 	 *         have no {@link ServiceRegistryKey}.
 	 */
 	public boolean isEmpty();
+
+	/**
+	 * @return first {@link Service} instance found or null if none exixts.
+	 */
+	public T getService();
 }

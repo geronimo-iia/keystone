@@ -192,6 +192,11 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 			return entries.values().iterator();
 		}
 
+		@Override
+		public T getService() {
+			return entries.isEmpty() ? null : entries.get(0).getService();
+		}
+
 	}
 
 }

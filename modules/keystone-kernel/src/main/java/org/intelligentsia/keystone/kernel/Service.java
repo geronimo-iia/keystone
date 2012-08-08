@@ -19,6 +19,8 @@
  */
 package org.intelligentsia.keystone.kernel;
 
+import org.intelligentsia.keystone.api.artifacts.KeystoneRuntimeException;
+
 /**
  * Service declare methods to manage a 'service' in our system.
  * 
@@ -42,8 +44,10 @@ public interface Service {
 	 * Initialize this service instance with specified kernel context.
 	 * 
 	 * @param context
+	 * @throws KeystoneRuntimeException
+	 *             if an error occurs
 	 */
-	public void initialize(KernelContext context);
+	public void initialize(KernelContext context) throws KeystoneRuntimeException;
 
 	/**
 	 * Destroy this service instance.

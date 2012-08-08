@@ -37,15 +37,15 @@ import org.intelligentsia.keystone.kernel.ServiceProvider;
 public class VirtualFileSystemArtifactEntryPoint implements ArtifactEntryPoint {
 
 	@Override
-	public void onLoad(ArtifactContext artifactContext, KernelContext kernelContext) throws KeystoneRuntimeException {
+	public void onLoad(final ArtifactContext artifactContext, final KernelContext kernelContext) throws KeystoneRuntimeException {
 		// locate a ServiceProver for KernelProviderService.
-		ServiceProvider<KernelProviderService> provider = kernelContext.find(KernelProviderService.class);
+		final ServiceProvider<KernelProviderService> provider = kernelContext.find(KernelProviderService.class);
 		if (provider.isEmpty()) {
 			throw new KeystoneRuntimeException("No KernelProviderService instance");
 		}
-		KernelProviderService kernelProviderService = provider.getService();
+		final KernelProviderService kernelProviderService = provider.getService();
 		// obtain kernel instance
-		Kernel kernel = kernelProviderService.getKernel(artifactContext);
+		final Kernel kernel = kernelProviderService.getKernel(artifactContext);
 		// register service
 		kernel.serviceServer().register(artifactContext, VirtualFileSystem.class, new DefaultVirtualFileSystem(artifactContext, kernel));
 	}

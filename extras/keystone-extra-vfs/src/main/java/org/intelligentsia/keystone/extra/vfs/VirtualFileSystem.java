@@ -19,6 +19,7 @@
  */
 package org.intelligentsia.keystone.extra.vfs;
 
+import org.apache.commons.vfs2.FileSystemManager;
 import org.intelligentsia.keystone.kernel.Service;
 
 /**
@@ -27,6 +28,6 @@ import org.intelligentsia.keystone.kernel.Service;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface VirtualFileSystem extends Service {
+public interface VirtualFileSystem extends Service, FileSystemManager {
 
 }

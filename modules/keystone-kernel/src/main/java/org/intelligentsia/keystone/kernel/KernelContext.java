@@ -36,7 +36,7 @@ public interface KernelContext {
 	 *            service class name
 	 * @return ServiceProvider instance.
 	 */
-	public ServiceProvider find(Class<? extends Service> service) throws KeystoneRuntimeException;
+	public <T extends Service> ServiceProvider<T> find(Class<T> service) throws KeystoneRuntimeException;
 
 	/**
 	 * @return an {@link EventPublisher} instance.

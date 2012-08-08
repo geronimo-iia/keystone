@@ -62,6 +62,6 @@ public interface ServiceServer extends Iterable<Class<? extends Service>>, Kerne
 	 *            service class
 	 * @return {@link ServiceProvider} instance
 	 */
-	public ServiceProvider find(Class<? extends Service> service) throws KeystoneRuntimeException;
+	public <T extends Service> ServiceProvider<T> find(Class<T> service) throws KeystoneRuntimeException;
 
 }

@@ -29,7 +29,7 @@ import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
  * @param <S>
  *            class which extends {@link Service}
  */
-public interface ServiceProvider extends Iterable<ServiceRegistryKey> {
+public interface ServiceProvider<T extends Service> extends Iterable<ServiceRegistryKey<T>> {
 
 	/**
 	 * @return an {@link Iterable} instance on {@link ArtifactIdentifier}
@@ -50,5 +50,11 @@ public interface ServiceProvider extends Iterable<ServiceRegistryKey> {
 	 * @return ServiceRegistryKey instance for specified key or null if not
 	 *         exists.
 	 */
-	public ServiceRegistryKey get(final ArtifactIdentifier key);
+	public ServiceRegistryKey<T> get(final ArtifactIdentifier key);
+
+	/**
+	 * @return {@link Boolean#TRUE} if this {@link ServiceProvider} instance
+	 *         have no {@link ServiceRegistryKey}.
+	 */
+	public boolean isEmpty();
 }

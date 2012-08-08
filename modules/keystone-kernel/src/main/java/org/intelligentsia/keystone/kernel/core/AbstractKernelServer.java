@@ -161,7 +161,7 @@ public abstract class AbstractKernelServer implements KernelServer {
 			}
 
 			@Override
-			public ServiceProvider find(final Class<? extends Service> service) throws KeystoneRuntimeException {
+			public <T extends Service> ServiceProvider<T> find(final Class<T> service) throws KeystoneRuntimeException {
 				return kernel.serviceServer().find(service);
 			}
 

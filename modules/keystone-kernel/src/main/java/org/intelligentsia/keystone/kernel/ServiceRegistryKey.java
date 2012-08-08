@@ -29,7 +29,7 @@ import org.intelligentsia.keystone.api.artifacts.ArtifactIdentifier;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public final class ServiceRegistryKey implements Serializable {
+public final class ServiceRegistryKey<T extends Service> implements Serializable {
 	/**
 	 * serialVersionUID:long
 	 */
@@ -39,9 +39,9 @@ public final class ServiceRegistryKey implements Serializable {
 	 */
 	private final ArtifactIdentifier artifactIdentifier;
 	/**
-	 * {@link Service} instacne.
+	 * {@link Service} instance.
 	 */
-	private final transient Service service;
+	private final transient T service;
 
 	/**
 	 * Build a new instance of ServiceProvider.java.
@@ -51,7 +51,7 @@ public final class ServiceRegistryKey implements Serializable {
 	 * @throws NullPointerException
 	 *             if artifactIdentifier or service is null
 	 */
-	public ServiceRegistryKey(final ArtifactIdentifier artifactIdentifier, final Service service) throws NullPointerException {
+	public ServiceRegistryKey(final ArtifactIdentifier artifactIdentifier, final T service) throws NullPointerException {
 		super();
 		if (artifactIdentifier == null) {
 			throw new NullPointerException("artifactIdentifier");
@@ -73,7 +73,7 @@ public final class ServiceRegistryKey implements Serializable {
 	/**
 	 * @return the service
 	 */
-	public final Service getService() {
+	public final T getService() {
 		return service;
 	}
 

@@ -298,6 +298,15 @@ public class BaseKernel implements Kernel, Iterable<KernelServer> {
 			throw new KeystoneRuntimeException(className + " is ever registered");
 		}
 		servers.put(className, instance);
+		// initialize if state is ready
+		if (State.READY.equals(state)) {
+			try {
+				instance.initialize(this);
+			} catch (final KeystoneRuntimeException e) {
+				servers.remove(className);
+				throw e;
+			}
+		}
 		return instance;
 	}
 

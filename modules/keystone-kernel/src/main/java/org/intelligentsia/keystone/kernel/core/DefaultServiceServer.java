@@ -47,7 +47,7 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 	/**
 	 * Registry instance.
 	 */
-	private final Map<Class<? extends Service>, ServiceProvider> registry = new ConcurrentHashMap<Class<? extends Service>, ServiceProvider>();
+	private final Map<Class<? extends Service>, ServiceProvider<?>> registry = new ConcurrentHashMap<Class<? extends Service>, ServiceProvider<?>>();
 
 	/**
 	 * Build a new instance of DefaultServiceServer.java.
@@ -62,14 +62,14 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 
 	@Override
 	protected void onDestroy() {
-		for (final ServiceProvider serviceProvider : registry.values()) {
+		for (final ServiceProvider<?> serviceProvider : registry.values()) {
 			for (final ArtifactIdentifier artifactIdentifier : serviceProvider.keys()) {
-				final ServiceRegistryKey key = serviceProvider.get(artifactIdentifier);
+				final ServiceRegistryKey<?> key = serviceProvider.get(artifactIdentifier);
 				if ((key != null) && (key.getService() != null)) {
 					key.getService().destroy();
 				}
 			}
-			((DefaultServiceProvider) serviceProvider).clear();
+			((DefaultServiceProvider<?>) serviceProvider).clear();
 		}
 		registry.clear();
 	}
@@ -88,7 +88,7 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 		Preconditions.checkNotNull(serviceClassName, "serviceClassName");
 		Preconditions.checkNotNull(service, "service");
 		// get registry entry.
-		final DefaultServiceProvider serviceProvider = (DefaultServiceProvider) find(serviceClassName);
+		final DefaultServiceProvider<S> serviceProvider = (DefaultServiceProvider<S>) find(serviceClassName);
 		// check if ever registered
 		if (serviceProvider.contains(artifactContext.getArtifactIdentifier())) {
 			throw new KeystoneRuntimeException(serviceClassName + " is ever registered with " + artifactContext.getArtifactIdentifier().toString());
@@ -96,7 +96,7 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 		// initialize
 		service.initialize(getKernelContext());
 		// add
-		serviceProvider.put(new ServiceRegistryKey(artifactContext.getArtifactIdentifier(), service));
+		serviceProvider.put(new ServiceRegistryKey<S>(artifactContext.getArtifactIdentifier(), service));
 		// raise event
 		kernel.eventBus().publish(new ServiceRegistryChangeEvent(artifactContext.getArtifactIdentifier(), serviceClassName, ServiceRegistryChangeEvent.State.REGISTERED));
 	}
@@ -106,8 +106,8 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 		Preconditions.checkNotNull(artifactContext, "artifactContext");
 		Preconditions.checkNotNull(serviceClassName, "serviceClassName");
 		// get registry
-		final DefaultServiceProvider serviceProvider = (DefaultServiceProvider) find(serviceClassName);
-		final ServiceRegistryKey key = serviceProvider.remove(artifactContext.getArtifactIdentifier());
+		final DefaultServiceProvider<S> serviceProvider = (DefaultServiceProvider<S>) find(serviceClassName);
+		final ServiceRegistryKey<?> key = serviceProvider.remove(artifactContext.getArtifactIdentifier());
 		// destroy
 		if ((key != null) && (key.getService() != null)) {
 			key.getService().destroy();
@@ -118,11 +118,12 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public ServiceProvider find(final Class<? extends Service> service) throws KeystoneRuntimeException {
-		ServiceProvider serviceProvider = registry.get(service);
+	public <T extends Service> ServiceProvider<T> find(final Class<T> service) throws KeystoneRuntimeException {
+		ServiceProvider<T> serviceProvider = (ServiceProvider<T>) registry.get(service);
 		if (serviceProvider == null) {
-			serviceProvider = new DefaultServiceProvider();
+			serviceProvider = new DefaultServiceProvider<T>();
 			registry.put(service, serviceProvider);
 		}
 		return serviceProvider;
@@ -134,8 +135,8 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 	 * @param serviceProvider
 	 * @param artifactIdentifier
 	 */
-	protected void destroy(final DefaultServiceProvider serviceProvider, final ArtifactIdentifier artifactIdentifier) {
-		final ServiceRegistryKey serviceRegistryKey = serviceProvider.get(artifactIdentifier);
+	protected void destroy(final DefaultServiceProvider<?> serviceProvider, final ArtifactIdentifier artifactIdentifier) {
+		final ServiceRegistryKey<?> serviceRegistryKey = serviceProvider.get(artifactIdentifier);
 		if (serviceRegistryKey != null) {
 			serviceRegistryKey.getService().destroy();
 		}
@@ -147,8 +148,8 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 	 * 
 	 * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
 	 */
-	private class DefaultServiceProvider implements ServiceProvider {
-		private final Map<ArtifactIdentifier, ServiceRegistryKey> entries = new ConcurrentHashMap<ArtifactIdentifier, ServiceRegistryKey>(4);
+	private class DefaultServiceProvider<T extends Service> implements ServiceProvider<T> {
+		private final Map<ArtifactIdentifier, ServiceRegistryKey<T>> entries = new ConcurrentHashMap<ArtifactIdentifier, ServiceRegistryKey<T>>(4);
 
 		public DefaultServiceProvider() {
 			super();
@@ -165,15 +166,15 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 		}
 
 		@Override
-		public ServiceRegistryKey get(final ArtifactIdentifier key) {
+		public ServiceRegistryKey<T> get(final ArtifactIdentifier key) {
 			return entries.get(key);
 		}
 
-		public ServiceRegistryKey put(final ServiceRegistryKey serviceRegistryKey) {
+		public ServiceRegistryKey<T> put(final ServiceRegistryKey<T> serviceRegistryKey) {
 			return entries.put(serviceRegistryKey.getArtifactIdentifier(), serviceRegistryKey);
 		}
 
-		public ServiceRegistryKey remove(final ArtifactIdentifier artifactIdentifier) {
+		public ServiceRegistryKey<T> remove(final ArtifactIdentifier artifactIdentifier) {
 			return entries.remove(artifactIdentifier);
 		}
 
@@ -182,7 +183,12 @@ public class DefaultServiceServer extends AbstractKernelServer implements Servic
 		}
 
 		@Override
-		public Iterator<ServiceRegistryKey> iterator() {
+		public boolean isEmpty() {
+			return entries.isEmpty();
+		}
+
+		@Override
+		public Iterator<ServiceRegistryKey<T>> iterator() {
 			return entries.values().iterator();
 		}
 

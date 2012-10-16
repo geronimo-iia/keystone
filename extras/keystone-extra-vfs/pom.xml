@@ -25,4 +25,7 @@
 			<version>2.0</version>
 		</dependency>
 	</dependencies>
+	<properties>
+		<maven-license-plugin.header>../../header.txt</maven-license-plugin.header>
+	</properties>
 </project>

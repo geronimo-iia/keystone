@@ -19,4 +19,7 @@
 			<version>2.6.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
+	<properties>
+		<maven-license-plugin.header>../../header.txt</maven-license-plugin.header>
+	</properties>
 </project>

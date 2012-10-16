@@ -15,4 +15,7 @@
 		<module>keystone-api</module>
 		<module>keystone-kernel</module>
 	</modules>
+	<properties>
+		<maven-license-plugin.header>../header.txt</maven-license-plugin.header>
+	</properties>
 </project>

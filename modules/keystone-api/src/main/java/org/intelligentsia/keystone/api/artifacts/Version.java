@@ -19,6 +19,7 @@
  */
 package org.intelligentsia.keystone.api.artifacts;
 
+import java.io.Serializable;
 import java.util.IllegalFormatException;
 import java.util.StringTokenizer;
 
@@ -49,7 +50,11 @@ import java.util.StringTokenizer;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public final class Version implements Comparable<Version> {
+public final class Version implements Comparable<Version>, Serializable {
+	/**
+	 * serialVersionUID:long
+	 */
+	private static final long serialVersionUID = -2059600592653555167L;
 	/**
 	 * Major number.
 	 */
@@ -66,6 +71,18 @@ public final class Version implements Comparable<Version> {
 	 * Classifier.
 	 */
 	private final String classifier;
+
+	/**
+	 * Build a new instance of Version.java.
+	 * 
+	 * @param version
+	 *            to copy
+	 * @throws NullPointerException
+	 *             if version is null
+	 */
+	public Version(Version version) throws NullPointerException {
+		this(version.major, version.medium, version.minor, version.classifier);
+	}
 
 	/**
 	 * Build a new instance of Version.java.

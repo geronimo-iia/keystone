@@ -67,6 +67,13 @@ public class Versioning {
 	private String lastUpdated;
 
 	/**
+	 * Build a new instance of Versioning.
+	 */
+	public Versioning() {
+		super();
+	}
+
+	/**
 	 * @return What the latest version in the directory is, including snapshots.
 	 * @uml.property name="latest"
 	 */

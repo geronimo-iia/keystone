@@ -25,7 +25,7 @@ package org.intelligentsia.keystone.api.artifacts.pom;
 import java.io.Serializable;
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * http://maven.apache.org/ref/3.0.3/maven-model/maven.html

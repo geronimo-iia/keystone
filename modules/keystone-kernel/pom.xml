@@ -22,8 +22,7 @@
 		<!-- ******************************************************************* -->
 		<dependency>
 			<groupId>org.xeustechnologies</groupId>
-			<artifactId>jcl-core</artifactId>
-			<version>${jcl.version}</version>
+			<artifactId>jcl-core</artifactId> 
 			<optional>true</optional>
 		</dependency>
 		<!-- ******************************************************************* -->
@@ -31,8 +30,7 @@
 		<!-- ******************************************************************* -->
 		<dependency>
 			<groupId>org.intelligents-ia</groupId>
-			<artifactId>event-bus</artifactId>
-			<version>${org.intelligents-ia.event-bus.version}</version>
+			<artifactId>event-bus</artifactId> 
 		</dependency>
 	</dependencies>
 	<!-- ******************************************************************* -->
@@ -40,14 +38,6 @@
 	<!-- ******************************************************************* -->
 	<build>
 		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.intelligents-ia.keystone</groupId>
 				<artifactId>keystone-plugin</artifactId>

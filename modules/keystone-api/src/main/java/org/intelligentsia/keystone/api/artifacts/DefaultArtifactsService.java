@@ -26,16 +26,16 @@ import static org.intelligentsia.keystone.api.artifacts.PathResolver.resolveMeta
 
 import java.io.IOException;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.DeserializationConfig.Feature;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.intelligentsia.keystone.api.StringUtils;
 import org.intelligentsia.keystone.api.artifacts.pom.Pom;
 import org.intelligentsia.keystone.api.artifacts.repository.RepositoryService;
 import org.intelligentsia.keystone.api.artifacts.repository.metadata.Metadata;
 
-import com.fasterxml.jackson.xml.XmlMapper;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 /**
  * DefaultArtifactsService implements ArtifactsService API.
@@ -53,7 +53,7 @@ public class DefaultArtifactsService implements ArtifactsService {
 	/**
 	 * Jackson Object XML Mapper.
 	 */
-	private final ObjectMapper mapper = new XmlMapper().configure(Feature.FAIL_ON_UNKNOWN_PROPERTIES, Boolean.FALSE);
+	private final ObjectMapper mapper = new XmlMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
 	/**
 	 * Build a new instance of <code>DefaultArtifactsService</code>

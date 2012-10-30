@@ -17,7 +17,7 @@ h2. Configure Your POM
 	        <plugin>
 	            <groupId>org.intelligentsia.keystone</groupId>
 	            <artifactId>plugin</artifactId>
-	            <version>2.5</version>
+	            <version>2.6</version>
 	            <executions>
 	                <execution>
 	                    <id>make-assembly</id>
@@ -114,7 +114,7 @@ h2. Add a new dependency on your project
 <dependency>
 	<groupId>org.intelligents-ia.keystone</groupId>
 	<artifactId>keystone-boot</artifactId>
-	<version>2.5</version>
+	<version>2.6</version>
 </dependency>
 </code>
 </pre>
@@ -127,5 +127,35 @@ h2. When you want to restart, simply throw this exception
 throw new KeystoneException(KeystoneException.Operation.RESTART);
 </code>
 </pre>
+
+
+h1. Releases Notes
+
+h2. 2.6.1-SNAPSHOT (TODO)
+
+* Integrate keystone sample in this project
+* Finalize extra features
+
+h2. 2.6.0
+
+* Bootstrap: add stack trace when exception occurs
+* Use Jackson libraries from github: com.fasterxml.jackson
+* Fix header of license
+* Add copy constructor on Version (keystone api)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

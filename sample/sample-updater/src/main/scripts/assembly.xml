@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<assembly>
+    <id>boot</id>
+    <formats>
+        <format>jar</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <files>
+        <file>
+            <source>src/main/resources/keystone.properties</source>
+            <outputDirectory>/</outputDirectory>
+            <filtered>true</filtered>
+        </file>
+
+    </files>
+    <dependencySets>
+        <!-- include all dependencies -->
+        <dependencySet>
+            <useProjectArtifact>true</useProjectArtifact>
+            <outputDirectory>/lib</outputDirectory>
+            <scope>runtime</scope>
+        </dependencySet>
+        <!-- include update tool -->
+        <dependencySet>
+            <outputDirectory>/tools</outputDirectory>
+            <scope>runtime</scope>
+            <outputFileNameMapping>keystone.jar</outputFileNameMapping>
+            <includes>
+                <include>org.intelligentsia.keystone:boot</include>
+            </includes>
+        </dependencySet>
+        <!-- include boot project in unpack form-->
+        <dependencySet>
+            <outputDirectory>/</outputDirectory>
+            <unpack>true</unpack>
+            <scope>runtime</scope>
+            <includes>
+                <include>org.intelligentsia.keystone:boot</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
+</assembly>

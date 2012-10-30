@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.intelligents-ia</groupId>
+		<artifactId>intelligents-ia</artifactId>
+		<version>1.2</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.intelligents-ia.keystone.sample</groupId>
+	<artifactId>keystone-sample</artifactId>
+	<packaging>pom</packaging>
+	<name>Keystone Sample</name>
+	<version>1.1-SNAPSHOT</version>
+	<description>sample for keystone.</description>
+	<url>http://intelligents-ia.com</url>
+	<inceptionYear>2011</inceptionYear>
+	<developers>
+		<developer>
+			<id>jerome.guibert.intelligents.ia.com</id>
+			<name>Jerome Guibert</name>
+			<organization>Intelligents-ia</organization>
+			<email>jguibert@intelligents-ia.com</email>
+		</developer>
+	</developers>
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License version 2.1</name>
+			<url>http://www.gnu.org/licenses/lgpl.html</url>
+		</license>
+	</licenses>
+	<scm>
+		<connection>scm:svn:https://intelligents-ia.googlecode.com/svn/trunk/keystone-sample/</connection>
+		<url>https://intelligents-ia.googlecode.com/svn/trunk/keystone-sample/</url>
+	</scm>
+	<organization>
+		<name>Intelligents-ia</name>
+		<url>http://intelligents-ia.com</url>
+	</organization>
+	<modules>
+		<module>sample-simple</module>
+		<module>sample-updater</module>
+		<module>sample-native</module>
+	</modules>
+	<properties>
+		<org.intelligents-ia.keystone>2.3-SNAPSHOT</org.intelligents-ia.keystone>
+	</properties>
+	<repositories>
+		<repository>
+			<id>intelligents-ia</id>
+			<name>Intelligents-ia Repository On Intelligents-ia Web Site</name>
+			<url>http://intelligents-ia.com/maven2</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+</project>

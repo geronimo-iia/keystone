@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.intelligents-ia.keystone.sample</groupId>
+		<artifactId>keystone-sample</artifactId>
+		<version>1.1-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>keystone-sample-updater</artifactId>
+	<packaging>jar</packaging>
+	<name>keystone sample</name>
+	<dependencies>
+		<dependency>
+			<groupId>org.intelligents-ia.keystone</groupId>
+			<artifactId>keystone-boot</artifactId>
+			<version>${org.intelligents-ia.keystone}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.intelligents-ia.keystone</groupId>
+				<artifactId>keystone-plugin</artifactId>
+				<version>${org.intelligents-ia.keystone}</version>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>custom</goal>
+						</goals>
+						<configuration>
+							<mainClass>org.intelligentsia.keystone.sample.KeystoneUpdaterSample</mainClass>
+							<info>true</info>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

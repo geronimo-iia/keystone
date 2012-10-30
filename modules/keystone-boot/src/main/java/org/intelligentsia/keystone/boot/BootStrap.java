@@ -401,13 +401,13 @@ public final class BootStrap {
 					}
 				} catch (final IllegalAccessException ex) {
 					// should not occurs
-					Console.WARNING("class '" + mainClassName + "', can not access to 'main' method  : " + ex.getMessage());
+					Console.WARNING("class '" + mainClassName + "', can not access to 'main' method  : " + ex.getMessage(), ex);
 				} catch (final IllegalArgumentException ex) {
-					Console.WARNING("class '" + mainClassName + "', problem with argument of 'main' method  : " + ex.getMessage());
+					Console.WARNING("class '" + mainClassName + "', problem with argument of 'main' method  : " + ex.getMessage(), ex);
 				} catch (final InvocationTargetException ex) {
-					Console.WARNING("class '" + mainClassName + "', exception occur when invoking 'main' method  : " + ex.getMessage());
+					Console.WARNING("class '" + mainClassName + "', exception occur when invoking 'main' method  : " + ex.getMessage(), ex);
 				} catch (final Throwable ex) {
-					Console.WARNING("class '" + mainClassName + "', exception occur : " + ex.getMessage());
+					Console.WARNING("class '" + mainClassName + "', exception occur : " + ex.getMessage(), ex);
 				}
 			} else {
 				Console.WARNING("The main() method in class '" + mainClassName + "' not found.");

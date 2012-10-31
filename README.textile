@@ -17,7 +17,7 @@ h2. Configure Your POM
 	        <plugin>
 	            <groupId>org.intelligentsia.keystone</groupId>
 	            <artifactId>plugin</artifactId>
-	            <version>2.6</version>
+	            <version>2.6.0</version>
 	            <executions>
 	                <execution>
 	                    <id>make-assembly</id>

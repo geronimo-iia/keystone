@@ -135,8 +135,13 @@ h1. Releases Notes
 
 h2. 2.6.1-SNAPSHOT (TODO)
 
+* Finalize/test extra features
+** nettosphere
+** jndi 
+** Java Chronicle
+
+Change done:
 * Integrate keystone sample in this project
-* Finalize extra features
 * use org.intelligents-ia:intelligents-ia as super pom
 
 h2. 2.6.0

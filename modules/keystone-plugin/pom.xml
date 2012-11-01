@@ -47,6 +47,6 @@
 		<maven-archiver.version>2.2</maven-archiver.version>
 		<maven-project.version>2.0</maven-project.version>
 		<maven-dependency-tree.version>1.2</maven-dependency-tree.version>
-		<maven-license-plugin.header>../../header.txt</maven-license-plugin.header>
+		<license.header.path>../../header.txt</license.header.path>
 	</properties>
 </project>

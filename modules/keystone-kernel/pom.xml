@@ -8,8 +8,6 @@
 	<artifactId>keystone-kernel</artifactId>
 	<packaging>jar</packaging>
 	<name>keystone-kernel</name>
-	<description>
-    </description>
 	<dependencies>
 		<dependency>
 			<groupId>org.intelligents-ia.keystone</groupId>
@@ -57,6 +55,6 @@
 		</plugins>
 	</build>
 	<properties>
-		<maven-license-plugin.header>../../header.txt</maven-license-plugin.header>
+		<license.header.path>../../header.txt</license.header.path>
 	</properties>
 </project>

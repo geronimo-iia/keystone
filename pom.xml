@@ -1,5 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.intelligents-ia</groupId>
+		<artifactId>intelligents-ia</artifactId>
+		<version>1.4.1</version>
+	</parent>
 	<groupId>org.intelligents-ia.keystone</groupId>
 	<artifactId>keystone</artifactId>
 	<packaging>pom</packaging>
@@ -26,14 +32,14 @@
 		</license>
 	</licenses>
 	<scm>
-		<connection>scm:git:https://github.com/geronimo-iia/keystone.git</connection>
 		<url>https://github.com/geronimo-iia/keystone.git</url>
+		<connection>scm:git:https://github.com/geronimo-iia/keystone.git</connection>
+		<developerConnection>scm:git:https://github.com/geronimo-iia/keystone.git</developerConnection>
 	</scm>
 	<organization>
 		<name>Intelligents-ia</name>
 		<url>http://intelligents-ia.com</url>
 	</organization>
-
 	<!-- ******************************************************************* -->
 	<!-- DEPENDENCIES MANAGEMENT -->
 	<!-- ******************************************************************* -->
@@ -110,97 +116,24 @@
 		<pluginManagement>
 			<plugins>
 				<!-- ******************************************************************* -->
-				<!-- JDK 1.6 -->
-				<!-- ******************************************************************* -->
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>2.3.2</version>
-					<configuration>
-						<source>1.6</source>
-						<target>1.6</target>
-						<encoding>UTF-8</encoding>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.3.2</version>
-					<configuration>
-						<archive>
-							<addMavenDescriptor>true</addMavenDescriptor>
-							<manifest>
-								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-							</manifest>
-						</archive>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.5</version>
-					<configuration>
-						<encoding>UTF-8</encoding>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>2.2.2</version>
-				</plugin>
-				<!-- ******************************************************************* -->
-				<!-- LICENCE CHECK -->
+				<!-- LICENCE CHECK ADD EXCLUDE-->
 				<!-- ******************************************************************* -->
 				<plugin>
 					<groupId>com.mycila.maven-license-plugin</groupId>
 					<artifactId>maven-license-plugin</artifactId>
-					<version>1.9.0</version>
 					<configuration>
-						<header>${maven-license-plugin.header}</header>
-						<failIfMissing>true</failIfMissing>
-						<aggregate>true</aggregate>
-						<encoding>UTF-8</encoding>
 						<excludes>
-							<exclude>LICENSE.txt</exclude>
-							<exclude>README.md</exclude>
-							<exclude>**/NOTES</exclude>
-							<exclude>**/src/doc/**</exclude>
-							<exclude>**/src/test/resources/**</exclude>
 							<exclude>**/src/repository/**</exclude>
 							<exclude>**/src/test/data/**</exclude>
-							<exclude>**/.gitattributes</exclude>
-							<exclude>**/.gitignore</exclude>
 							<exclude>repository/**</exclude>
 							<exclude>**/*.ucd</exclude>
 							<exclude>**/.euml2</exclude>
 							<exclude>**/.umlproject</exclude>
 						</excludes>
-						<strictCheck>true</strictCheck>
 					</configuration>
-					<executions>
-						<execution>
-							<id>check-headers</id>
-							<phase>verify</phase>
-							<goals>
-								<goal>check</goal>
-							</goals>
-						</execution>
-					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>
-		<plugins>
-			<plugin>
-				<groupId>com.mycila.maven-license-plugin</groupId>
-				<artifactId>maven-license-plugin</artifactId>
-			</plugin>
-		</plugins>
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ftp</artifactId>
-				<version>2.2</version>
-			</extension>
-		</extensions>
 	</build>
 	<!-- ******************************************************************* -->
 	<!-- MODULE LIST -->
@@ -210,18 +143,8 @@
 		<module>extras</module>
 	</modules>
 	<!-- ******************************************************************* -->
-	<!-- DISTRIBUTION -->
+	<!-- ONE REPOSITORY to rule them all -->
 	<!-- ******************************************************************* -->
-	<distributionManagement>
-		<repository>
-			<id>intelligents-ia-releases</id>
-			<url>ftp://ftp.lost-oasis.net/web-mvn.intelligents-ia.com/htdocs/releases</url>
-		</repository>
-		<snapshotRepository>
-			<id>intelligents-ia-snapshot</id>
-			<url>ftp://ftp.lost-oasis.net/web-mvn.intelligents-ia.com/htdocs/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
 	<repositories>
 		<repository>
 			<id>intelligents-ia-releases</id>
@@ -234,47 +157,11 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		<repository>
-			<id>intelligents-ia-snapshot</id>
-			<name>Intelligents-ia snapshot repository</name>
-			<url>http://mvn.intelligents-ia.com/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
 	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>intelligents-ia-releases</id>
-			<name>Intelligents-ia releases repository</name>
-			<url>http://mvn.intelligents-ia.com/releases</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>intelligents-ia-snapshot</id>
-			<name>Intelligents-ia snapshot repository</name>
-			<url>http://mvn.intelligents-ia.com/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
 	<!-- ******************************************************************* -->
 	<!-- PROPERTIES -->
 	<!-- ******************************************************************* -->
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven-license-plugin.header>header.txt</maven-license-plugin.header>
+		<license.header.path>header.txt</license.header.path>
 	</properties>
 </project>

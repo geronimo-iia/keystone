@@ -44,6 +44,6 @@
 		</plugins>
 	</build>
 	<properties>
-		<maven-license-plugin.header>../../header.txt</maven-license-plugin.header>
+		<license.header.path>../../header.txt</license.header.path>
 	</properties>
 </project>

@@ -141,6 +141,7 @@
 	<modules>
 		<module>modules</module>
 		<module>extras</module>
+		<module>samples</module>
 	</modules>
 	<!-- ******************************************************************* -->
 	<!-- ONE REPOSITORY to rule them all -->

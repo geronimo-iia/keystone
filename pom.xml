@@ -110,32 +110,6 @@
 		</dependency>
 	</dependencies>
 	<!-- ******************************************************************* -->
-	<!-- BUILD -->
-	<!-- ******************************************************************* -->
-	<build>
-		<pluginManagement>
-			<plugins>
-				<!-- ******************************************************************* -->
-				<!-- LICENCE CHECK ADD EXCLUDE-->
-				<!-- ******************************************************************* -->
-				<plugin>
-					<groupId>com.mycila.maven-license-plugin</groupId>
-					<artifactId>maven-license-plugin</artifactId>
-					<configuration>
-						<excludes>
-							<exclude>**/src/repository/**</exclude>
-							<exclude>**/src/test/data/**</exclude>
-							<exclude>repository/**</exclude>
-							<exclude>**/*.ucd</exclude>
-							<exclude>**/.euml2</exclude>
-							<exclude>**/.umlproject</exclude>
-						</excludes>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
-	<!-- ******************************************************************* -->
 	<!-- MODULE LIST -->
 	<!-- ******************************************************************* -->
 	<modules>

@@ -168,3 +168,6 @@ pip-log.txt
 
 # maven
 target
+
+# git.properties
+**/src/main/resources/git.properties

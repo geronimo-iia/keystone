@@ -82,35 +82,7 @@ bc.
 		</pluginRepository>
 	</pluginRepositories>
 
-h3. Snapshot Repository
 
-bc. 
-	<repositories>
-		<repository>
-			<id>intelligents-ia-snapshot</id>
-			<name>Intelligents-ia snapshot repository</name>
-			<url>http://mvn.intelligents-ia.com/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>intelligents-ia-snapshot</id>
-			<name>Intelligents-ia snapshot repository</name>
-			<url>http://mvn.intelligents-ia.com/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
 
 
 h1. Use extra features: Restart your application when needed!
@@ -133,14 +105,21 @@ throw new KeystoneException(KeystoneException.Operation.RESTART);
 
 h1. Releases Notes
 
-h2. 2.6.1-SNAPSHOT (TODO)
 
-* Finalize/test extra features
-** nettosphere
-** jndi 
-** Java Chronicle
+h2. 2.6.2-SNAPSHOT (TODO)
+
+* focus this project on three key point:
+** bootstrap any java application
+** integration with maven
+** offer restart features
+** offer a way to update embedded java application at runtime
+* extract all keystone-kernel and extras in another project
+* add more documentation on this subject
+
+h2. 2.6.1-SNAPSHOT (Release coming soon)
 
 Change done:
+* Integrate super pom 1.4.3 and add git.properties
 * Integrate keystone sample in this project
 * use org.intelligents-ia:intelligents-ia as super pom
 

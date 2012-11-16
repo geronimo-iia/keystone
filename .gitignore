@@ -170,4 +170,5 @@ pip-log.txt
 target
 
 # git.properties
-**/src/main/resources/git.properties
+git.properties
+

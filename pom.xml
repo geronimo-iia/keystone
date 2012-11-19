@@ -113,9 +113,9 @@
 	<!-- MODULE LIST -->
 	<!-- ******************************************************************* -->
 	<modules>
-		<module>modules</module>
-		<module>extras</module>
-		<module>samples</module>
+		<module>keystone-boot</module>
+		<module>keystone-plugin</module>
+		<module>keystone-samples</module>
 	</modules>
 	<!-- ******************************************************************* -->
 	<!-- ONE REPOSITORY to rule them all -->
@@ -139,4 +139,45 @@
 	<properties>
 		<license.header.path>header.txt</license.header.path>
 	</properties>
+	<!-- ******************************************************************* -->
+	<!-- BUILD -->
+	<!-- ******************************************************************* -->
+	<build>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											pl.project13.maven
+										</groupId>
+										<artifactId>
+											git-commit-id-plugin
+										</artifactId>
+										<versionRange>
+											[2.1.0,)
+										</versionRange>
+										<goals>
+											<goal>revision</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 </project>

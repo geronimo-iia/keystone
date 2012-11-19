@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.intelligents-ia.keystone</groupId>
-		<artifactId>keystone-modules</artifactId>
+		<artifactId>keystone</artifactId>
 		<version>2.6.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
@@ -48,6 +48,6 @@
 		<maven-archiver.version>2.2</maven-archiver.version>
 		<maven-project.version>2.0</maven-project.version>
 		<maven-dependency-tree.version>1.2</maven-dependency-tree.version>
-		<license.header.path>../../header.txt</license.header.path>
+		<license.header.path>../header.txt</license.header.path>
 	</properties>
 </project>

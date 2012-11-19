@@ -10,7 +10,7 @@
 	<artifactId>keystone</artifactId>
 	<packaging>pom</packaging>
 	<name>keystone</name>
-	<version>2.6.1-SNAPSHOT</version>
+	<version>3.0-SNAPSHOT</version>
 	<description>
         1. Stone wedge-shaped arch which maintains a vault [Architecture].
         2. A central element on which everything depends.

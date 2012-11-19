@@ -106,22 +106,15 @@ throw new KeystoneException(KeystoneException.Operation.RESTART);
 h1. Releases Notes
 
 
-h2. 2.6.2-SNAPSHOT (TODO)
-
-* focus this project on three key point:
-** bootstrap any java application
-** integration with maven
-** offer restart features
-** offer a way to update embedded java application at runtime
-* extract all keystone-kernel and extras in another project
-* add more documentation on this subject
-
-h2. 2.6.1-SNAPSHOT (Release coming soon)
+h2. 3.0-SNAPSHOT (Release coming soon)
 
 Change done:
 * Integrate super pom 1.4.3 and add git.properties
 * Integrate keystone sample in this project
 * use org.intelligents-ia:intelligents-ia as super pom
+* extract all keystone-kernel and extras in another project:
+** keystone project focus on bootstrap application, maven integration, restart features and pattern to update embedded java application at runtime
+** keystone-kernel focus on micro kernel container (yes, i like playing...)
 
 h2. 2.6.0
 

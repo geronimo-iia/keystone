@@ -109,7 +109,7 @@ h1. Releases Notes
 h2. 3.0-SNAPSHOT (Release coming soon)
 
 Change done:
-* Integrate super pom 1.4.3 and add git.properties
+* Integrate super pom 1.4.4 and add git.properties
 * Integrate keystone sample in this project
 * use org.intelligents-ia:intelligents-ia as super pom
 * extract all keystone-kernel and extras in another project:

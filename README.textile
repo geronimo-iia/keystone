@@ -14,7 +14,7 @@ bc.
 	        <plugin>
 	            <groupId>org.intelligentsia.keystone</groupId>
 	            <artifactId>plugin</artifactId>
-	            <version>2.6.0</version>
+	            <version>3.0</version>
 	            <executions>
 	                <execution>
 	                    <id>make-assembly</id>
@@ -93,7 +93,7 @@ bc.
 <dependency>
 	<groupId>org.intelligents-ia.keystone</groupId>
 	<artifactId>keystone-boot</artifactId>
-	<version>2.6.0</version>
+	<version>3.0</version>
 </dependency>
 
 
@@ -106,7 +106,7 @@ throw new KeystoneException(KeystoneException.Operation.RESTART);
 h1. Releases Notes
 
 
-h2. 3.0-SNAPSHOT (Release coming soon)
+h2. 3.0
 
 Change done:
 * Integrate super pom 1.4.4 and add git.properties

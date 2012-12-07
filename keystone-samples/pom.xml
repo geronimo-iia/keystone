@@ -25,6 +25,5 @@
 	<modules>
 		<module>sample-simple</module>
 		<module>sample-updater</module>
-		<module>sample-native</module>
 	</modules>
 </project>

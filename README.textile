@@ -62,6 +62,7 @@ bc.
 </natives>
 
 * libraries: add a list of extra  java libraries. Each path can be a file or a directory (Not recursive). 
+
 bc. 
 <libraries>
 	<paths>
@@ -70,6 +71,9 @@ bc.
 	</paths>
 </libraries>
 
+p. native library are supported in both way
+* with plugin parameters 
+* within embedded jar
 
 
 h2. Add some repositories

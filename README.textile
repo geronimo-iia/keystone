@@ -50,6 +50,28 @@ h2. Keystone Maven Plugin Parameters
 * finalName: Final artifact name. By default, this is the name of the original artefact suffix "-boot". Example for "sample.jar", it will be "sample-boot.jar"
 * replaceProjectArtifact: true | false (default is false). If enabled, the archive packaged artifact replaces the current project
 
+* natives: add a list of native libraries. Each path can be a file or a directory (Not recursive). 
+
+bc. 
+<natives>
+	<paths>
+		<path>${basedir}/extra/timer.dll</path>
+		<path>${basedir}/extra/timer.so</path>
+		<path>${basedir}/extra-natives</path>
+	</paths>
+</natives>
+
+* libraries: add a list of extra  java libraries. Each path can be a file or a directory (Not recursive). 
+bc. 
+<libraries>
+	<paths>
+		<path>${basedir}/h2-driver.jar</path>
+		<path>${basedir}/drivers</path>
+	</paths>
+</libraries>
+
+
+
 h2. Add some repositories
 
 h3. Releases Repository
@@ -108,7 +130,12 @@ h1. Releases Notes
 h2. 3.1 SNAPSHOT
 
 * exclude only "test" scope artifacts
-* fix native support
+* add native support 
+** be able to load embedded native library file 
+** be able to load native library in classpath at runtime
+* add plugin configuration utilities:
+** add a path set of native libraries
+** add a path set of extra java libraries 
 
 h2. 3.0
 

@@ -44,7 +44,7 @@ import java.util.zip.ZipException;
  * <li>META-INF/lib</li>
  * <li>lib</li>
  * </ul>
- * To {home}/lib folder.
+ * To {home}/lib folder
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
@@ -115,7 +115,7 @@ public class ExtractionManager {
 			final File lib = new File(home, "lib");
 			if (lib.exists()) {
 				if (!ExtractionManager.delete(lib)) {
-					Console.WARNING("Unable to Clean up lib");
+					Console.WARNING("Unable to Clean up lib folder");
 				}
 			}
 		}

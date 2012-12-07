@@ -23,76 +23,52 @@
 package org.intelligentsia.keystone;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Library.
+ * PathSet.
  * 
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public class Library implements Serializable {
+public class PathSet implements Serializable {
 
 	/**
 	 * serialVersionUID:long
 	 */
 	private static final long serialVersionUID = -4094326771866885545L;
-	/**
-	 * Library name without extention
-	 * 
-	 * @parameter expression="${name}"
-	 */
-	private String name;
-	/**
-	 * Path of this library.
-	 * 
-	 * @parameter expression="${path}"
-	 */
-	private String path;
+
+	 /**
+     * @parameter
+     */
+	private List<String> paths;
 
 	/**
-	 * Build a new instance of Library.
+	 * Build a new instance of PathSet.
 	 */
-	public Library() {
+	public PathSet() {
 		super();
 	}
 
-	/**
-	 * @return the name
-	 */
-	public final String getName() {
-		return name;
+	public void addPath(String path) {
+		getPaths().add(path);
 	}
 
-	/**
-	 * @param name
-	 *            the name to set
-	 */
-	public final void setName(final String name) {
-		this.name = name;
+	public void removePath(String path) {
+		getPaths().remove(path);
 	}
 
-	/**
-	 * @return the path
-	 */
-	public final String getPath() {
-		return path;
+	public List<String> getPaths() {
+		if (paths == null) {
+			paths = new ArrayList<String>();
+		}
+		return paths;
 	}
 
-	/**
-	 * @param path
-	 *            the path to set
-	 */
-	public final void setPath(final String path) {
-		this.path = path;
-	}
-
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "Library [" + (name != null ? "name=" + name + ", " : "") + (path != null ? "path=" + path : "") + "]";
+	public void setPaths(List<String> paths) {
+		this.paths = paths;
 	}
 
 }

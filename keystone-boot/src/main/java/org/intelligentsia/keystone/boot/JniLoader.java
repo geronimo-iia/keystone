@@ -23,7 +23,13 @@
 package org.intelligentsia.keystone.boot;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * JniLoader.
@@ -32,6 +38,8 @@ import java.util.StringTokenizer;
  * 
  */
 public class JniLoader {
+
+	private static Map<String, File> nativeLibraries = new ConcurrentHashMap<String, File>(5);
 
 	/**
 	 * Returns the absolute path name of a native library. The VM invokes this
@@ -49,13 +57,59 @@ public class JniLoader {
 	 */
 	public static String findLibrary(final File directory, final String libname) {
 		final String systemLibName = System.mapLibraryName(libname);
-		final File lib = new File(directory, systemLibName);
+		File lib = new File(directory, systemLibName);
 		if (!lib.exists()) {
-			Console.WARNING("Library '" + libname + "' has not be found ('" + lib.getAbsolutePath() + "')");
-			return null;
+			Console.VERBOSE("Library '" + libname + "' has not be found in embedded folder ('" + lib.getAbsolutePath() + "')");
+			lib = findLibraryInClassPath(libname, systemLibName);
+			if (lib == null || !lib.exists()) {
+				Console.WARNING("Library '" + libname + "' has not be found.");
+				return null;
+			}
 		}
 		Console.VERBOSE("Library '" + libname + "' found ('" + lib.getAbsolutePath() + "')");
 		return lib.getAbsolutePath();
+	}
+
+	/**
+	 * If libname exists in classpath, copy this in a temp file.
+	 * 
+	 * @param libname
+	 *            The library name
+	 * @param systemLibName
+	 *            The library system name
+	 * @return a {@link File} or null.
+	 */
+	private static File findLibraryInClassPath(final String libname, final String systemLibName) {
+		File result = nativeLibraries.get(libname);
+		if (result == null) {
+			// try to find in current class loader
+			InputStream inputStream = null;
+			OutputStream outputStream = null;
+			try {
+				inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(systemLibName);
+				if (inputStream != null) {
+					Console.VERBOSE("Copy native library : " + systemLibName);
+					// copy to temp file
+					result = File.createTempFile("keystone", libname);
+					outputStream = new FileOutputStream(result);
+					final byte[] buf = new byte[4096 * 4];
+					int len = 0;
+					while ((len = inputStream.read(buf)) > 0) {
+						outputStream.write(buf, 0, len);
+					}
+				}
+			} catch (IOException e) {
+				Console.VERBOSE("Error when copy native library : " + systemLibName, e);
+				result = null;
+			} finally {
+				ExtractionManager.close(inputStream);
+				ExtractionManager.close(outputStream);
+			}
+			if (result != null) {
+				nativeLibraries.put(libname, result);
+			}
+		}
+		return result;
 	}
 
 	/**

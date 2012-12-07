@@ -32,6 +32,7 @@ import java.util.Stack;
 import org.apache.maven.archiver.MavenArchiveConfiguration;
 import org.apache.maven.archiver.MavenArchiver;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.resolver.ArtifactCollector;
@@ -223,11 +224,20 @@ public class BootStrapMojo extends AbstractMojo {
 	private String pluginVersion = "";
 
 	/**
-	 * List of ordered libraries to add on final artifact (native or not).
+	 * List of native libraries path to add on final artifact (path could be a
+	 * directory).
+	 * 
+	 * @parameter alias="${natives}"
+	 */
+	private PathSet natives = null;
+
+	/**
+	 * List of libraries path to add on final artifact (path could be a
+	 * directory).
 	 * 
 	 * @parameter alias="${libraries}"
 	 */
-	private List<Library> libraries = null;
+	private PathSet libraries = null;
 
 	/**
 	 * If true then all dependencies will be exploded and packaged inside final
@@ -261,13 +271,13 @@ public class BootStrapMojo extends AbstractMojo {
 		if (!root.mkdirs()) {
 			throw new MojoExecutionException("Cannot create output directory " + root.getName());
 		}
-		// Analyze native libraries
-		analyzeNativeLibraries();
 		// write default plugin properties
 		writeBootStrapProperties(root);
 		// copy all runtime dependencies
 		final File libFile = copyDependencies(root);
-		// copy external library
+		// copy extra libraries
+		copyExtraLibraries(libFile);
+		// copy natives library
 		copyNativeLibraries(libFile);
 		// copy main artifact
 		copyMainArtifact(root, libFile);
@@ -278,49 +288,54 @@ public class BootStrapMojo extends AbstractMojo {
 	}
 
 	/**
-	 * Analyze native libraries. Compute library name if needed.
+	 * Copy extra libraries to libFile.
 	 * 
+	 * @param libFile
 	 * @throws MojoExecutionException
-	 *             if a library don't exists
+	 * @return library directory
 	 */
-	private void analyzeNativeLibraries() throws MojoExecutionException {
+	private void copyExtraLibraries(File libFile) throws MojoExecutionException {
 		if (libraries != null) {
-			getLog().info("analyze native libraries");
-			for (Library library : libraries) {
-				File f = new File(library.getPath());
-				if (!f.exists()) {
-					throw new MojoExecutionException("Unable to found library: " + library);
-				}
-				// compute name
-				if (library.getName() == null || "".equals(library.getName())) {
-					library.setName(f.getName());
-					// removing extension
-					int index = library.getName().lastIndexOf('.');
-					if (index > 0) {
-						library.setName(library.getName().substring(0, index));
-					}
-				}
-			}
+			getLog().info("copy extra libraries");
+			copyLibraries(libraries, libFile);
 		}
 	}
 
 	/**
-	 * Copy native libraries
+	 * Copy native libraries into "native folder"
 	 * 
-	 * @param libDirectory
-	 *            destination libraries directory
+	 * @param nativeLib
+	 *            root directory
 	 * @throws MojoExecutionException
 	 */
-	private void copyNativeLibraries(File libDirectory) throws MojoExecutionException {
-		if (libraries != null) {
+	private void copyNativeLibraries(File nativeLib) throws MojoExecutionException {
+		if (natives != null) {
 			getLog().info("copy native libraries");
-			for (Library library : libraries) {
-				File f = new File(library.getPath());
+			copyLibraries(natives, nativeLib);
+		}
+	}
+
+	/**
+	 * Copy path to destination folder (path can be a directory).
+	 * 
+	 * @param files
+	 * @param destination
+	 * @throws MojoExecutionException
+	 */
+	private void copyLibraries(PathSet pathSet, File destination) throws MojoExecutionException {
+		if (pathSet != null) {
+			for (String path : pathSet.getPaths()) {
+				File f = new File(path);
 				try {
-					getLog().debug("copy " + library.getPath());
-					FileUtils.copyFileToDirectory(f, libDirectory);
+					getLog().debug("copy " + path);
+					if (f.isDirectory()) {
+						getLog().info("copy " + f.getName());
+						FileUtils.copyDirectory(f, destination);
+					} else {
+						FileUtils.copyFileToDirectory(f, destination);
+					}
 				} catch (IOException e) {
-					throw new MojoExecutionException("Error copying library " + library, e);
+					throw new MojoExecutionException("Error copying library " + path, e);
 				}
 			}
 		}
@@ -342,7 +357,16 @@ public class BootStrapMojo extends AbstractMojo {
 		try {
 			final Set<Artifact> artifacts = new HashSet<Artifact>();
 			// init filter
-			final ArtifactFilter artifactFilter = new ScopeArtifactFilter(null);
+			final ArtifactFilter artifactFilter = new ScopeArtifactFilter(DefaultArtifact.SCOPE_COMPILE) {
+				@Override
+				public boolean include(Artifact artifact) {
+					if (Artifact.SCOPE_TEST.equals(artifact.getScope())) {
+						return false;
+					}
+					return true;
+				}
+
+			};
 			// Build project dependency tree
 			final DependencyNode rootNode = treeBuilder.buildDependencyTree(project, localRepository, artifactFactory, artifactMetadataSource, artifactFilter, artifactCollector);
 			// collect
@@ -395,7 +419,7 @@ public class BootStrapMojo extends AbstractMojo {
 	protected void collectRec(final DependencyNode node, final Set<Artifact> artifacts) {
 		if (node.getState() == DependencyNode.INCLUDED) {
 			final Artifact artifact = node.getArtifact();
-			if (Artifact.SCOPE_COMPILE.equals(artifact.getScope()) || Artifact.SCOPE_RUNTIME.equals(artifact.getScope())) {
+			if (!Artifact.SCOPE_TEST.equals(artifact.getScope())) {
 				getLog().info("Adding Artifact: " + artifact.toString());
 				artifacts.add(artifact);
 				for (final Iterator<?> iterator = node.getChildren().iterator(); iterator.hasNext();) {
@@ -421,7 +445,7 @@ public class BootStrapMojo extends AbstractMojo {
 			DependencyNode node = stack.pop();
 			if (node.getState() == DependencyNode.INCLUDED) {
 				final Artifact artifact = node.getArtifact();
-				if (Artifact.SCOPE_COMPILE.equals(artifact.getScope()) || Artifact.SCOPE_RUNTIME.equals(artifact.getScope())) {
+				if (!Artifact.SCOPE_TEST.equals(artifact.getScope())) {
 					getLog().info("Adding Artefact: " + artifact.toString());
 					artifacts.add(artifact);
 					// check children
@@ -484,25 +508,6 @@ public class BootStrapMojo extends AbstractMojo {
 		// classpath
 		properties.put("BootStrap.includeJavaHomeLib", Boolean.toString(includeJavaHomeLib));
 		properties.put("BootStrap.includeSystemClassLoader", Boolean.toString(includeSystemClassLoader));
-
-		// native libraries
-		if (libraries != null) {
-			Set<String> names = new HashSet<String>();
-			for (Library library : libraries) {
-				names.add(library.getName());
-			}
-			StringBuilder builder = null;
-			for (String name : names) {
-				if (builder != null) {
-					builder.append(name).append(",");
-				} else {
-					builder = new StringBuilder(name);
-				}
-			}
-			if (builder != null) {
-				properties.put("BootStrap.nativeCode", builder.toString());
-			}
-		}
 
 		// Create META-INF directory
 		final File metainf = new File(root, "META-INF");

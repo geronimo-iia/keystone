@@ -105,6 +105,10 @@ throw new KeystoneException(KeystoneException.Operation.RESTART);
 
 h1. Releases Notes
 
+h2. 3.1 SNAPSHOT
+
+* exclude only "test" scope artifacts
+* fix native support
 
 h2. 3.0
 

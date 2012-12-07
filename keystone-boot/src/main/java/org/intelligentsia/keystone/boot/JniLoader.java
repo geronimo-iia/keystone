@@ -53,9 +53,9 @@ public class JniLoader {
 	 */
 	public static String findLibrary(final File directory, final String libname) {
 		final String systemLibName = System.mapLibraryName(libname);
+		//Console.VERBOSE("Library '" + libname + "' lookup for '" + systemLibName + "'");
 		File lib = new File(directory, systemLibName);
 		if (!lib.exists()) {
-			Console.WARNING("Library '" + libname + "' has not be found.");
 			return null;
 		}
 		Console.VERBOSE("Library '" + libname + "' found ('" + lib.getAbsolutePath() + "')");
@@ -84,7 +84,7 @@ public class JniLoader {
 		try {
 			inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(systemLibName);
 			if (inputStream != null) {
-				Console.VERBOSE("Copy native library : " + systemLibName + " to " + lib.getAbsolutePath());
+				//Console.VERBOSE("Copy native library : " + systemLibName + " to " + lib.getAbsolutePath());
 				// copy to temp file
 				outputStream = new FileOutputStream(lib);
 				final byte[] buf = new byte[4096 * 4];
@@ -92,6 +92,7 @@ public class JniLoader {
 				while ((len = inputStream.read(buf)) > 0) {
 					outputStream.write(buf, 0, len);
 				}
+				Console.VERBOSE("Library '" + libname + "' found in classpath resource");
 				return lib.getAbsolutePath();
 			}
 			return null;

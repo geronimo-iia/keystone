@@ -211,10 +211,10 @@ public final class BootStrap {
 			protected String findLibrary(final String libname) {
 				String libPath = JniLoader.findLibrary(new File(home, "lib"), libname);
 				if (libPath == null) {
-					Console.VERBOSE("Library '" + libname + "' has not be found in embedded folder.");
+					//Console.VERBOSE("Library '" + libname + "' has not be found in embedded libraries folder.");
 					libPath = JniLoader.findLibraryInClassPath(libname, new File(home, "lib-natives"));
 					if (libPath == null) {
-						Console.VERBOSE("Library '" + libname + "' has not be found in classpath.");
+						//Console.VERBOSE("Library '" + libname + "' has not be found in classpath.");
 						return super.findLibrary(libname);
 					}
 				}

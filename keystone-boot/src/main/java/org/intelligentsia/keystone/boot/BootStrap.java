@@ -169,7 +169,7 @@ public final class BootStrap {
 			return;
 		}
 		// HOME LOCATION
-		File home = null;
+		final File home;
 		try {
 			home = BootStrap.getHomeDirectory(arguments, location);
 		} catch (final IllegalStateException e) {
@@ -196,16 +196,6 @@ public final class BootStrap {
 			return;
 		}
 
-		// manage native libraries
-		final String nativeCode = Arguments.getStringArgument(arguments, "BootStrap.nativeCode", null);
-		if (nativeCode != null) {
-			if (!JniLoader.loadLibraries(new File(home, "lib"), nativeCode)) {
-				Console.WARNING("Error when loading native code");
-				return;
-			}
-			Console.VERBOSE("nativeCode=" + nativeCode + " loaded");
-		}
-
 		// computing classPath
 		List<URL> urls = null;
 		try {
@@ -216,7 +206,30 @@ public final class BootStrap {
 
 		// Instantiate classloader
 		final ClassLoader classloader = new URLClassLoader(urls.toArray(new URL[urls.size()]), Arguments.getBooleanArgument(arguments, "BootStrap.includeSystemClassLoader", Boolean.FALSE) ? ClassLoader.getSystemClassLoader() : ClassLoader
-				.getSystemClassLoader().getParent());
+				.getSystemClassLoader().getParent()) {
+			/**
+			 * Returns the absolute path name of a native library. The VM
+			 * invokes this method to locate the native libraries that belong to
+			 * classes loaded with this class loader. If this method returns
+			 * <tt>null</tt>, the VM searches the library along the path
+			 * specified as the "<tt>java.library.path</tt>" property. </p>
+			 * 
+			 * @param libname
+			 *            The library name
+			 * 
+			 * @return The absolute path of the native library
+			 * 
+			 * @see System#loadLibrary(String)
+			 * @see System#mapLibraryName(String)
+			 * 
+			 * @since 1.2
+			 */
+			@Override
+			protected String findLibrary(final String libname) {
+				String libPath = JniLoader.findLibrary(new File(home, "lib"), libname);
+				return libPath != null ? libPath : super.findLibrary(libname);
+			}
+		};
 
 		// Set environment
 		System.getProperties().put("BootStrap.location", location);

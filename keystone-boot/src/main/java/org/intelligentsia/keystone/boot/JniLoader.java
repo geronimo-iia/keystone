@@ -34,6 +34,31 @@ import java.util.StringTokenizer;
 public class JniLoader {
 
 	/**
+	 * Returns the absolute path name of a native library. The VM invokes this
+	 * method to locate the native libraries that belong to classes loaded with
+	 * this class loader. If this method returns <tt>null</tt>, the VM searches
+	 * the library along the path specified as the "<tt>java.library.path</tt>"
+	 * property. </p>
+	 * 
+	 * @param directory
+	 *            directory location of libraries
+	 * @param libname
+	 *            The library name
+	 * 
+	 * @return The absolute path of the native library
+	 */
+	public static String findLibrary(final File directory, final String libname) {
+		final String systemLibName = System.mapLibraryName(libname);
+		final File lib = new File(directory, systemLibName);
+		if (!lib.exists()) {
+			Console.WARNING("Library '" + libname + "' has not be found ('" + lib.getAbsolutePath() + "')");
+			return null;
+		}
+		Console.VERBOSE("Library '" + libname + "' found ('" + lib.getAbsolutePath() + "')");
+		return lib.getAbsolutePath();
+	}
+
+	/**
 	 * Load specified libraries.
 	 * 
 	 * @param directory
@@ -61,16 +86,15 @@ public class JniLoader {
 	 * @return true if library has been successfully loaded.
 	 */
 	public static Boolean loadLibrary(final File directory, final String libname) {
-		final String systemLibName = System.mapLibraryName(libname);
-		final File lib = new File(directory, systemLibName);
-		if (!lib.exists()) {
-			Console.WARNING("Library '" + libname + "' has not be found ('" + lib.getAbsolutePath() + "')");
+		final String libPath = findLibrary(directory, libname);
+		if (libPath == null) {
+			Console.WARNING("Library '" + libname + "' has not be found ('" + libPath + "')");
 			return Boolean.FALSE;
 		}
 		try {
-			Runtime.getRuntime().load(lib.getAbsolutePath());
+			Runtime.getRuntime().load(libPath);
 		} catch (final UnsatisfiedLinkError e) {
-			Console.WARNING("Library '" + libname + "' not found ('" + lib.getAbsolutePath() + "') or her dependencies not ever loaded", e);
+			Console.WARNING("Library '" + libname + "' not found ('" + libPath + "') or her dependencies not ever loaded", e);
 			return Boolean.FALSE;
 		} catch (final Throwable e) {
 			Console.WARNING("Loading Library '" + libname + "'", e);

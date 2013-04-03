@@ -92,7 +92,8 @@ add to classpath application, archives from the JAVA_HOME / lib if it exists
 Adding the system classloader as a parent application class loaders
 * **explodeDirectory**: Root extracting archives embark with the bootstrap.  
 By default, this directory is the current directory if write operations are allowed on it, otherwise it is a temporary folder that is used.
-* **finalName**: Final artifact name. By default, this is the name of the original artefact suffix “-boot”. Example for “sample.jar”, it will be “sample-boot.jar”
+* **finalName**: Final artifact name.  
+By default, this is the name of the original artefact suffix “-boot”. Example for “sample.jar”, it will be “sample-boot.jar”
 * **replaceProjectArtifact**: true | false (default is false).  
 If enabled, the archive packaged artifact replaces the current project
 * **natives**: add a list of native libraries.  

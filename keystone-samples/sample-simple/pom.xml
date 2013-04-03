@@ -31,7 +31,12 @@
 							<mainClass>org.intelligentsia.keystone.sample.simple.Main</mainClass>
 							<explodeDependencies>false</explodeDependencies>
 							<replaceProjectArtifact>true</replaceProjectArtifact>
-							<info>true</info> 
+							<info>true</info>
+                            <scopes>
+                                <scope>compile</scope>
+                                <scope>runtime</scope>
+                                <scope>system</scope>
+                            </scopes>
 						</configuration>
 						<goals>
 							<goal>custom</goal>

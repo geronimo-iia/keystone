@@ -118,6 +118,32 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
+                <!-- ******************************************************************* -->
+                <!-- LICENCE CHECK -->
+                <!-- ******************************************************************* -->
+                <plugin>
+                    <groupId>com.mycila.maven-license-plugin</groupId>
+                    <artifactId>maven-license-plugin</artifactId>
+                    <version>${maven-license-plugin.version}</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>LICENSE.txt</exclude>
+                            <exclude>README.*</exclude>
+                            <exclude>NOTICE.*</exclude>
+                            <exclude>docs/**</exclude>
+                            <exclude>**/NOTES</exclude>
+                            <exclude>**/src/doc/**</exclude>
+                            <exclude>**/src/test/resources/**</exclude>
+                            <exclude>**/.gitattributes</exclude>
+                            <exclude>**/.gitignore</exclude>
+                            <exclude>**/.svnignore</exclude>
+                            <exclude>**/src/config/**</exclude>
+                            <exclude>**/git.properties</exclude>
+                            <exclude>.idea/**</exclude>
+                        </excludes>
+                        <strictCheck>true</strictCheck>
+                    </configuration>
+                </plugin>
 			</plugins>
 		</pluginManagement>
 	</build>

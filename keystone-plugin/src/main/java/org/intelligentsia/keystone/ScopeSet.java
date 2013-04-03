@@ -17,73 +17,72 @@
  *        under the License.
  *
  */
-/**
- * 
- */
 package org.intelligentsia.keystone;
+
+import org.apache.maven.artifact.Artifact;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * PathSet is a list of path..
- * 
- * 
+ * ScopeSet is a set of scope that dependencies must match in order to be included in final archive.
+ *
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
- * 
  */
-public class PathSet implements Serializable {
+public class ScopeSet implements Serializable {
 
-	/**
-	 * serialVersionUID:long
-	 */
-	private static final long serialVersionUID = -4094326771866885545L;
-
-	 /**
-     * @parameter
-     */
-	private List<String> paths;
-
-	/**
-	 * Build a new instance of PathSet.
-	 */
-	public PathSet() {
-		super();
-	}
+    private List<String> scopes;
 
     /**
-     * Add specified path.
-     * @param path
+     * Build a new ScopeSet.
      */
-	public void addPath(String path) {
-		getPaths().add(path);
-	}
+    public ScopeSet() {
+        super();
+    }
 
     /**
-     * Remove specified path.
-     * @param path
+     * @param artifact
+     * @return true if artifact has a scope included in this scope set.
      */
-	public void removePath(String path) {
-		getPaths().remove(path);
-	}
+    public boolean contains(Artifact artifact) {
+        return getScopes().contains(artifact.getScope());
+    }
 
     /**
-     * @return a List of path.
+     * Add specified scope.
+     *
+     * @param scope
      */
-	public List<String> getPaths() {
-		if (paths == null) {
-			paths = new ArrayList<String>();
-		}
-		return paths;
-	}
+    public void addScope(String scope) {
+        getScopes().add(scope);
+    }
 
     /**
-     * Set a list of path.
-     * @param paths
+     * Remove specified scope.
+     *
+     * @param scope
      */
-	public void setPaths(List<String> paths) {
-		this.paths = paths;
-	}
+    public void removeScope(String scope) {
+        getScopes().remove(scope);
+    }
 
+    /**
+     * @return a list of scope to include.
+     */
+    public List<String> getScopes() {
+        if (scopes == null) {
+            scopes = new ArrayList<String>();
+        }
+        return scopes;
+    }
+
+    /**
+     * Set a list of scope to include.
+     *
+     * @param scopes
+     */
+    public void setScopes(List<String> scopes) {
+        this.scopes = scopes;
+    }
 }

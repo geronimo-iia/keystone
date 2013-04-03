@@ -1,8 +1,7 @@
-
 # Bootstrap your java application
 
 **Keystone** [project](http://intelligents-ia.com/index.php/category/technique/keystone "Keystone Web site") is a bootstrap that loads your application and its dependencies from a single archive.  
-With his **maven plugin** and few line of configuration, and your application will be availaible with all his dependencies in a single archive.   
+With his **maven plugin** and few line of configuration, your application will be availaible with all his dependencies in a single archive.   
 You will be able to run it as this: 
 ```bash
 java -jar myapp.jar

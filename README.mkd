@@ -47,8 +47,8 @@ java -jar myapp.jar
 <build>
 	    <plugins>
 	        <plugin>
-	            <groupId>org.intelligentsia.keystone</groupId>
-	            <artifactId>plugin</artifactId>
+	            <groupId>org.intelligents-ia.keystone</groupId>
+	            <artifactId>keystone-plugin</artifactId>
 	            <version>3.1</version>
 	            <executions>
 	                <execution>

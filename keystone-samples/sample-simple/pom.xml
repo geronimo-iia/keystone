@@ -20,7 +20,7 @@
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
-				<groupId>org.intelligents-ia.keystone</groupId>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>keystone-plugin</artifactId>
 				<version>${project.version}</version>
 				<executions>

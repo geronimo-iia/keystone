@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Stack;
+import java.util.regex.Pattern;
 
 import org.apache.maven.archiver.MavenArchiveConfiguration;
 import org.apache.maven.archiver.MavenArchiver;
@@ -63,7 +64,11 @@ import org.codehaus.plexus.util.FileUtils;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class BootStrapMojo extends AbstractMojo {
-
+    
+    /**
+     * Default scope pattern: exclude only 'test' scope. 
+     */
+    protected static final String SCOPE_DEFAULT_PATTERN = "^((?!test).)*$";
 	/**
 	 * file name.
 	 */
@@ -248,6 +253,15 @@ public class BootStrapMojo extends AbstractMojo {
 	private Boolean explodeDependencies = false;
 
 	/**
+	 * Regular expression of scope. By default we exclude only 'test' scope.
+	 * 
+	 * @parameter expression="${scope}"
+	 */
+	private String includedScope = SCOPE_DEFAULT_PATTERN;
+	
+	private Pattern pattern = null;
+	
+	/**
 	 * {@inheritDoc}
 	 */
 	public void execute() throws MojoExecutionException {
@@ -285,6 +299,19 @@ public class BootStrapMojo extends AbstractMojo {
 		copyBootStrap(root);
 		// package result
 		packageApplication(root);
+		
+	}
+	
+	/**
+	 * @param scope
+	 * @return True if this scope is included.
+	 */
+	protected boolean includedScope(final String scope) {
+	    if (pattern==null) {
+	        // initialize pattern
+	        pattern = Pattern.compile(includedScope, Pattern.CASE_INSENSITIVE);
+	    }
+	    return scope !=null ? pattern.matcher(scope).matches() : Boolean.TRUE;
 	}
 
 	/**
@@ -340,7 +367,7 @@ public class BootStrapMojo extends AbstractMojo {
 			}
 		}
 	}
-
+	
 	/**
 	 * Copy all runtimes dependencies of the project inside %root%/lib
 	 * 
@@ -360,10 +387,7 @@ public class BootStrapMojo extends AbstractMojo {
 			final ArtifactFilter artifactFilter = new ScopeArtifactFilter(DefaultArtifact.SCOPE_COMPILE) {
 				@Override
 				public boolean include(Artifact artifact) {
-					if (Artifact.SCOPE_TEST.equals(artifact.getScope())) {
-						return false;
-					}
-					return true;
+				    return includedScope(artifact.getScope());
 				}
 
 			};
@@ -402,50 +426,18 @@ public class BootStrapMojo extends AbstractMojo {
 	 * collect children dependency starting on specified node and add them in
 	 * artifacts set.
 	 * 
-	 * @param node
-	 * @param artifacts
-	 */
-	private void collect(final DependencyNode node, final Set<Artifact> artifacts) {
-		collectNoRec(node, artifacts);
-	}
-
-	/**
-	 * collect children dependency starting on specified node and add them in
-	 * artifacts set. Recursive algorithm.
-	 * 
-	 * @param node
-	 * @param artifacts
-	 */
-	protected void collectRec(final DependencyNode node, final Set<Artifact> artifacts) {
-		if (node.getState() == DependencyNode.INCLUDED) {
-			final Artifact artifact = node.getArtifact();
-			if (!Artifact.SCOPE_TEST.equals(artifact.getScope())) {
-				getLog().info("Adding Artifact: " + artifact.toString());
-				artifacts.add(artifact);
-				for (final Iterator<?> iterator = node.getChildren().iterator(); iterator.hasNext();) {
-					final DependencyNode child = (DependencyNode) iterator.next();
-					collect(child, artifacts);
-				}
-			}
-		}
-	}
-
-	/**
-	 * collect children dependency starting on specified node and add them in
-	 * artifacts set. No recursive algorithm.
-	 * 
-	 * @param node
+	 * @param root
 	 * @param artifacts
 	 */
 	@SuppressWarnings("unchecked")
-	protected void collectNoRec(final DependencyNode root, final Set<Artifact> artifacts) {
+    private void collect(final DependencyNode root, final Set<Artifact> artifacts) {
 		Stack<DependencyNode> stack = new Stack<DependencyNode>();
 		stack.push(root);
 		while (!stack.isEmpty()) {
 			DependencyNode node = stack.pop();
 			if (node.getState() == DependencyNode.INCLUDED) {
 				final Artifact artifact = node.getArtifact();
-				if (!Artifact.SCOPE_TEST.equals(artifact.getScope())) {
+				if ( includedScope(artifact.getScope())) {
 					getLog().info("Adding Artefact: " + artifact.toString());
 					artifacts.add(artifact);
 					// check children

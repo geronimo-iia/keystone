@@ -189,11 +189,16 @@ public final class BootStrap {
 			return;
 		}
 		Console.INFO("Main-Class=" + mainClassName);
-
+	
 		// explode inner jar
 		if (!ExtractionManager.explode(location, home)) {
 			return;
 		}
+
+        // add shutdown hook if necessary
+        if (Arguments.getBooleanArgument(arguments, "BootStrap.cleanUpBeforeShutdown", Boolean.FALSE)) {
+            ExtractionManager.cleanUpHook(home);
+        }
 
 		// computing classPath
 		List<URL> urls = null;
@@ -231,9 +236,6 @@ public final class BootStrap {
 		// invoke main method, with original argument
 		BootStrap.invokeMain(classloader, mainClassName, args, home);
 
-		if (Arguments.getBooleanArgument(arguments, "BootStrap.cleanUpBeforeShutdown", Boolean.FALSE)) {
-			ExtractionManager.cleanUp(home, Boolean.TRUE);
-		}
 		// stop
 		Console.INFO("Exit");
 		// do not do this, because this could cause termination of threaded
@@ -392,7 +394,7 @@ public final class BootStrap {
 						Console.VERBOSE("Restarting");
 						BootStrap.restart(new Runnable() {
 							public void run() {
-								ExtractionManager.cleanUp(home, Boolean.TRUE);
+								ExtractionManager.cleanUpHook(home);
 							}
 						});
 						break;

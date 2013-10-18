@@ -51,7 +51,8 @@ import java.util.zip.ZipException;
 public class ExtractionManager {
 
 	private static Boolean cleanUpLib = Boolean.TRUE;
-
+    private static Boolean hookAdded = Boolean.FALSE;
+    
 	/**
 	 * Initialize clean up directive.
 	 * 
@@ -62,7 +63,7 @@ public class ExtractionManager {
 	}
 
 	/**
-	 * Explode.
+	 * Explode libraries and make a clean before if necessary.
 	 * 
 	 * @param location
 	 *            inner jar location
@@ -121,6 +122,24 @@ public class ExtractionManager {
 		}
 	}
 
+	/**
+	 * Add a shutdown hook to clean up at end.
+	 * @param home
+	 */
+	public static void cleanUpHook(final File home) {
+	    if (!hookAdded) {
+    	    Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+                public void run() {
+                    final File lib = new File(home, "lib");
+                    if (lib.exists()) {
+                        ExtractionManager.delete(lib);
+                    }
+                }
+            }));
+    	    hookAdded = Boolean.TRUE;
+	    }
+	}
+	
 	/**
 	 * Create a new temporary directory. Use something like
 	 * {@link #recursiveDelete(File)} to clean this directory up since it isn't

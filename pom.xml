@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.intelligents-ia</groupId>
 		<artifactId>intelligents-ia</artifactId>
-		<version>1.4.4</version>
+		<version>1.4.6</version>
 	</parent>
 	<groupId>org.intelligents-ia.keystone</groupId>
 	<artifactId>keystone</artifactId>

@@ -84,7 +84,7 @@ public class BootStrapMojo extends AbstractMojo {
 	/**
 	 * Project target.
 	 * 
-	 * @parameter expression="${project}"
+	 * @parameter property="project"
 	 */
 	private org.apache.maven.project.MavenProject project;
 	/**
@@ -104,7 +104,7 @@ public class BootStrapMojo extends AbstractMojo {
 	/**
 	 * Build directory.
 	 * 
-	 * @parameter expression="${project.build.directory}"
+	 * @parameter property="project.build.directory"
 	 * @required
 	 */
 	private File buildDirectory;
@@ -146,7 +146,7 @@ public class BootStrapMojo extends AbstractMojo {
 	/**
 	 * java main class to run
 	 * 
-	 * @parameter expression="${mainClass}"
+	 * @parameter property="mainClass"
 	 */
 	private String mainClass = null;
 
@@ -154,7 +154,7 @@ public class BootStrapMojo extends AbstractMojo {
 	 * Parameter for Bootstrap: true|false (default true) clean up local 'lib'
 	 * file system on startup.
 	 * 
-	 * @parameter expression="${cleanUpLib}"
+	 * @parameter property="cleanUpLib"
 	 */
 	private Boolean cleanUpLib = true;
 
@@ -162,7 +162,7 @@ public class BootStrapMojo extends AbstractMojo {
 	 * Parameter for Bootstrap: true|false (default false) clean up local 'lib'
 	 * file system on shutdown.
 	 * 
-	 * @parameter expression="${cleanUpBeforeShutdown}"
+	 * @parameter property="cleanUpBeforeShutdown"
 	 */
 	private Boolean cleanUpBeforeShutdown = false;
 
@@ -170,34 +170,34 @@ public class BootStrapMojo extends AbstractMojo {
 	 * Parameter for Bootstrap: true|false (default false) activate 'verbose'
 	 * mode
 	 * 
-	 * @parameter expression="${verbose}"
+	 * @parameter property="verbose"
 	 */
 	private Boolean verbose = false;
 	/**
 	 * Parameter for Bootstrap: true|false (default false) activate 'info log'
 	 * mode
 	 * 
-	 * @parameter expression="${info}"
+	 * @parameter property="info"
 	 */
 	private Boolean info = false;
 	/**
 	 * Parameter for Bootstrap: log file of bootstrap (default is none)
 	 * 
-	 * @parameter expression="${logFile}"
+	 * @parameter property="logFile"
 	 */
 	private String logFile = null;
 	/**
 	 * Parameter for Bootstrap: true|false (default true) include java home
 	 * librarie
 	 * 
-	 * @parameter expression="${includeJavaHomeLib}"
+	 * @parameter property="includeJavaHomeLib"
 	 */
 	private Boolean includeJavaHomeLib = true;
 	/**
 	 * Parameter for Bootstrap: true|false (default true) include system class
 	 * loader
 	 * 
-	 * @parameter expression="${includeSystemClassLoader}"
+	 * @parameter property="includeSystemClassLoader"
 	 */
 	private Boolean includeSystemClassLoader = true;
 
@@ -205,21 +205,21 @@ public class BootStrapMojo extends AbstractMojo {
 	 * Parameter for Bootstrap: explode Directory for inner jar. Default is
 	 * current path location or temp directory if path is not writable.
 	 * 
-	 * @parameter expression="${explodeDirectory}"
+	 * @parameter property="explodeDirectory"
 	 */
 	private String explodeDirectory = null;
 
 	/**
 	 * if true, the final boot archive will replace project artifact.
 	 * 
-	 * @parameter expression="${replaceProjectArtifact}"
+	 * @parameter property="replaceProjectArtifact"
 	 */
 	private Boolean replaceProjectArtifact = false;
 
 	/**
 	 * Final name of keystone artifact.
 	 * 
-	 * @parameter expression="${finalName}"
+	 * @parameter property="finalName"
 	 */
 	private String finalName = "";
 
@@ -248,18 +248,25 @@ public class BootStrapMojo extends AbstractMojo {
 	 * If true then all dependencies will be exploded and packaged inside final
 	 * archive (like "onejarplugin"). Per default is false.
 	 * 
-	 * @parameter expression="${explodeDependencies}"
+	 * @parameter property="explodeDependencies"
 	 */
 	private Boolean explodeDependencies = false;
 
 	/**
 	 * Regular expression of scope. By default we exclude only 'test' scope.
 	 * 
-	 * @parameter expression="${scope}"
+	 * @parameter property="scope"
 	 */
 	private String includedScope = SCOPE_DEFAULT_PATTERN;
 	
 	private Pattern pattern = null;
+	
+	/**
+	 * Minimal JVM Specification Version needed.
+	 * 
+	 * @parameter property="minimalJvmVersion"
+	 */
+	private String minimalJvmVersion = null;
 	
 	/**
 	 * {@inheritDoc}
@@ -500,6 +507,10 @@ public class BootStrapMojo extends AbstractMojo {
 		// classpath
 		properties.put("BootStrap.includeJavaHomeLib", Boolean.toString(includeJavaHomeLib));
 		properties.put("BootStrap.includeSystemClassLoader", Boolean.toString(includeSystemClassLoader));
+		// JVM Version
+		if (minimalJvmVersion != null) {
+			properties.put("BootStrap.minimalJvmVersion", minimalJvmVersion);
+		}
 
 		// Create META-INF directory
 		final File metainf = new File(root, "META-INF");

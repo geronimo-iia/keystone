@@ -97,7 +97,11 @@ import java.util.jar.Attributes;
  * system class loader</li>
  * </ul>
  * <p>
- * Configuration priority (hight to less):
+ * JVM Specification Version can be checked with parameter: 'BootStrap.minimalJvmVersion'.
+ * If current JVM is not backward compatible, the system halt.
+ * </p>
+ * <p>
+ * Configuration priority (high to less):
  * </p>
  * <ul>
  * <li>from command line with --....</li>
@@ -161,6 +165,15 @@ public final class BootStrap {
 		Console.VERBOSE("Arguments " + arguments);
 		ExtractionManager.initialize(arguments);
 
+		// JVM version checker
+		String minimalJvmVersion = Arguments.getStringArgument(arguments, "BootStrap.minimalJvmVersion", null);
+		if (minimalJvmVersion != null) {
+			if (!VersionChecker.isCompatible(minimalJvmVersion)) {
+				Console.WARNING("JVM Specification Version " + VersionChecker.getCurrentJavaVirtualMachineSpecificationVersion() + " is not compatible with specified requirement : '" + minimalJvmVersion + "'");
+				return;
+			}
+		}
+
 		// code location
 		final String location = BootStrap.getCodeSourceLocation();
 		if ((location == null) || "".equals(location)) {
@@ -189,16 +202,16 @@ public final class BootStrap {
 			return;
 		}
 		Console.INFO("Main-Class=" + mainClassName);
-	
+
 		// explode inner jar
 		if (!ExtractionManager.explode(location, home)) {
 			return;
 		}
 
-        // add shutdown hook if necessary
-        if (Arguments.getBooleanArgument(arguments, "BootStrap.cleanUpBeforeShutdown", Boolean.FALSE)) {
-            ExtractionManager.cleanUpHook(home);
-        }
+		// add shutdown hook if necessary
+		if (Arguments.getBooleanArgument(arguments, "BootStrap.cleanUpBeforeShutdown", Boolean.FALSE)) {
+			ExtractionManager.cleanUpHook(home);
+		}
 
 		// computing classPath
 		List<URL> urls = null;
@@ -216,10 +229,12 @@ public final class BootStrap {
 			protected String findLibrary(final String libname) {
 				String libPath = JniLoader.findLibrary(new File(home, "lib"), libname);
 				if (libPath == null) {
-					//Console.VERBOSE("Library '" + libname + "' has not be found in embedded libraries folder.");
+					// Console.VERBOSE("Library '" + libname +
+					// "' has not be found in embedded libraries folder.");
 					libPath = JniLoader.findLibraryInClassPath(libname, new File(home, "lib-natives"));
 					if (libPath == null) {
-						//Console.VERBOSE("Library '" + libname + "' has not be found in classpath.");
+						// Console.VERBOSE("Library '" + libname +
+						// "' has not be found in classpath.");
 						return super.findLibrary(libname);
 					}
 				}

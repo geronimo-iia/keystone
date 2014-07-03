@@ -6,10 +6,11 @@ KEYSTONE : Bootstrap your java application
 With his **maven plugin** and few line of configuration, your application will be available with all his dependencies in a single archive.
 
 The four main ideas which make the difference with other solution are:
-1. all dependencies aren not exploded in final archive, 'jar' file stay without anny modification, so manifest also...
-2. user our maven plugin to package all that you need (and we'll loading dependencies automatically for you) 
-3. you could load native library
-4. you could restart your application 
+
+* all dependencies are not exploded in final archive, 'jar' file stay without anny modification, so manifest also...
+* user our maven plugin to package all that you need (and we'll loading dependencies automatically for you) 
+* you could load native library
+* you could restart your application 
 
 So, you will be able to run it as this: 
 
@@ -125,28 +126,26 @@ By default, this is the name of the original artefact suffix “-boot”. Exampl
 If enabled, the archive packaged artifact replaces the current project
 * **includedScope**: regular expression, specify which dependencies scope will be included. By default, only 'test' scope are excluded.
 * **natives**: add a list of native libraries.  
-Each path can be a file or a directory (Not recursive).
-
-
-    <natives>
-    	<paths>
-    		<path>${basedir}/extra/timer.dll</path>
-    		<path>${basedir}/extra/timer.so</path>
-    		<path>${basedir}/extra-natives</path>
-    	</paths>
-    </natives>
-
-
-
 * **libraries**: add a list of extra java libraries. Each path can be a file or a directory (Not recursive).
 
 
-    <libraries>
-    	<paths>
-    		<path>${basedir}/h2-driver.jar</path>
-    		<path>${basedir}/drivers</path>
-    	</paths>
-    </libraries>
+Each path can be a file or a directory (Not recursive).
+
+	<natives>
+		<paths>
+			<path>${basedir}/extra/timer.dll</path>
+			<path>${basedir}/extra/timer.so</path>
+			<path>${basedir}/extra-natives</path>
+		</paths>
+	</natives>
+
+
+	<libraries>
+		<paths>
+			<path>${basedir}/h2-driver.jar</path>
+			<path>${basedir}/drivers</path>
+		</paths>
+	</libraries>
 
 
 Native libraries are supported in both way
@@ -159,9 +158,11 @@ Use extra features: Restart your application when needed!
 =========================================================
 
 
-add a new dependency on your project
-------------------------------------
+1. add a new dependency on your project
+2. When you want to restart, simply throw this exception
 
+
+In your pom:
 
 	<dependency>
 		<groupId>org.intelligents-ia.keystone</groupId>
@@ -170,9 +171,8 @@ add a new dependency on your project
 	</dependency>
 
 
-When you want to restart, simply throw this exception
------------------------------------------------------
 
+In your code:
 
 	throw new KeystoneException(KeystoneException.Operation.RESTART);
 

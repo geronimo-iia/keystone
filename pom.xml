@@ -9,7 +9,7 @@
 	<artifactId>keystone</artifactId>
 	<packaging>pom</packaging>
 	<name>keystone</name>
-	<version>3.2-SNAPSHOT</version>
+	<version>3.2</version>
 	<description>
         1. Stone wedge-shaped arch which maintains a vault [Architecture].
         2. A central element on which everything depends.
@@ -34,7 +34,8 @@
 		<url>https://github.com/geronimo-iia/keystone.git</url>
 		<connection>scm:git:https://github.com/geronimo-iia/keystone.git</connection>
 		<developerConnection>scm:git:https://github.com/geronimo-iia/keystone.git</developerConnection>
-	</scm>
+	  <tag>keystone-3.2</tag>
+  </scm>
 	<organization>
 		<name>Intelligents-ia</name>
 		<url>http://intelligents-ia.com</url>

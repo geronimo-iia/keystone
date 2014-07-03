@@ -49,7 +49,7 @@ java -jar myapp.jar
 	        <plugin>
 	            <groupId>org.intelligents-ia.keystone</groupId>
 	            <artifactId>keystone-plugin</artifactId>
-	            <version>3.1</version>
+	            <version>3.2</version>
 	            <executions>
 	                <execution>
 	                    <id>make-assembly</id>
@@ -134,7 +134,7 @@ Native libraries are supported in both way
 <dependency>
 	<groupId>org.intelligents-ia.keystone</groupId>
 	<artifactId>keystone-boot</artifactId>
-	<version>3.1</version>
+	<version>3.2</version>
 </dependency>
 ```
 
@@ -155,6 +155,7 @@ throw new KeystoneException(KeystoneException.Operation.RESTART);
 * add optional parameter 'minimalJvmVersion' to check minimal jvm version on start
 * update deprecated logback configuration
 * update deprecated maven properties declaration
+* update parent pom (1.4.7, to use new distribution management configuration)
 
 ## 3.1
 

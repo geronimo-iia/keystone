@@ -3,13 +3,13 @@
 	<parent>
 		<groupId>org.intelligents-ia</groupId>
 		<artifactId>intelligents-ia</artifactId>
-		<version>1.4.4</version>
+		<version>1.4.7</version>
 	</parent>
 	<groupId>org.intelligents-ia.keystone</groupId>
 	<artifactId>keystone</artifactId>
 	<packaging>pom</packaging>
 	<name>keystone</name>
-	<version>3.2-SNAPSHOT</version>
+	<version>3.3-SNAPSHOT</version>
 	<description>
         1. Stone wedge-shaped arch which maintains a vault [Architecture].
         2. A central element on which everything depends.
@@ -34,7 +34,8 @@
 		<url>https://github.com/geronimo-iia/keystone.git</url>
 		<connection>scm:git:https://github.com/geronimo-iia/keystone.git</connection>
 		<developerConnection>scm:git:https://github.com/geronimo-iia/keystone.git</developerConnection>
-	</scm>
+	  <tag>HEAD</tag>
+  </scm>
 	<organization>
 		<name>Intelligents-ia</name>
 		<url>http://intelligents-ia.com</url>

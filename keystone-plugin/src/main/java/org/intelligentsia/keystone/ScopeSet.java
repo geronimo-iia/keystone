@@ -32,6 +32,8 @@ import java.util.List;
  */
 public class ScopeSet implements Serializable {
 
+    private static final long serialVersionUID = -7785361226952170104L;
+    
     private List<String> scopes;
 
     /**

@@ -64,6 +64,7 @@
 		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
 		<maven-resources-plugin.version>2.6</maven-resources-plugin.version>
 		<maven-jar-plugin.version>2.5</maven-jar-plugin.version>
+		<maven-javadoc-plugin>2.9.1</maven-javadoc-plugin>
 		<maven-source-plugin.version>2.2.1</maven-source-plugin.version>
 		<maven-install-plugin.version>2.5.1</maven-install-plugin.version>
 		<maven-release-plugin.version>2.5</maven-release-plugin.version>
@@ -100,6 +101,19 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<!-- ******************************************************************* -->
+	<!-- DISTRIBUTION -->
+	<!-- ******************************************************************* -->
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 	<!-- ******************************************************************* -->
 	<!-- BUILD -->
 	<!-- ******************************************************************* -->
@@ -144,7 +158,7 @@
 					</configuration>
 				</plugin>
 				<!-- ******************************************************************* -->
-				<!-- Source -->
+				<!-- Source and java doc -->
 				<!-- ******************************************************************* -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -153,6 +167,19 @@
 					<executions>
 						<execution>
 							<id>attach-sources</id>
+							<goals>
+								<goal>jar-no-fork</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${maven-javadoc-plugin}</version>
+					<executions>
+						<execution>
+							<id>attach-javadocs</id>
 							<goals>
 								<goal>jar</goal>
 							</goals>
@@ -180,6 +207,9 @@
 					<configuration>
 						<scmCommentPrefix>[maven-release-plugin]</scmCommentPrefix>
 						<autoVersionSubmodules>true</autoVersionSubmodules>
+						<useReleaseProfile>false</useReleaseProfile>
+						<releaseProfiles>release</releaseProfiles>
+						<goals>deploy</goals>
 					</configuration>
 				</plugin>
 				<!-- ******************************************************************* -->
@@ -342,22 +372,21 @@
 		</plugins>
 	</build>
 	<!-- ********************************************************************************* -->
-	<!-- PROFILE -->
+	<!-- ON RELEASE PROFILE -->
 	<!-- ********************************************************************************* -->
 	<profiles>
-		<!-- ********************************************************************************* -->
-		<!-- ON RELEASE PROFILE -->
-		<!-- ********************************************************************************* -->
 		<profile>
-			<id>release-sign-artifacts</id>
-			<activation>
-				<property>
-					<name>performRelease</name>
-					<value>true</value>
-				</property>
-			</activation>
+			<id>release</id>
 			<build>
 				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>

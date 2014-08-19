@@ -4,7 +4,7 @@
 	<artifactId>keystone</artifactId>
 	<packaging>pom</packaging>
 	<name>keystone</name>
-	<version>3.3</version>
+	<version>3.4-SNAPSHOT</version>
 	<description>
 	   Keystone project is a bootstrap that loads your application and its dependencies from a single archive.
        With his maven plugin and few line of configuration, your application will be available with all his dependencies in a single archive.
@@ -39,7 +39,7 @@
 		<url>https://github.com/geronimo-iia/keystone.git</url>
 		<connection>scm:git:https://github.com/geronimo-iia/keystone.git</connection>
 		<developerConnection>scm:git:https://github.com/geronimo-iia/keystone.git</developerConnection>
-		<tag>keystone-3.3</tag>
+		<tag>HEAD</tag>
 	</scm>
 	<organization>
 		<name>Intelligents-ia</name>

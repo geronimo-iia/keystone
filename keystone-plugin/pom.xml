@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.intelligents-ia</groupId>
 		<artifactId>keystone</artifactId>
-		<version>3.3</version>
+		<version>3.4-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>keystone-plugin</artifactId>

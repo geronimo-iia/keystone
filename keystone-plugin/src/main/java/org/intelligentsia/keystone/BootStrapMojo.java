@@ -80,7 +80,7 @@ public class BootStrapMojo extends AbstractMojo {
     /**
      * group id.
      */
-    private static final String GROUP_ID = "org.intelligents-ia.keystone";
+    private static final String GROUP_ID = "org.intelligents-ia";
     /**
      * Project target.
      * 

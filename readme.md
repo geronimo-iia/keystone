@@ -183,6 +183,13 @@ In your code:
 Releases Notes
 ==============
 
+3.3 (current)
+------------
+
+* add properties "BootStrap.restarted" when system is restarted
+* fix exception handling
+* update pom for release keystone in central maven repository
+
 3.2:
 ----
 

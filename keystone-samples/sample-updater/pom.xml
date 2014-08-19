@@ -16,11 +16,14 @@
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
+		<properties>
+		<license.header.path>../../header.txt</license.header.path>
+	</properties>
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
-				<groupId>org.intelligents-ia.keystone</groupId>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>keystone-plugin</artifactId>
 				<version>${project.version}</version>
 				<executions>
@@ -33,6 +36,7 @@
 						<configuration>
 							<mainClass>org.intelligentsia.keystone.sample.KeystoneUpdaterSample</mainClass>
 							<info>true</info>
+							<verbose>true</verbose>
 						</configuration>
 					</execution>
 				</executions>

@@ -94,7 +94,7 @@ public class Restarter {
 			builder.append(command).append(' ');
 		}
 		final String cmd = builder.toString();
-
+		
 		// execute the command in a shutdown hook, to be sure that all the
 		// resources have been disposed before restarting the application
 		Runtime.getRuntime().addShutdownHook(new Thread() {

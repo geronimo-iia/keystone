@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * PathSet.
+ * PathSet is a list of path..
  * 
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
@@ -52,14 +52,25 @@ public class PathSet implements Serializable {
 		super();
 	}
 
+    /**
+     * Add specified path.
+     * @param path
+     */
 	public void addPath(String path) {
 		getPaths().add(path);
 	}
 
+    /**
+     * Remove specified path.
+     * @param path
+     */
 	public void removePath(String path) {
 		getPaths().remove(path);
 	}
 
+    /**
+     * @return a List of path.
+     */
 	public List<String> getPaths() {
 		if (paths == null) {
 			paths = new ArrayList<String>();
@@ -67,6 +78,10 @@ public class PathSet implements Serializable {
 		return paths;
 	}
 
+    /**
+     * Set a list of path.
+     * @param paths
+     */
 	public void setPaths(List<String> paths) {
 		this.paths = paths;
 	}

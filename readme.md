@@ -37,7 +37,7 @@ Configure your project
 	        <plugin>
 	            <groupId>org.intelligents-ia</groupId>
 	            <artifactId>keystone-plugin</artifactId>
-	            <version>3.2</version>
+	            <version>3.3</version>
 	            <executions>
 	                <execution>
 	                    <id>make-assembly</id>
@@ -127,9 +127,9 @@ Use extra features: Restart your application when needed!
 In your pom:
 
 	<dependency>
-		<groupId>org.intelligents-ia.keystone</groupId>
+		<groupId>org.intelligents-ia</groupId>
 		<artifactId>keystone-boot</artifactId>
-		<version>3.2</version>
+		<version>3.3</version>
 	</dependency>
 
 
@@ -145,8 +145,8 @@ In your code:
 Releases Notes
 ==============
 
-3.3 (current)
-------------
+3.3
+---
 
 * add properties "BootStrap.restarted" when system is restarted
 * fix exception handling

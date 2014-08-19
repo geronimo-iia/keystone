@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.intelligents-ia.keystone</groupId>
 		<artifactId>keystone-samples</artifactId>
@@ -16,6 +17,9 @@
 			<version>1.1.2</version>
 		</dependency>
 	</dependencies>
+	<properties>
+		<license.header.path>../../header.txt</license.header.path>
+	</properties>
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
@@ -32,11 +36,11 @@
 							<explodeDependencies>false</explodeDependencies>
 							<replaceProjectArtifact>true</replaceProjectArtifact>
 							<info>true</info>
-                            <scopes>
-                                <scope>compile</scope>
-                                <scope>runtime</scope>
-                                <scope>system</scope>
-                            </scopes>
+							<scopes>
+								<scope>compile</scope>
+								<scope>runtime</scope>
+								<scope>system</scope>
+							</scopes>
 						</configuration>
 						<goals>
 							<goal>custom</goal>

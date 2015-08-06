@@ -181,12 +181,6 @@ public class BootStrapMojo extends AbstractMojo {
      * @parameter property="logFile"
      */
     private String logFile = null;
-    /**
-     * Parameter for Bootstrap: true|false (default true) include java home librarie
-     * 
-     * @parameter property="includeJavaHomeLib"
-     */
-    private Boolean includeJavaHomeLib = true;
 
     /**
      * Parameter for Bootstrap: explode Directory for inner jar. Default is current path location or temp directory if path is not
@@ -481,8 +475,6 @@ public class BootStrapMojo extends AbstractMojo {
         if (logFile != null) {
             properties.put("BootStrap.logFile", logFile);
         }
-        // classpath
-        properties.put("BootStrap.includeJavaHomeLib", Boolean.toString(includeJavaHomeLib));
 
         // JVM Version
         if (minimalJvmVersion != null) {

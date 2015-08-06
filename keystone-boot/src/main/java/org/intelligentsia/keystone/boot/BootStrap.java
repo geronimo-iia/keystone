@@ -82,7 +82,6 @@ import java.util.jar.Attributes;
  * <li>BootStrap.extraLibrariesFolderPath = folder path of external libraries , in order to include them on classpath. Even if keystone
  * is used to pack all dependencies in a single archive, many project needs adding extra dependencies on their classpath as specific
  * database driver etc...</li>
- * <li>BootStrap.includeJavaHomeLib=true|false (default false) include java home libraries</li>
  * </ul>
  * <p>
  * JVM Specification Version can be checked with parameter: 'BootStrap.minimalJvmVersion'. If current JVM is not backward compatible,
@@ -135,7 +134,7 @@ public final class BootStrap {
     /**
      * Main methods.
      * 
-     * @param args
+     * @param args main arguments
      * @throws IOException if something is wrong when reading properties files.
      */
     public static void main(final String[] args) throws IOException {
@@ -293,24 +292,22 @@ public final class BootStrap {
      */
     private static List<URL> computeClassPath(final File home, final Map<String, String> arguments) throws IllegalStateException {
 
-        final Boolean includeJavaHomeLib = Arguments.getBooleanArgument(arguments, "BootStrap.includeJavaHomeLib", Boolean.TRUE);
         final String javaHome = System.getProperty("java.home", null);
 
         final List<URL> urls = new ArrayList<URL>();
         // add java home
-        if (includeJavaHomeLib) {
-            Console.VERBOSE("Including Java Home Libraries");
-            try {
-                if (javaHome != null) {
-                    urls.addAll(BootStrap.computeFromDirectory(new File(javaHome, "lib")));
-                } else {
-                    Console.WARNING("Java Home property is not set");
-                }
-            } catch (final MalformedURLException ex) {
-                Console.WARNING("error when including JavaHomeLib :" + ex.getMessage());
-                throw new IllegalStateException("error when including JavaHomeLib", ex);
+        Console.VERBOSE("Including Java Home Libraries");
+        try {
+            if (javaHome != null) {
+                urls.addAll(BootStrap.computeFromDirectory(new File(javaHome, "lib")));
+            } else {
+                Console.WARNING("Java Home property is not set");
             }
+        } catch (final MalformedURLException ex) {
+            Console.WARNING("error when including JavaHomeLib :" + ex.getMessage());
+            throw new IllegalStateException("error when including JavaHomeLib", ex);
         }
+
         // add ${HOME}/lib
         try {
             urls.addAll(BootStrap.computeFromDirectory(new File(home, "lib")));
@@ -391,8 +388,8 @@ public final class BootStrap {
     /**
      * Process Keystone Exception
      * 
-     * @param home
-     * @param throwable
+     * @param home home directory
+     * @param exception exception to check
      */
     public static void processKeystoneException(final File home, final Throwable exception) {
         Throwable throwable = findRootCause(exception);
@@ -445,12 +442,12 @@ public final class BootStrap {
     /**
      * Compute a list of jar file found in specified path in a recursive way.
      * 
-     * @param path directory path
+     * @param directory directory path
      * @return a list of URL found in specified directory.
      * @throws MalformedURLException
      */
     private static List<URL> computeFromDirectory(final File directory) throws MalformedURLException {
-        final List<URL> urls = new ArrayList<URL>();
+        final List<URL> urls = new ArrayList<>();
         if (directory.exists() && directory.isDirectory()) {
             for (final File child : directory.listFiles()) {
                 if (child.isDirectory()) {

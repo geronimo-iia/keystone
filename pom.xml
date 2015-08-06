@@ -1,11 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.intelligents-ia.keystone</groupId>
+	<groupId>org.intelligents-ia</groupId>
 	<artifactId>keystone</artifactId>
 	<packaging>pom</packaging>
 	<name>keystone</name>
-	<version>3.3-SNAPSHOT</version>
+	<version>3.4-SNAPSHOT</version>
 	<description>
 	   Keystone project is a bootstrap that loads your application and its dependencies from a single archive.
        With his maven plugin and few line of configuration, your application will be available with all his dependencies in a single archive.
@@ -64,6 +63,7 @@
 		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
 		<maven-resources-plugin.version>2.6</maven-resources-plugin.version>
 		<maven-jar-plugin.version>2.5</maven-jar-plugin.version>
+		<maven-javadoc-plugin>2.9.1</maven-javadoc-plugin>
 		<maven-source-plugin.version>2.2.1</maven-source-plugin.version>
 		<maven-install-plugin.version>2.5.1</maven-install-plugin.version>
 		<maven-release-plugin.version>2.5</maven-release-plugin.version>
@@ -72,11 +72,8 @@
 		<maven-reactor-plugin.version>1.1</maven-reactor-plugin.version>
 		<maven-enforcer-plugin.version>1.3.1</maven-enforcer-plugin.version>
 
-		<!-- GnuPg Configuration key to define per project. -->
-		<!-- in your settings.xml define this parameter -->
-		<!-- <gnupg.homedir>your home dir</gnupg.homedir> -->
-		<!-- <gnupg.keyname>Your Key Name</gnupg.keyname> -->
-		<!-- <gnupg.passphrase>Your Passphrase</gnupg.passphrase> -->
+		<!-- GnuPg Configuration key to define per project. --> 
+		<gnupg.keyname>F45635CF</gnupg.keyname>
 
 		<!-- other plugin version -->
 		<maven-jgitflow-plugin.version>1.0-m3</maven-jgitflow-plugin.version>
@@ -100,6 +97,19 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<!-- ******************************************************************* -->
+	<!-- DISTRIBUTION -->
+	<!-- ******************************************************************* -->
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 	<!-- ******************************************************************* -->
 	<!-- BUILD -->
 	<!-- ******************************************************************* -->
@@ -144,7 +154,7 @@
 					</configuration>
 				</plugin>
 				<!-- ******************************************************************* -->
-				<!-- Source -->
+				<!-- Source and java doc -->
 				<!-- ******************************************************************* -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -153,6 +163,19 @@
 					<executions>
 						<execution>
 							<id>attach-sources</id>
+							<goals>
+								<goal>jar-no-fork</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${maven-javadoc-plugin}</version>
+					<executions>
+						<execution>
+							<id>attach-javadocs</id>
 							<goals>
 								<goal>jar</goal>
 							</goals>
@@ -180,6 +203,9 @@
 					<configuration>
 						<scmCommentPrefix>[maven-release-plugin]</scmCommentPrefix>
 						<autoVersionSubmodules>true</autoVersionSubmodules>
+						<useReleaseProfile>false</useReleaseProfile>
+						<releaseProfiles>release</releaseProfiles>
+						<goals>deploy</goals>
 					</configuration>
 				</plugin>
 				<!-- ******************************************************************* -->
@@ -191,9 +217,6 @@
 					<version>${maven-gpg-plugin.version}</version>
 					<configuration>
 						<keyname>${gnupg.keyname}</keyname>
-						<passphrase>${gnupg.passphrase}</passphrase>
-						<homedir>${gnupg.homedir}</homedir>
-						<skip>${gnupg.skip}</skip>
 					</configuration>
 					<executions>
 						<execution>
@@ -342,22 +365,21 @@
 		</plugins>
 	</build>
 	<!-- ********************************************************************************* -->
-	<!-- PROFILE -->
+	<!-- ON RELEASE PROFILE -->
 	<!-- ********************************************************************************* -->
 	<profiles>
-		<!-- ********************************************************************************* -->
-		<!-- ON RELEASE PROFILE -->
-		<!-- ********************************************************************************* -->
 		<profile>
-			<id>release-sign-artifacts</id>
-			<activation>
-				<property>
-					<name>performRelease</name>
-					<value>true</value>
-				</property>
-			</activation>
+			<id>release</id>
 			<build>
 				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>

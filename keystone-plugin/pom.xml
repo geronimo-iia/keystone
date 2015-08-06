@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.intelligents-ia.keystone</groupId>
+		<groupId>org.intelligents-ia</groupId>
 		<artifactId>keystone</artifactId>
-		<version>3.3-SNAPSHOT</version>
+		<version>3.4-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>keystone-plugin</artifactId>
@@ -11,7 +11,7 @@
 	<name>keystone-plugin</name>
 	<dependencies>
 		<dependency>
-			<groupId>org.intelligents-ia.keystone</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>keystone-boot</artifactId>
 			<version>${project.version}</version>
 		</dependency>

@@ -32,50 +32,12 @@ So it's time to start
 Configure your project
 ======================
 
-Add repositories 
-----------------
-
-    <repositories>
-		<repository>
-			<id>intelligents-ia-releases</id>
-			<name>Intelligents-ia releases repository</name>
-			<url>http://mvn.intelligents-ia.com/releases</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>intelligents-ia-releases</id>
-			<name>Intelligents-ia releases repository</name>
-			<url>http://mvn.intelligents-ia.com/releases</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
-
-
-*note: with maven 3, you could omit "pluginRepositories" tag*
-
-
-Configure keystone maven plugin
--------------------------------
-
-
 	<build>
 	    <plugins>
 	        <plugin>
-	            <groupId>org.intelligents-ia.keystone</groupId>
+	            <groupId>org.intelligents-ia</groupId>
 	            <artifactId>keystone-plugin</artifactId>
-	            <version>3.2</version>
+	            <version>3.3</version>
 	            <executions>
 	                <execution>
 	                    <id>make-assembly</id>
@@ -165,9 +127,9 @@ Use extra features: Restart your application when needed!
 In your pom:
 
 	<dependency>
-		<groupId>org.intelligents-ia.keystone</groupId>
+		<groupId>org.intelligents-ia</groupId>
 		<artifactId>keystone-boot</artifactId>
-		<version>3.2</version>
+		<version>3.3</version>
 	</dependency>
 
 
@@ -183,12 +145,13 @@ In your code:
 Releases Notes
 ==============
 
-3.3 (current)
-------------
+3.3
+---
 
 * add properties "BootStrap.restarted" when system is restarted
 * fix exception handling
 * update pom for release keystone in central maven repository
+* change group id from org.intelligents-ia.keystone to org.intelligents-ia
 
 3.2:
 ----

@@ -26,10 +26,39 @@ import java.util.Scanner;
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class Main {
+public class MainInteractive {
 
 	public static void main(final String[] args) throws Exception {
-		System.out.println("In Main reached ");
+		// Console.setLogFile(new File("./test.log"));
+		System.out.println("In Main: ");
+
+		final Scanner sc = new Scanner(System.in);
+
+		if (sc.nextInt() == 0) {
+			System.out.println("Call autoRestart");
+			try {
+				Restarter.autoRestart(new Runnable() {
+
+					public void run() {
+						System.out.println("Run before auto restart");
+					}
+				});
+			} catch (final IllegalStateException e) {
+				System.out.println(e.getMessage());
+			}
+			System.out.println("Call restartWith");
+			try {
+				Restarter.restartWith(new Runnable() {
+
+					public void run() {
+						System.out.println("Run before restart with");
+					}
+				}, "org.intelligentsia.keystone.boot.Main");
+			} catch (final IllegalStateException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		sc.close();
 		System.out.println("Exit in main");
 	}
 

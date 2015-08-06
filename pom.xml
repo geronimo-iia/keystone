@@ -82,7 +82,7 @@
 		<license.header.path>header.txt</license.header.path>
 
 		<!-- Maven Compiler settings -->
-		<jvm.specification.version>1.6</jvm.specification.version>
+		<jvm.specification.version>1.8</jvm.specification.version>
 		<maven.compiler.optimize>true</maven.compiler.optimize>
 		<maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
 	</properties>

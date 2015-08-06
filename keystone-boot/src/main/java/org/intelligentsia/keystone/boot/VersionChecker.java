@@ -58,7 +58,7 @@ public final class VersionChecker {
 	 * @return current Java Virtual Machine Specification Version.
 	 */
 	public static String getCurrentJavaVirtualMachineSpecificationVersion() {
-		return System.getProperty("java.vm.specification.version", "1.4");
+		return System.getProperty("java.vm.specification.version", "1.8");
 	}
 
 }

@@ -146,6 +146,7 @@ Releases Notes
 * remove useless parameter "includeJavaHomeLib": always add to classpath application, archives from the JAVA_HOME / lib if it exists
 * remove useless parameter "replaceProjectArtifact": archive packaged artifact should never replaces the current project
 * remove useless parameter "includeSystemClassLoader": system classloader is parent of application classloader.
+* fix exception handling of embedded application
  
 
 3.3

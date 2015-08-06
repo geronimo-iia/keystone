@@ -19,29 +19,24 @@
  */
 package org.intelligentsia.keystone.boot;
 
-import java.io.File;
-
-import org.junit.Test;
-
 /**
- * BootStrapTest dummy.
+ * Check that with have dummy-{a|b}.txt in classpath.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class BootStrapTest {
-	@Test
-	public void testLaunch() throws Exception {
-		BootStrap.main(new String[] { Main.class.getName() });
+public class MainExternalCheck {
+
+	public static void main(final String[] args) throws Exception {
+		System.out.println("MainExternalCheck reached ");
+
+		if (Thread.currentThread().getContextClassLoader().getResourceAsStream("dummy-a.txt")==null) {
+			throw new IllegalStateException("No external jar loaded");
+		}
+
+		if (Thread.currentThread().getContextClassLoader().getResourceAsStream("dummy-b.txt")==null) {
+			throw new IllegalStateException("No external jar loaded");
+		}
+		System.out.println("Exit");
 	}
 
-	@Test
-	public void testLaunchFromDefault() throws Exception {
-		BootStrap.main(new String[] {});
-	}
-
-	@Test
-	public void testLaunchWithExternal() throws Exception {
-		BootStrap.main(new String[] { "--Main-Class=" + MainExternalCheck.class.getName(), "--BootStrap.explodeDirectory=." + File.separator + "target" + File.separator + "test-home",
-				"--BootStrap.extraLibrariesFolderPath=src" + File.separator + "external-resources-test" });
-	}
 }

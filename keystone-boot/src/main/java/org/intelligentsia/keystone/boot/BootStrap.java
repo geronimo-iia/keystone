@@ -343,10 +343,10 @@ public final class BootStrap {
      * @param mainClassName main class name
      * @param arguments arguments
      * @param home home directory
-     * @throws SecurityException
+     * @throws RuntimeException from inner application
      */
     private static void invokeMain(final ClassLoader classloader, final String mainClassName, final String[] arguments, final File home)
-            throws SecurityException {
+            throws  RuntimeException {
         // load main class
         Class<?> mainClass = null;
         try {
@@ -391,8 +391,9 @@ public final class BootStrap {
      *
      * @param home home directory
      * @param exception exception to check
+     * @throws RuntimeException from application
      */
-    public static void processKeystoneException(final File home, final Throwable exception) {
+    public static void processKeystoneException(final File home, final Throwable exception)  throws RuntimeException{
         Throwable throwable = findRootCause(exception);
         if (KeystoneException.class.isAssignableFrom(throwable.getClass())) {
             KeystoneException keystoneException = (KeystoneException) throwable;
@@ -420,7 +421,9 @@ public final class BootStrap {
                     break;
             }
         } else {
-            Console.WARNING("Exception occur : " + exception.getMessage(), exception);
+            Console.WARNING("Exception occur : " + throwable.getMessage(), exception);
+            // throw original exception
+            throw new RuntimeException(throwable);
         }
     }
 

@@ -187,12 +187,6 @@ public class BootStrapMojo extends AbstractMojo {
      * @parameter property="includeJavaHomeLib"
      */
     private Boolean includeJavaHomeLib = true;
-    /**
-     * Parameter for Bootstrap: true|false (default true) include system class loader
-     * 
-     * @parameter property="includeSystemClassLoader"
-     */
-    private Boolean includeSystemClassLoader = true;
 
     /**
      * Parameter for Bootstrap: explode Directory for inner jar. Default is current path location or temp directory if path is not
@@ -201,13 +195,6 @@ public class BootStrapMojo extends AbstractMojo {
      * @parameter property="explodeDirectory"
      */
     private String explodeDirectory = null;
-
-    /**
-     * if true, the final boot archive will replace project artifact.
-     * 
-     * @parameter property="replaceProjectArtifact"
-     */
-    private Boolean replaceProjectArtifact = false;
 
     /**
      * Final name of keystone artifact.
@@ -343,7 +330,7 @@ public class BootStrapMojo extends AbstractMojo {
     /**
      * Copy path to destination folder (path can be a directory).
      * 
-     * @param files
+     * @param pathSet
      * @param destination
      * @throws MojoExecutionException
      */
@@ -496,7 +483,7 @@ public class BootStrapMojo extends AbstractMojo {
         }
         // classpath
         properties.put("BootStrap.includeJavaHomeLib", Boolean.toString(includeJavaHomeLib));
-        properties.put("BootStrap.includeSystemClassLoader", Boolean.toString(includeSystemClassLoader));
+
         // JVM Version
         if (minimalJvmVersion != null) {
             properties.put("BootStrap.minimalJvmVersion", minimalJvmVersion);
@@ -555,16 +542,11 @@ public class BootStrapMojo extends AbstractMojo {
             }
             // create archive
             archiver.createArchive(project, archive);
-            // set archive as artifact
-            if (replaceProjectArtifact) {
-                project.getArtifact().setFile(custFile);
-            } else {
-                // add an other artifact in current project
-                final Artifact artifact = artifactFactory.createArtifact(project.getGroupId(), project.getArtifactId() + "-boot",
-                        project.getVersion(), Artifact.SCOPE_COMPILE, "jar");
-                artifact.setFile(custFile);
-                project.addAttachedArtifact(artifact);
-            }
+            // add an other artifact in current project
+            final Artifact artifact = artifactFactory.createArtifact(project.getGroupId(), project.getArtifactId() + "-boot",
+                    project.getVersion(), Artifact.SCOPE_COMPILE, "jar");
+            artifact.setFile(custFile);
+            project.addAttachedArtifact(artifact);
         } catch (final ArchiverException e) {
             throw new MojoExecutionException("Exception while packaging", e);
         } catch (final ManifestException e) {
@@ -580,9 +562,6 @@ public class BootStrapMojo extends AbstractMojo {
      * @return final name archive (specified by "finalName" plugin parameter or by final name of project with '-boot' suffix.
      */
     private String getFinalArchiveName() {
-        if (replaceProjectArtifact) {
-            return project.getArtifact().getFile().getName();
-        }
         if (finalName != null && !"".equals(finalName)) {
             return finalName;
         }

@@ -83,7 +83,6 @@ import java.util.jar.Attributes;
  * is used to pack all dependencies in a single archive, many project needs adding extra dependencies on their classpath as specific
  * database driver etc...</li>
  * <li>BootStrap.includeJavaHomeLib=true|false (default false) include java home libraries</li>
- * <li>BootStrap.includeSystemClassLoader=true|false (default true) include system class loader</li>
  * </ul>
  * <p>
  * JVM Specification Version can be checked with parameter: 'BootStrap.minimalJvmVersion'. If current JVM is not backward compatible,
@@ -209,9 +208,7 @@ public final class BootStrap {
         }
 
         // Instantiate classloader
-        final ClassLoader classloader = new URLClassLoader(urls.toArray(new URL[urls.size()]), Arguments.getBooleanArgument(arguments,
-                "BootStrap.includeSystemClassLoader", Boolean.FALSE) ? ClassLoader.getSystemClassLoader() : ClassLoader
-                .getSystemClassLoader().getParent()) {
+        final ClassLoader classloader = new URLClassLoader(urls.toArray(new URL[urls.size()]), ClassLoader.getSystemClassLoader()) {
 
             @Override
             protected String findLibrary(final String libname) {

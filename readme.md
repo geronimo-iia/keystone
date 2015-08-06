@@ -78,14 +78,10 @@ Per default, all logs go on standard output.
 * **minimalJvmVersion**: minimal JVM specification version required. 
 * **includeJavaHomeLib**: true | false (default is true),  
 add to classpath application, archives from the JAVA_HOME / lib if it exists
-* **includeSystemClassLoader**: true | false (default is true).  
-Adding the system classloader as a parent application class loaders
 * **explodeDirectory**: Root extracting archives embark with the bootstrap.  
 By default, this directory is the current directory if write operations are allowed on it, otherwise it is a temporary folder that is used.
 * **finalName**: Final artifact name.  
 By default, this is the name of the original artefact suffix “-boot”. Example for “sample.jar”, it will be “sample-boot.jar”
-* **replaceProjectArtifact**: true | false (default is false).  
-If enabled, the archive packaged artifact replaces the current project
 * **includedScope**: regular expression, specify which dependencies scope will be included. By default, only 'test' scope are excluded.
 * **natives**: add a list of native libraries.  
 * **libraries**: add a list of extra java libraries. Each path can be a file or a directory (Not recursive).
@@ -144,6 +140,15 @@ In your code:
 
 Releases Notes
 ==============
+
+3.4 Snapshot 
+------------
+
+* switch to JDK 8
+* remove useless parameter includeJavaHomeLib)
+* remove useless parameter "replaceProjectArtifact": archive packaged artifact should never replaces the current project
+* remove useless parameter "includeSystemClassLoader": system classloader is parent of application classloader.
+ 
 
 3.3
 ---

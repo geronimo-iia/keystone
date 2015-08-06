@@ -1,21 +1,20 @@
 /**
- *        Licensed to the Apache Software Foundation (ASF) under one
- *        or more contributor license agreements.  See the NOTICE file
- *        distributed with this work for additional information
- *        regarding copyright ownership.  The ASF licenses this file
- *        to you under the Apache License, Version 2.0 (the
- *        "License"); you may not use this file except in compliance
- *        with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *        Unless required by applicable law or agreed to in writing,
- *        software distributed under the License is distributed on an
- *        "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *        KIND, either express or implied.  See the License for the
- *        specific language governing permissions and limitations
- *        under the License.
- *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 package org.intelligentsia.keystone.boot;
 
@@ -27,6 +26,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLDecoder;
+import java.nio.file.Files;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ import java.util.jar.Attributes;
  * <p>
  * if ${home} is not writable, system will use jvm.temp.dir\{} as home folder. In this case, update is not supported yet.
  * </p>
- * 
+ *
  * <p>
  * Option that you could set on command line with a "--name=value" or in a properties files:
  * </p>
@@ -56,16 +56,16 @@ import java.util.jar.Attributes;
  * <ul>
  * <li>Main-Class=java main class, mandatory</li>
  * </ul>
- * 
+ *
  * <p>
  * Locale directory management:
  * </p>
  * <ul>
- * <li>BootStrap.explodeDirectory=if specified use this directory to explode innerjar libraries. Use home per default.</li>
+ * <li>BootStrap.explodeDirectory=if specified use this directory to explode inner jar libraries. Use home per default.</li>
  * <li>BootStrap.cleanUpLib=true|false (default true) clean up local 'lib' file system on startup</li>
  * <li>BootStrap.cleanUpBeforeShutdown=true|false (default false) clean up all file when system shutdown.</li>
  * </ul>
- * 
+ *
  * <p>
  * Log information
  * </p>
@@ -74,7 +74,7 @@ import java.util.jar.Attributes;
  * <li>BootStrap.info=true|false (default true) activate 'info' mode</li>
  * <li>BootStrap.logFile=log file of bootstrap (default is none)</li>
  * </ul>
- * 
+ *
  * <p>
  * Class Path management
  * </p>
@@ -105,7 +105,7 @@ import java.util.jar.Attributes;
  * <li>BootStrap.keystone.version=keystone version used/li>
  * <li>BootStrap.project.version=inner project version</li>
  * </ul>
- * 
+ *
  * <p>
  * Delegated main class can manage restart of system by throw a KeystonException with "restart" or "clean" operation string".
  * </p>
@@ -120,8 +120,8 @@ import java.util.jar.Attributes;
  * <p>
  * An update process can set system properties "BootStrap.location" with the new jar and restart on it
  * </p>
- * 
- * 
+ *
+ *
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public final class BootStrap {
@@ -133,7 +133,7 @@ public final class BootStrap {
 
     /**
      * Main methods.
-     * 
+     *
      * @param args main arguments
      * @throws IOException if something is wrong when reading properties files.
      */
@@ -152,8 +152,8 @@ public final class BootStrap {
         // JVM version checker
         String minimalJvmVersion = Arguments.getStringArgument(arguments, "BootStrap.minimalJvmVersion", null);
         if (minimalJvmVersion != null) {
-            if (!VersionChecker.isCompatible(minimalJvmVersion)) {
-                Console.WARNING("JVM Specification Version " + VersionChecker.getCurrentJavaVirtualMachineSpecificationVersion()
+            if (!SimpleVersion.isCompatible(minimalJvmVersion)) {
+                Console.WARNING("JVM Specification Version " + SimpleVersion.getCurrentJavaVirtualMachineSpecificationVersion()
                         + " is not compatible with specified requirement : '" + minimalJvmVersion + "'");
                 return;
             }
@@ -206,7 +206,7 @@ public final class BootStrap {
             return;
         }
 
-        // Instantiate classloader
+        // Instantiate class loader
         final ClassLoader classloader = new URLClassLoader(urls.toArray(new URL[urls.size()]), ClassLoader.getSystemClassLoader()) {
 
             @Override
@@ -246,7 +246,7 @@ public final class BootStrap {
 
     /**
      * Initialize console level.
-     * 
+     *
      * @param arguments
      * @return true if log initialization need home directory.
      */
@@ -264,7 +264,7 @@ public final class BootStrap {
 
     /**
      * Initialize console log file.
-     * 
+     *
      * @param arguments
      * @param home
      */
@@ -284,7 +284,7 @@ public final class BootStrap {
 
     /**
      * Compute classpath.
-     * 
+     *
      * @param home
      * @param arguments
      * @return a list of url to include in class path.
@@ -337,7 +337,7 @@ public final class BootStrap {
 
     /**
      * Invoke main class inside the specific class loader.
-     * 
+     *
      * @param classloader class loader to use
      * @param mainClassName main class name
      * @param arguments arguments
@@ -364,7 +364,7 @@ public final class BootStrap {
             Method main = null;
             try {
                 // args.getClass()
-                main = mainClass.getMethod("main", new Class<?>[] { String[].class });
+                main = mainClass.getMethod("main", new Class<?>[]{ String[].class });
             } catch (final NoSuchMethodException ex) {
                 Console.WARNING("class '" + mainClassName + "' did not have a method 'main': " + ex.getMessage());
             } catch (final SecurityException ex) {
@@ -374,7 +374,7 @@ public final class BootStrap {
                 main.setAccessible(true);
                 Console.VERBOSE("Entering main");
                 try {
-                    main.invoke(null, new Object[] { arguments });
+                    main.invoke(null, new Object[]{ arguments });
                     Console.VERBOSE("Exiting main");
                 } catch (final Throwable throwable) {
                     processKeystoneException(home, throwable);
@@ -387,7 +387,7 @@ public final class BootStrap {
 
     /**
      * Process Keystone Exception
-     * 
+     *
      * @param home home directory
      * @param exception exception to check
      */
@@ -425,7 +425,7 @@ public final class BootStrap {
 
     /**
      * Get Root Cause.
-     * 
+     *
      * @param throwable
      * @return root cause.
      */
@@ -441,7 +441,7 @@ public final class BootStrap {
 
     /**
      * Compute a list of jar file found in specified path in a recursive way.
-     * 
+     *
      * @param directory directory path
      * @return a list of URL found in specified directory.
      * @throws MalformedURLException
@@ -478,7 +478,7 @@ public final class BootStrap {
 
     /**
      * Get home directory.
-     * 
+     *
      * @param arguments arguments
      * @param location code location
      * @return home directory.
@@ -489,12 +489,13 @@ public final class BootStrap {
         final String path = Arguments.getStringArgument(arguments, "BootStrap.explodeDirectory", location != null ? new File(location)
                 .getParentFile().getAbsolutePath() : null);
         try {
-            File home = path != null ? new File(path) : ExtractionManager.createTempDir();
+            File home = path != null ? new File(path) : Files.createTempDirectory("keystone").toFile();
+            ;
             // check write access
             if (!home.canWrite()) {
                 Console.WARNING("Home Directory is not Writable, using a temp directory.");
                 try {
-                    home = ExtractionManager.createTempDir();
+                    home = Files.createTempDirectory("keystone").toFile();
                 } catch (final IOException e) {
                     throw new IllegalStateException("Unable to create home temp directory.", e);
                 }
@@ -512,7 +513,7 @@ public final class BootStrap {
     /**
      * Restart all system using value of system property "BootStrap.location". This property can be updated by delegated Main class,
      * after an update for example.
-     * 
+     *
      * @param runnable runnable class before restarting.
      */
     public static void restart(final Runnable runnable) {

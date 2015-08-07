@@ -27,8 +27,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLDecoder;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.Map;
 import java.util.jar.JarEntry;
@@ -245,7 +248,7 @@ public class ExtractionManager {
                     if (inputStream == null) {
                         throw new IOException("Unable to access resource '" + name + "'");
                     }
-                    Files.copy(inputStream, Paths.get(localFile.toURI()));
+                    Files.copy(inputStream, Paths.get(localFile.toURI()), StandardCopyOption.REPLACE_EXISTING);
                 } catch (final IOException exception) {
                     Console.VERBOSE("Error when exploding Entry: " + name, exception);
                     delete(localFile);

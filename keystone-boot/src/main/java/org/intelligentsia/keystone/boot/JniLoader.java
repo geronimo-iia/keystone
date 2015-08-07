@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.StringTokenizer;
 
 /**
@@ -85,7 +86,7 @@ public class JniLoader {
         try {
             inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(systemLibName);
             if (inputStream != null) {
-                Files.copy(inputStream, Paths.get(lib.toURI()));
+                Files.copy(inputStream, Paths.get(lib.toURI()), StandardCopyOption.REPLACE_EXISTING);
                 Console.VERBOSE("Library '" + libname + "' found in classpath resource");
                 return lib.getAbsolutePath();
             }

@@ -130,12 +130,10 @@ public class ExtractionManager {
      */
     public static void cleanUpHook(final File home) {
         if (!hookAdded) {
-            Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-                public void run() {
-                    final File lib = new File(home, "lib");
-                    if (lib.exists()) {
-                        ExtractionManager.delete(lib);
-                    }
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                final File lib = new File(home, "lib");
+                if (lib.exists()) {
+                    ExtractionManager.delete(lib);
                 }
             }));
             hookAdded = Boolean.TRUE;

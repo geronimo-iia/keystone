@@ -36,6 +36,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactCollector;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
@@ -43,6 +44,8 @@ import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.shared.dependency.tree.DependencyNode;
 import org.apache.maven.shared.dependency.tree.DependencyTreeBuilder;
 import org.apache.maven.shared.dependency.tree.DependencyTreeBuilderException;
@@ -57,12 +60,9 @@ import org.codehaus.plexus.util.FileUtils;
 /**
  * BootStrapMojo implement maven plugin for keystone bootstrap project.
  * 
- * @goal custom
- * 
- * @phase package
- * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
+@Mojo( name = "custom", defaultPhase = LifecyclePhase.PACKAGE)
 public class BootStrapMojo extends AbstractMojo {
 
     /**
@@ -114,7 +114,7 @@ public class BootStrapMojo extends AbstractMojo {
     /** @parameter default-value="${localRepository}" */
     private org.apache.maven.artifact.repository.ArtifactRepository localRepository;
     /** @parameter default-value="${project.remoteArtifactRepositories}" */
-    private List<?> remoteRepositories;
+    private List<ArtifactRepository> remoteRepositories;
     /**
      * @component
      * @required
@@ -157,11 +157,11 @@ public class BootStrapMojo extends AbstractMojo {
     private Boolean cleanUpLib = true;
 
     /**
-     * Parameter for Bootstrap: true|false (default false) clean up local 'lib' file system on shutdown.
+     * Parameter for Bootstrap: true|false (default true) clean up local 'lib' file system on shutdown.
      * 
      * @parameter property="cleanUpBeforeShutdown"
      */
-    private Boolean cleanUpBeforeShutdown = false;
+    private Boolean cleanUpBeforeShutdown = true;
 
     /**
      * Parameter for Bootstrap: true|false (default false) activate 'verbose' mode
@@ -603,8 +603,6 @@ public class BootStrapMojo extends AbstractMojo {
         } catch (final NoSuchArchiverException e) {
             throw new MojoExecutionException("Unable to unarchive " + artifactFile.getName(), e);
         } catch (final ArchiverException e) {
-            throw new MojoExecutionException("Unable to unarchive " + artifactFile.getName(), e);
-        } catch (final IOException e) {
             throw new MojoExecutionException("Unable to unarchive " + artifactFile.getName(), e);
         }
     }

@@ -9,45 +9,81 @@
 	<artifactId>keystone-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
 	<name>keystone-plugin</name>
+	<properties>
+		<license.header.path>../header.txt</license.header.path>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<version>3.4</version>
+				<executions>
+					<execution>
+						<id>default-descriptor</id>
+						<phase>process-classes</phase>
+					</execution>
+					<execution>
+						<id>help-goal</id>
+						<goals>
+							<goal>helpmojo</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>keystone-boot</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<!-- ******************************************************************* -->
-		<!-- MAVEN DEPENDENCIES -->
-		<!-- ******************************************************************* -->
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-plugin-api</artifactId>
-			<version>${maven-plugin-api.version}</version>
+			<version>3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugin-tools</groupId>
+			<artifactId>maven-plugin-annotations</artifactId>
+			<version>3.4</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-archiver</artifactId>
-			<version>${maven-archiver.version}</version>
+			<version>3.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-project</artifactId>
-			<version>${maven-project.version}</version>
+			<version>2.2.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven.shared</groupId>
 			<artifactId>maven-dependency-tree</artifactId>
-			<version>${maven-dependency-tree.version}</version>
+			<version>2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.plexus</groupId>
+			<artifactId>plexus-utils</artifactId>
+			<version>1.5.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-compat</artifactId>
+			<version>3.3.9</version>
 		</dependency>
 	</dependencies>
-	<!-- ******************************************************************* -->
-	<!-- MAVEN DEPENDENCIES VERSION -->
-	<!-- ******************************************************************* -->
-	<properties>
-		<maven-plugin-api.version>2.0</maven-plugin-api.version>
-		<maven-archiver.version>2.2</maven-archiver.version>
-		<maven-project.version>2.0</maven-project.version>
-		<maven-dependency-tree.version>1.2</maven-dependency-tree.version>
-		<license.header.path>../header.txt</license.header.path>
-	</properties>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<version>3.2</version>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>

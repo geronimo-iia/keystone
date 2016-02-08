@@ -1,42 +1,41 @@
 /**
- *        Licensed to the Apache Software Foundation (ASF) under one
- *        or more contributor license agreements.  See the NOTICE file
- *        distributed with this work for additional information
- *        regarding copyright ownership.  The ASF licenses this file
- *        to you under the Apache License, Version 2.0 (the
- *        "License"); you may not use this file except in compliance
- *        with the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *        Unless required by applicable law or agreed to in writing,
- *        software distributed under the License is distributed on an
- *        "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *        KIND, either express or implied.  See the License for the
- *        specific language governing permissions and limitations
- *        under the License.
- *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 package org.intelligentsia.keystone.boot;
 
 /**
  * Check that with have dummy-{a|b}.txt in classpath.
- * 
+ *
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class MainExternalCheck {
 
-	public static void main(final String[] args) throws Exception {
-		System.out.println("MainExternalCheck reached ");
+    public static void main(final String[] args) throws Exception {
+        System.out.println("MainExternalCheck reached ");
 
-		if (Thread.currentThread().getContextClassLoader().getResourceAsStream("dummy-a.txt")==null) {
-			throw new IllegalStateException("No external jar loaded");
-		}
+        if (Thread.currentThread().getContextClassLoader().getResourceAsStream("dummy-a.txt") == null) {
+            throw new IllegalStateException("No external jar loaded");
+        }
 
-		if (Thread.currentThread().getContextClassLoader().getResourceAsStream("dummy-b.txt")==null) {
-			throw new IllegalStateException("No external jar loaded");
-		}
-		System.out.println("Exit");
-	}
+        if (Thread.currentThread().getContextClassLoader().getResourceAsStream("dummy-b.txt") == null) {
+            throw new IllegalStateException("No external jar loaded");
+        }
+        System.out.println("Exit");
+    }
 
 }

@@ -37,7 +37,7 @@ Configure your project
 	        <plugin>
 	            <groupId>org.intelligents-ia</groupId>
 	            <artifactId>keystone-plugin</artifactId>
-	            <version>3.3</version>
+	            <version>3.4</version>
 	            <executions>
 	                <execution>
 	                    <id>make-assembly</id>
@@ -123,7 +123,7 @@ In your pom:
 	<dependency>
 		<groupId>org.intelligents-ia</groupId>
 		<artifactId>keystone-boot</artifactId>
-		<version>3.3</version>
+		<version>3.4</version>
 	</dependency>
 
 

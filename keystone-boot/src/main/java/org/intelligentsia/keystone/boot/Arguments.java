@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -73,17 +74,19 @@ public class Arguments {
      */
     public static String[] argumentToArray(final Map<String, String> arguments) {
         final List<String> result = new ArrayList<>();
-        for (final Map.Entry<String, String> entry : arguments.entrySet()) {
-            if (entry.getKey().equals(entry.getValue())) {
-                result.add(entry.getKey());
-            } else {
-                if (entry.getValue().equals(Boolean.TRUE.toString())) {
-                    result.add("--" + entry.getKey());
-                } else {
-                    result.add("--" + entry.getKey() + "=" + entry.getValue());
+        arguments.entrySet().forEach(
+                entry -> {
+                    if (entry.getKey().equals(entry.getValue())) {
+                        result.add(entry.getKey());
+                    } else {
+                        if (entry.getValue().equals(Boolean.TRUE.toString())) {
+                            result.add("--" + entry.getKey());
+                        } else {
+                            result.add("--" + entry.getKey() + "=" + entry.getValue());
+                        }
+                    }
                 }
-            }
-        }
+        );
         return result.toArray(new String[]{});
     }
 
@@ -136,7 +139,7 @@ public class Arguments {
      *         null
      */
     public static String getStringArgument(final Map<String, String> args, final String name, final String defaultValue) {
-        return (args.get(name) == null ? defaultValue : args.get(name));
+        return Optional.ofNullable(args.get(name)).orElse(defaultValue);
     }
 
     /**
@@ -166,28 +169,20 @@ public class Arguments {
      *             if an error occurred when reading from resource name.
      */
     private static void loadPropsFrom(final String name, final Map<String, String> args) throws IOException {
-        InputStream is = null;
-        try {
-            is = BootStrap.class.getClassLoader().getResourceAsStream(name);
+        try (InputStream is  = BootStrap.class.getClassLoader().getResourceAsStream(name)) {
             if (is != null) {
                 final Properties properties = new Properties();
                 properties.load(is);
-                for (final Iterator<Object> i = properties.keySet().iterator(); i.hasNext(); ) {
-                    final String key = ((String) i.next()).trim();
-                    if (!args.containsKey(key)) {
-                        args.put(key, properties.getProperty(key));
-                    }
-                }
+                properties.entrySet()
+                        .forEach(
+                                entry -> {
+                                    final String key = entry.getKey().toString().trim();
+                                    if (!args.containsKey(key)) {
+                                        args.put(key, entry.getValue().toString());
+                                    }
+                                }
+                );
                 properties.clear();
-            }
-        } finally {
-            // we did not used (BootStrap/delete ) for separate contract
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (final IOException exception) {
-                    Console.VERBOSE("Closing Error", exception);
-                }
             }
         }
     }

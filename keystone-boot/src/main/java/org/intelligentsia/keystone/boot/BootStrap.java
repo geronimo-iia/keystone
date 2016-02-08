@@ -64,7 +64,7 @@ import java.util.jar.Attributes;
  * <ul>
  * <li>BootStrap.explodeDirectory=if specified use this directory to explode inner jar libraries. Use home per default.</li>
  * <li>BootStrap.cleanUpLib=true|false (default true) clean up local 'lib' file system on startup</li>
- * <li>BootStrap.cleanUpBeforeShutdown=true|false (default false) clean up all file when system shutdown.</li>
+ * <li>BootStrap.cleanUpBeforeShutdown=true|false (default true) clean up all file when system shutdown.</li>
  * </ul>
  *
  * <p>
@@ -195,7 +195,7 @@ public final class BootStrap {
         }
 
         // add shutdown hook if necessary
-        if (Arguments.getBooleanArgument(arguments, "BootStrap.cleanUpBeforeShutdown", Boolean.FALSE)) {
+        if (Arguments.getBooleanArgument(arguments, "BootStrap.cleanUpBeforeShutdown", Boolean.TRUE)) {
             ExtractionManager.cleanUpHook(home);
         }
 

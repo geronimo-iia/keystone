@@ -139,8 +139,15 @@ In your code:
 Releases Notes
 ==============
 
-3.4 Snapshot 
+3.5 Snapshot 
 ------------
+
+TODO:
+* remove deprecated maven plugin api
+
+
+3.4 
+--------
 
 * support JDK 8
 * update maven plugin (using 3.x api and keep 2.x compatibility) 
@@ -151,15 +158,15 @@ Releases Notes
  
 
 3.3
----
+--------
 
 * add properties "BootStrap.restarted" when system is restarted
 * fix exception handling
 * update pom for release keystone in central maven repository
 * change group id from org.intelligents-ia.keystone to org.intelligents-ia
 
-3.2:
-----
+3.2
+--------
 
 * configure dependencies scope with maven plugin, parameter 'includedScope'. By default, only 'test' scope is excluded (since 3.1).
 * add optional parameter 'minimalJvmVersion' to check minimal jvm version on start
@@ -168,7 +175,7 @@ Releases Notes
 * update parent pom (1.4.7, to use new distribution management configuration)
 
 3.1
-------
+--------
 
 * exclude only “test” scope artifacts
 * add native support
@@ -179,7 +186,7 @@ Releases Notes
     * add a path set of extra java libraries
 
 3.0
-------
+--------
 
 * Integrate super pom 1.4.4 and add git.properties
 * Integrate keystone sample in this project

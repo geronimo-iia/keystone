@@ -20,15 +20,23 @@
 package org.intelligentsia.keystone.boot;
 
 /**
- * Little Main class for testing by hand...
+ * Check that with have dummy-{a|b}.txt in classpath.
  *
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public class Main {
+public class MainExternalCheck {
 
     public static void main(final String[] args) throws Exception {
-        System.out.println("In Main reached ");
-        System.out.println("Exit in main");
+        System.out.println("MainExternalCheck reached ");
+
+        if (Thread.currentThread().getContextClassLoader().getResourceAsStream("dummy-a.txt") == null) {
+            throw new IllegalStateException("No external jar loaded");
+        }
+
+        if (Thread.currentThread().getContextClassLoader().getResourceAsStream("dummy-b.txt") == null) {
+            throw new IllegalStateException("No external jar loaded");
+        }
+        System.out.println("Exit");
     }
 
 }

@@ -41,7 +41,7 @@ public class BootStrapTest {
 
 	@Test
 	public void testLaunchWithExternal() throws Exception {
-		BootStrap.main(new String[] { "--Main-Class=" + Main.class.getName(), "--BootStrap.explodeDirectory=." + File.separator + "target" + File.separator + "test-home",
+		BootStrap.main(new String[] { "--Main-Class=" + MainExternalCheck.class.getName(), "--BootStrap.explodeDirectory=." + File.separator + "target" + File.separator + "test-home",
 				"--BootStrap.extraLibrariesFolderPath=src" + File.separator + "external-resources-test" });
 	}
 }

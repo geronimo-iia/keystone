@@ -27,6 +27,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLDecoder;
+import java.nio.file.Files;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ import java.util.jar.Attributes;
  * <p>
  * if ${home} is not writable, system will use jvm.temp.dir\{} as home folder. In this case, update is not supported yet.
  * </p>
- * 
+ *
  * <p>
  * Option that you could set on command line with a "--name=value" or in a properties files:
  * </p>
@@ -56,16 +57,16 @@ import java.util.jar.Attributes;
  * <ul>
  * <li>Main-Class=java main class, mandatory</li>
  * </ul>
- * 
+ *
  * <p>
  * Locale directory management:
  * </p>
  * <ul>
- * <li>BootStrap.explodeDirectory=if specified use this directory to explode innerjar libraries. Use home per default.</li>
+ * <li>BootStrap.explodeDirectory=if specified use this directory to explode inner jar libraries. Use home per default.</li>
  * <li>BootStrap.cleanUpLib=true|false (default true) clean up local 'lib' file system on startup</li>
- * <li>BootStrap.cleanUpBeforeShutdown=true|false (default false) clean up all file when system shutdown.</li>
+ * <li>BootStrap.cleanUpBeforeShutdown=true|false (default true) clean up all file when system shutdown.</li>
  * </ul>
- * 
+ *
  * <p>
  * Log information
  * </p>
@@ -74,7 +75,7 @@ import java.util.jar.Attributes;
  * <li>BootStrap.info=true|false (default true) activate 'info' mode</li>
  * <li>BootStrap.logFile=log file of bootstrap (default is none)</li>
  * </ul>
- * 
+ *
  * <p>
  * Class Path management
  * </p>
@@ -82,8 +83,6 @@ import java.util.jar.Attributes;
  * <li>BootStrap.extraLibrariesFolderPath = folder path of external libraries , in order to include them on classpath. Even if keystone
  * is used to pack all dependencies in a single archive, many project needs adding extra dependencies on their classpath as specific
  * database driver etc...</li>
- * <li>BootStrap.includeJavaHomeLib=true|false (default false) include java home libraries</li>
- * <li>BootStrap.includeSystemClassLoader=true|false (default true) include system class loader</li>
  * </ul>
  * <p>
  * JVM Specification Version can be checked with parameter: 'BootStrap.minimalJvmVersion'. If current JVM is not backward compatible,
@@ -107,7 +106,7 @@ import java.util.jar.Attributes;
  * <li>BootStrap.keystone.version=keystone version used/li>
  * <li>BootStrap.project.version=inner project version</li>
  * </ul>
- * 
+ *
  * <p>
  * Delegated main class can manage restart of system by throw a KeystonException with "restart" or "clean" operation string".
  * </p>
@@ -122,8 +121,8 @@ import java.util.jar.Attributes;
  * <p>
  * An update process can set system properties "BootStrap.location" with the new jar and restart on it
  * </p>
- * 
- * 
+ *
+ *
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public final class BootStrap {
@@ -135,8 +134,8 @@ public final class BootStrap {
 
     /**
      * Main methods.
-     * 
-     * @param args
+     *
+     * @param args main arguments
      * @throws IOException if something is wrong when reading properties files.
      */
     public static void main(final String[] args) throws IOException {
@@ -154,8 +153,8 @@ public final class BootStrap {
         // JVM version checker
         String minimalJvmVersion = Arguments.getStringArgument(arguments, "BootStrap.minimalJvmVersion", null);
         if (minimalJvmVersion != null) {
-            if (!VersionChecker.isCompatible(minimalJvmVersion)) {
-                Console.WARNING("JVM Specification Version " + VersionChecker.getCurrentJavaVirtualMachineSpecificationVersion()
+            if (!SimpleVersion.isCompatible(minimalJvmVersion)) {
+                Console.WARNING("JVM Specification Version " + SimpleVersion.getCurrentJavaVirtualMachineSpecificationVersion()
                         + " is not compatible with specified requirement : '" + minimalJvmVersion + "'");
                 return;
             }
@@ -196,7 +195,7 @@ public final class BootStrap {
         }
 
         // add shutdown hook if necessary
-        if (Arguments.getBooleanArgument(arguments, "BootStrap.cleanUpBeforeShutdown", Boolean.FALSE)) {
+        if (Arguments.getBooleanArgument(arguments, "BootStrap.cleanUpBeforeShutdown", Boolean.TRUE)) {
             ExtractionManager.cleanUpHook(home);
         }
 
@@ -208,10 +207,8 @@ public final class BootStrap {
             return;
         }
 
-        // Instantiate classloader
-        final ClassLoader classloader = new URLClassLoader(urls.toArray(new URL[urls.size()]), Arguments.getBooleanArgument(arguments,
-                "BootStrap.includeSystemClassLoader", Boolean.FALSE) ? ClassLoader.getSystemClassLoader() : ClassLoader
-                .getSystemClassLoader().getParent()) {
+        // Instantiate class loader
+        final ClassLoader classloader = new URLClassLoader(urls.toArray(new URL[urls.size()]), ClassLoader.getSystemClassLoader()) {
 
             @Override
             protected String findLibrary(final String libname) {
@@ -250,7 +247,7 @@ public final class BootStrap {
 
     /**
      * Initialize console level.
-     * 
+     *
      * @param arguments
      * @return true if log initialization need home directory.
      */
@@ -268,7 +265,7 @@ public final class BootStrap {
 
     /**
      * Initialize console log file.
-     * 
+     *
      * @param arguments
      * @param home
      */
@@ -288,7 +285,7 @@ public final class BootStrap {
 
     /**
      * Compute classpath.
-     * 
+     *
      * @param home
      * @param arguments
      * @return a list of url to include in class path.
@@ -296,24 +293,22 @@ public final class BootStrap {
      */
     private static List<URL> computeClassPath(final File home, final Map<String, String> arguments) throws IllegalStateException {
 
-        final Boolean includeJavaHomeLib = Arguments.getBooleanArgument(arguments, "BootStrap.includeJavaHomeLib", Boolean.TRUE);
         final String javaHome = System.getProperty("java.home", null);
 
         final List<URL> urls = new ArrayList<URL>();
         // add java home
-        if (includeJavaHomeLib) {
-            Console.VERBOSE("Including Java Home Libraries");
-            try {
-                if (javaHome != null) {
-                    urls.addAll(BootStrap.computeFromDirectory(new File(javaHome, "lib")));
-                } else {
-                    Console.WARNING("Java Home property is not set");
-                }
-            } catch (final MalformedURLException ex) {
-                Console.WARNING("error when including JavaHomeLib :" + ex.getMessage());
-                throw new IllegalStateException("error when including JavaHomeLib", ex);
+        Console.VERBOSE("Including Java Home Libraries");
+        try {
+            if (javaHome != null) {
+                urls.addAll(BootStrap.computeFromDirectory(new File(javaHome, "lib")));
+            } else {
+                Console.WARNING("Java Home property is not set");
             }
+        } catch (final MalformedURLException ex) {
+            Console.WARNING("error when including JavaHomeLib :" + ex.getMessage());
+            throw new IllegalStateException("error when including JavaHomeLib", ex);
         }
+
         // add ${HOME}/lib
         try {
             urls.addAll(BootStrap.computeFromDirectory(new File(home, "lib")));
@@ -343,15 +338,15 @@ public final class BootStrap {
 
     /**
      * Invoke main class inside the specific class loader.
-     * 
+     *
      * @param classloader class loader to use
      * @param mainClassName main class name
      * @param arguments arguments
      * @param home home directory
-     * @throws SecurityException
+     * @throws RuntimeException from inner application
      */
     private static void invokeMain(final ClassLoader classloader, final String mainClassName, final String[] arguments, final File home)
-            throws SecurityException {
+            throws  RuntimeException {
         // load main class
         Class<?> mainClass = null;
         try {
@@ -370,7 +365,7 @@ public final class BootStrap {
             Method main = null;
             try {
                 // args.getClass()
-                main = mainClass.getMethod("main", new Class<?>[] { String[].class });
+                main = mainClass.getMethod("main", new Class<?>[]{ String[].class });
             } catch (final NoSuchMethodException ex) {
                 Console.WARNING("class '" + mainClassName + "' did not have a method 'main': " + ex.getMessage());
             } catch (final SecurityException ex) {
@@ -380,7 +375,7 @@ public final class BootStrap {
                 main.setAccessible(true);
                 Console.VERBOSE("Entering main");
                 try {
-                    main.invoke(null, new Object[] { arguments });
+                    main.invoke(null, new Object[]{ arguments });
                     Console.VERBOSE("Exiting main");
                 } catch (final Throwable throwable) {
                     processKeystoneException(home, throwable);
@@ -393,11 +388,12 @@ public final class BootStrap {
 
     /**
      * Process Keystone Exception
-     * 
-     * @param home
-     * @param throwable
+     *
+     * @param home home directory
+     * @param exception exception to check
+     * @throws RuntimeException from application
      */
-    public static void processKeystoneException(final File home, final Throwable exception) {
+    public static void processKeystoneException(final File home, final Throwable exception)  throws RuntimeException{
         Throwable throwable = findRootCause(exception);
         if (KeystoneException.class.isAssignableFrom(throwable.getClass())) {
             KeystoneException keystoneException = (KeystoneException) throwable;
@@ -425,13 +421,15 @@ public final class BootStrap {
                     break;
             }
         } else {
-            Console.WARNING("Exception occur : " + exception.getMessage(), exception);
+            Console.WARNING("Exception occur : " + throwable.getMessage(), exception);
+            // throw original exception
+            throw new RuntimeException(throwable);
         }
     }
 
     /**
      * Get Root Cause.
-     * 
+     *
      * @param throwable
      * @return root cause.
      */
@@ -447,13 +445,13 @@ public final class BootStrap {
 
     /**
      * Compute a list of jar file found in specified path in a recursive way.
-     * 
-     * @param path directory path
+     *
+     * @param directory directory path
      * @return a list of URL found in specified directory.
      * @throws MalformedURLException
      */
     private static List<URL> computeFromDirectory(final File directory) throws MalformedURLException {
-        final List<URL> urls = new ArrayList<URL>();
+        final List<URL> urls = new ArrayList<>();
         if (directory.exists() && directory.isDirectory()) {
             for (final File child : directory.listFiles()) {
                 if (child.isDirectory()) {
@@ -484,7 +482,7 @@ public final class BootStrap {
 
     /**
      * Get home directory.
-     * 
+     *
      * @param arguments arguments
      * @param location code location
      * @return home directory.
@@ -495,12 +493,13 @@ public final class BootStrap {
         final String path = Arguments.getStringArgument(arguments, "BootStrap.explodeDirectory", location != null ? new File(location)
                 .getParentFile().getAbsolutePath() : null);
         try {
-            File home = path != null ? new File(path) : ExtractionManager.createTempDir();
+            File home = path != null ? new File(path) : Files.createTempDirectory("keystone").toFile();
+            ;
             // check write access
             if (!home.canWrite()) {
                 Console.WARNING("Home Directory is not Writable, using a temp directory.");
                 try {
-                    home = ExtractionManager.createTempDir();
+                    home = Files.createTempDirectory("keystone").toFile();
                 } catch (final IOException e) {
                     throw new IllegalStateException("Unable to create home temp directory.", e);
                 }
@@ -518,7 +517,7 @@ public final class BootStrap {
     /**
      * Restart all system using value of system property "BootStrap.location". This property can be updated by delegated Main class,
      * after an update for example.
-     * 
+     *
      * @param runnable runnable class before restarting.
      */
     public static void restart(final Runnable runnable) {

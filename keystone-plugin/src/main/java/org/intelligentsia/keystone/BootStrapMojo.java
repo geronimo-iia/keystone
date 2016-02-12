@@ -35,14 +35,21 @@ import org.apache.maven.archiver.MavenArchiver;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
-import org.apache.maven.artifact.resolver.ArtifactCollector;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.repository.legacy.resolver.LegacyArtifactCollector;
 import org.apache.maven.shared.dependency.tree.DependencyNode;
 import org.apache.maven.shared.dependency.tree.DependencyTreeBuilder;
 import org.apache.maven.shared.dependency.tree.DependencyTreeBuilderException;
@@ -56,13 +63,10 @@ import org.codehaus.plexus.util.FileUtils;
 
 /**
  * BootStrapMojo implement maven plugin for keystone bootstrap project.
- * 
- * @goal custom
- * 
- * @phase package
- * 
+ *
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
+@Mojo(name = "custom", defaultPhase = LifecyclePhase.PACKAGE)
 public class BootStrapMojo extends AbstractMojo {
 
     /**
@@ -81,139 +85,92 @@ public class BootStrapMojo extends AbstractMojo {
      * group id.
      */
     private static final String GROUP_ID = "org.intelligents-ia";
-    /**
-     * Project target.
-     * 
-     * @parameter property="project" default-value="${project}"
-     */
+
+    @Parameter(defaultValue = "${project}")
     private org.apache.maven.project.MavenProject project;
     /**
      * The Jar archiver needed for archiving.
-     * 
-     * 
-     * @component role="org.codehaus.plexus.archiver.Archiver" roleHint="jar"
-     * @required
      */
+    @Component(role = org.codehaus.plexus.archiver.Archiver.class, hint = "jar")
     private JarArchiver jarArchiver;
-    /**
-     * The maven archive configuration to use
-     * 
-     * @parameter
-     */
+
     protected MavenArchiveConfiguration archive = new MavenArchiveConfiguration();
-    /**
-     * Build directory.
-     * 
-     * @parameter default-value="${project.build.directory}
-     */
+
+    @Parameter(defaultValue = "${project.build.directory}")
     private File buildDirectory;
-    /** @component */
-    private org.apache.maven.artifact.factory.ArtifactFactory artifactFactory;
-    /** @component */
-    private org.apache.maven.artifact.resolver.ArtifactResolver resolver;
-    /** @parameter default-value="${localRepository}" */
+
+    @Component
+    private ArtifactFactory artifactFactory;
+
+    @Component
+    private ArtifactResolver resolver;
+
+    @Parameter(defaultValue = "${localRepository}")
     private org.apache.maven.artifact.repository.ArtifactRepository localRepository;
-    /** @parameter default-value="${project.remoteArtifactRepositories}" */
-    private List<?> remoteRepositories;
-    /**
-     * @component
-     * @required
-     * @readonly
-     */
+
+    @Parameter(defaultValue = "${project.remoteArtifactRepositories}")
+    private List<ArtifactRepository> remoteRepositories;
+
+    @Component
     private ArtifactMetadataSource artifactMetadataSource;
-    /**
-     * @component
-     * @required
-     * @readonly
-     */
-    private ArtifactCollector artifactCollector;
-    /**
-     * @component
-     * @required
-     * @readonly
-     */
+
+    @Component
+    private LegacyArtifactCollector artifactCollector;
+
+    @Component
     private DependencyTreeBuilder treeBuilder;
-    /**
-     * support for accessing archives
-     * 
-     * @component
-     */
+
+    @Component
     private ArchiverManager archiverManager;
 
-    /** @parameter default-value="${plugin.artifacts}" */
+    @Parameter(defaultValue = "${plugin.artifacts}")
     private java.util.List<Artifact> pluginArtifacts;
+
     /**
-     * java main class to run
-     * 
-     * @parameter property="mainClass"
+     * Main class.
      */
+    @Parameter(property = "mainClass")
     private String mainClass = null;
 
     /**
      * Parameter for Bootstrap: true|false (default true) clean up local 'lib' file system on startup.
-     * 
-     * @parameter property="cleanUpLib"
      */
+    @Parameter(property = "cleanUpLib")
     private Boolean cleanUpLib = true;
 
     /**
-     * Parameter for Bootstrap: true|false (default false) clean up local 'lib' file system on shutdown.
-     * 
-     * @parameter property="cleanUpBeforeShutdown"
+     * Parameter for Bootstrap: true|false (default true) clean up local 'lib' file system on shutdown.
      */
-    private Boolean cleanUpBeforeShutdown = false;
+    @Parameter(property = "cleanUpBeforeShutdown")
+    private Boolean cleanUpBeforeShutdown = true;
 
     /**
      * Parameter for Bootstrap: true|false (default false) activate 'verbose' mode
-     * 
-     * @parameter property="verbose"
      */
+    @Parameter(property = "verbose")
     private Boolean verbose = false;
     /**
      * Parameter for Bootstrap: true|false (default false) activate 'info log' mode
-     * 
-     * @parameter property="info"
      */
+    @Parameter(property = "info")
     private Boolean info = false;
     /**
      * Parameter for Bootstrap: log file of bootstrap (default is none)
-     * 
-     * @parameter property="logFile"
      */
+    @Parameter(property = "logFile")
     private String logFile = null;
-    /**
-     * Parameter for Bootstrap: true|false (default true) include java home librarie
-     * 
-     * @parameter property="includeJavaHomeLib"
-     */
-    private Boolean includeJavaHomeLib = true;
-    /**
-     * Parameter for Bootstrap: true|false (default true) include system class loader
-     * 
-     * @parameter property="includeSystemClassLoader"
-     */
-    private Boolean includeSystemClassLoader = true;
 
     /**
      * Parameter for Bootstrap: explode Directory for inner jar. Default is current path location or temp directory if path is not
      * writable.
-     * 
-     * @parameter property="explodeDirectory"
      */
+    @Parameter(property = "explodeDirectory")
     private String explodeDirectory = null;
 
     /**
-     * if true, the final boot archive will replace project artifact.
-     * 
-     * @parameter property="replaceProjectArtifact"
-     */
-    private Boolean replaceProjectArtifact = false;
-
-    /**
      * Final name of keystone artifact.
-     * 
-     * @parameter property="finalName"
      */
+    @Parameter(property = "finalName")
     private String finalName = "";
 
     /**
@@ -223,39 +180,34 @@ public class BootStrapMojo extends AbstractMojo {
 
     /**
      * List of native libraries path to add on final artifact (path could be a directory).
-     * 
-     * @parameter alias="${natives}"
      */
+    @Parameter(alias = "natives")
     private PathSet natives = null;
 
     /**
      * List of libraries path to add on final artifact (path could be a directory).
-     * 
-     * @parameter alias="${libraries}"
      */
+    @Parameter(alias = "libraries")
     private PathSet libraries = null;
 
     /**
      * If true then all dependencies will be exploded and packaged inside final archive (like "onejarplugin"). Per default is false.
-     * 
-     * @parameter property="explodeDependencies"
      */
+    @Parameter(property = "explodeDependencies")
     private Boolean explodeDependencies = false;
 
     /**
      * Regular expression of scope. By default we exclude only 'test' scope.
-     * 
-     * @parameter property="scope"
      */
+    @Parameter(property = "scope")
     private String includedScope = SCOPE_DEFAULT_PATTERN;
 
     private Pattern pattern = null;
 
     /**
      * Minimal JVM Specification Version needed.
-     * 
-     * @parameter property="minimalJvmVersion"
      */
+    @Parameter(property = "minimalJvmVersion")
     private String minimalJvmVersion = null;
 
     /**
@@ -303,6 +255,7 @@ public class BootStrapMojo extends AbstractMojo {
 
     /**
      * @param scope
+     *
      * @return True if this scope is included.
      */
     protected boolean includedScope(final String scope) {
@@ -315,10 +268,12 @@ public class BootStrapMojo extends AbstractMojo {
 
     /**
      * Copy extra libraries to libFile.
-     * 
+     *
      * @param libFile
-     * @throws MojoExecutionException
+     *
      * @return library directory
+     *
+     * @throws MojoExecutionException
      */
     private void copyExtraLibraries(File libFile) throws MojoExecutionException {
         if (libraries != null) {
@@ -329,8 +284,9 @@ public class BootStrapMojo extends AbstractMojo {
 
     /**
      * Copy native libraries into "native folder"
-     * 
+     *
      * @param nativeLib root directory
+     *
      * @throws MojoExecutionException
      */
     private void copyNativeLibraries(File nativeLib) throws MojoExecutionException {
@@ -342,9 +298,10 @@ public class BootStrapMojo extends AbstractMojo {
 
     /**
      * Copy path to destination folder (path can be a directory).
-     * 
-     * @param files
+     *
+     * @param pathSet
      * @param destination
+     *
      * @throws MojoExecutionException
      */
     private void copyLibraries(PathSet pathSet, File destination) throws MojoExecutionException {
@@ -368,10 +325,12 @@ public class BootStrapMojo extends AbstractMojo {
 
     /**
      * Copy all runtimes dependencies of the project inside %root%/lib
-     * 
-     * @param root
-     * @throws MojoExecutionException
+     *
+     * @param root root file
+     *
      * @return library directory
+     *
+     * @throws MojoExecutionException if some artifact can't be resolved
      */
     private File copyDependencies(final File root) throws MojoExecutionException {
         getLog().info("copy runtime dependencies");
@@ -393,7 +352,7 @@ public class BootStrapMojo extends AbstractMojo {
             final DependencyNode rootNode = treeBuilder.buildDependencyTree(project, localRepository, artifactFactory,
                     artifactMetadataSource, artifactFilter, artifactCollector);
             // collect
-            for (final Iterator<?> iterator = rootNode.getChildren().iterator(); iterator.hasNext();) {
+            for (final Iterator<?> iterator = rootNode.getChildren().iterator(); iterator.hasNext(); ) {
                 final DependencyNode child = (DependencyNode) iterator.next();
                 collect(child, artifacts);
             }
@@ -423,13 +382,12 @@ public class BootStrapMojo extends AbstractMojo {
 
     /**
      * collect children dependency starting on specified node and add them in artifacts set.
-     * 
-     * @param root
-     * @param artifacts
+     *
+     * @param root      root point
+     * @param artifacts artifact set to feed
      */
-    @SuppressWarnings("unchecked")
     private void collect(final DependencyNode root, final Set<Artifact> artifacts) {
-        Stack<DependencyNode> stack = new Stack<DependencyNode>();
+        Stack<DependencyNode> stack = new Stack<>();
         stack.push(root);
         while (!stack.isEmpty()) {
             DependencyNode node = stack.pop();
@@ -450,9 +408,10 @@ public class BootStrapMojo extends AbstractMojo {
 
     /**
      * Copy project artifact in lib directory or explode it.
-     * 
-     * @param root folder root
+     *
+     * @param root         folder root
      * @param libDirectory
+     *
      * @throws MojoExecutionException
      */
     private void copyMainArtifact(final File root, final File libDirectory) throws MojoExecutionException {
@@ -494,9 +453,7 @@ public class BootStrapMojo extends AbstractMojo {
         if (logFile != null) {
             properties.put("BootStrap.logFile", logFile);
         }
-        // classpath
-        properties.put("BootStrap.includeJavaHomeLib", Boolean.toString(includeJavaHomeLib));
-        properties.put("BootStrap.includeSystemClassLoader", Boolean.toString(includeSystemClassLoader));
+
         // JVM Version
         if (minimalJvmVersion != null) {
             properties.put("BootStrap.minimalJvmVersion", minimalJvmVersion);
@@ -530,8 +487,9 @@ public class BootStrapMojo extends AbstractMojo {
 
     /**
      * package application and add artifact into project.
-     * 
+     *
      * @param root folder root
+     *
      * @throws MojoExecutionException
      */
     private void packageApplication(final File root) throws MojoExecutionException {
@@ -555,16 +513,11 @@ public class BootStrapMojo extends AbstractMojo {
             }
             // create archive
             archiver.createArchive(project, archive);
-            // set archive as artifact
-            if (replaceProjectArtifact) {
-                project.getArtifact().setFile(custFile);
-            } else {
-                // add an other artifact in current project
-                final Artifact artifact = artifactFactory.createArtifact(project.getGroupId(), project.getArtifactId() + "-boot",
-                        project.getVersion(), Artifact.SCOPE_COMPILE, "jar");
-                artifact.setFile(custFile);
-                project.addAttachedArtifact(artifact);
-            }
+            // add an other artifact in current project
+            final Artifact artifact = artifactFactory.createArtifact(project.getGroupId(), project.getArtifactId() + "-boot",
+                    project.getVersion(), Artifact.SCOPE_COMPILE, "jar");
+            artifact.setFile(custFile);
+            project.addAttachedArtifact(artifact);
         } catch (final ArchiverException e) {
             throw new MojoExecutionException("Exception while packaging", e);
         } catch (final ManifestException e) {
@@ -580,9 +533,6 @@ public class BootStrapMojo extends AbstractMojo {
      * @return final name archive (specified by "finalName" plugin parameter or by final name of project with '-boot' suffix.
      */
     private String getFinalArchiveName() {
-        if (replaceProjectArtifact) {
-            return project.getArtifact().getFile().getName();
-        }
         if (finalName != null && !"".equals(finalName)) {
             return finalName;
         }
@@ -591,8 +541,9 @@ public class BootStrapMojo extends AbstractMojo {
 
     /**
      * Copy bootstrap under specified root directory.
-     * 
+     *
      * @param root
+     *
      * @throws MojoExecutionException
      */
     private void copyBootStrap(final File root) throws MojoExecutionException {
@@ -614,9 +565,10 @@ public class BootStrapMojo extends AbstractMojo {
 
     /**
      * extract specified artifact.
-     * 
-     * @param destination destination folder
+     *
+     * @param destination  destination folder
      * @param artifactFile
+     *
      * @throws NoSuchArchiverException
      * @throws ArchiverException
      * @throws MojoExecutionException
@@ -633,15 +585,14 @@ public class BootStrapMojo extends AbstractMojo {
             throw new MojoExecutionException("Unable to unarchive " + artifactFile.getName(), e);
         } catch (final ArchiverException e) {
             throw new MojoExecutionException("Unable to unarchive " + artifactFile.getName(), e);
-        } catch (final IOException e) {
-            throw new MojoExecutionException("Unable to unarchive " + artifactFile.getName(), e);
         }
     }
 
     /**
      * Utility to delete file (directory or single file)
-     * 
+     *
      * @param from
+     *
      * @return
      */
     private static boolean delete(final File from) {

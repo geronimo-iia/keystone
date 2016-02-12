@@ -33,7 +33,6 @@
 						<configuration>
 							<mainClass>org.intelligentsia.keystone.sample.simple.Main</mainClass>
 							<explodeDependencies>false</explodeDependencies>
-							<replaceProjectArtifact>true</replaceProjectArtifact>
 							<info>true</info>
 							<scopes>
 								<scope>compile</scope>

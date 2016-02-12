@@ -23,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -54,5 +55,41 @@ public class SimpleVersionTest {
 		version = new SimpleVersion(1, null);
 		assertTrue(version.isBackwardCompatible(new SimpleVersion(1, null)));
 		assertTrue(version.isBackwardCompatible(new SimpleVersion(1, 1)));
+	}
+
+
+	@Test
+	public void checkVersionPropertyNotNull() {
+		Assert.assertNotNull(SimpleVersion.getCurrentJavaVirtualMachineSpecificationVersion());
+	}
+
+
+	@Test
+	public void checkCompatibility() {
+		SimpleVersion current = SimpleVersion.parse(SimpleVersion.getCurrentJavaVirtualMachineSpecificationVersion());
+
+		SimpleVersion upper = new SimpleVersion(current.getMajor(), current.getMedium() + 1);
+		Assert.assertFalse(SimpleVersion.isCompatible(upper.toString()));
+		upper = new SimpleVersion(current.getMajor() + 1 , current.getMedium() );
+		Assert.assertFalse(SimpleVersion.isCompatible(upper.toString()));
+
+		// equals version
+		Assert.assertTrue(SimpleVersion.isCompatible(SimpleVersion.getCurrentJavaVirtualMachineSpecificationVersion()));
+		Assert.assertTrue(SimpleVersion.isCompatible(current.toString()));
+	}
+
+
+	@Test
+	public void checkInCompatibilityWhenLower() {
+		SimpleVersion current = SimpleVersion.parse(SimpleVersion.getCurrentJavaVirtualMachineSpecificationVersion());
+		SimpleVersion lower = null;
+		if (current.getMedium() == 0) {
+			lower =  new SimpleVersion(current.getMajor() - 1, current.getMedium() );
+		} else {
+			lower =  new SimpleVersion(current.getMajor(), current.getMedium() - 1);
+		}
+
+		Assert.assertTrue(SimpleVersion.isCompatible(lower.toString()));
+		Assert.assertFalse(SimpleVersion.isCompatible("0.9"));
 	}
 }

@@ -1,11 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.intelligents-ia</groupId>
     <artifactId>keystone</artifactId>
     <packaging>pom</packaging>
     <name>keystone</name>
-    <version>3.4-SNAPSHOT</version>
+    <version>3.5-SNAPSHOT</version>
     <description>
         Keystone project is a bootstrap that loads your application and its dependencies from a single archive.
         With his maven plugin and few line of configuration, your application will be available with all his

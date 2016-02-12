@@ -115,7 +115,7 @@ public class BootStrapMojo extends AbstractMojo {
     private ArtifactMetadataSource artifactMetadataSource;
 
     @Component
-    private LegacyArtifactCollector artifactCollector;
+    private org.apache.maven.artifact.resolver.ArtifactCollector artifactCollector;
 
     @Component
     private DependencyTreeBuilder treeBuilder;

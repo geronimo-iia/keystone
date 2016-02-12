@@ -35,20 +35,21 @@ import org.apache.maven.archiver.MavenArchiver;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.resolver.ArtifactCollector;
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ScopeArtifactFilter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
-import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.repository.legacy.resolver.LegacyArtifactCollector;
 import org.apache.maven.shared.dependency.tree.DependencyNode;
 import org.apache.maven.shared.dependency.tree.DependencyTreeBuilder;
 import org.apache.maven.shared.dependency.tree.DependencyTreeBuilderException;
@@ -89,7 +90,6 @@ public class BootStrapMojo extends AbstractMojo {
     private org.apache.maven.project.MavenProject project;
     /**
      * The Jar archiver needed for archiving.
-     *
      */
     @Component(role = org.codehaus.plexus.archiver.Archiver.class, hint = "jar")
     private JarArchiver jarArchiver;
@@ -100,10 +100,10 @@ public class BootStrapMojo extends AbstractMojo {
     private File buildDirectory;
 
     @Component
-    private org.apache.maven.artifact.factory.ArtifactFactory artifactFactory;
+    private ArtifactFactory artifactFactory;
 
     @Component
-    private org.apache.maven.artifact.resolver.ArtifactResolver resolver;
+    private ArtifactResolver resolver;
 
     @Parameter(defaultValue = "${localRepository}")
     private org.apache.maven.artifact.repository.ArtifactRepository localRepository;
@@ -115,7 +115,7 @@ public class BootStrapMojo extends AbstractMojo {
     private ArtifactMetadataSource artifactMetadataSource;
 
     @Component
-    private ArtifactCollector artifactCollector;
+    private LegacyArtifactCollector artifactCollector;
 
     @Component
     private DependencyTreeBuilder treeBuilder;
@@ -134,33 +134,28 @@ public class BootStrapMojo extends AbstractMojo {
 
     /**
      * Parameter for Bootstrap: true|false (default true) clean up local 'lib' file system on startup.
-     *
      */
     @Parameter(property = "cleanUpLib")
     private Boolean cleanUpLib = true;
 
     /**
      * Parameter for Bootstrap: true|false (default true) clean up local 'lib' file system on shutdown.
-     *
      */
     @Parameter(property = "cleanUpBeforeShutdown")
     private Boolean cleanUpBeforeShutdown = true;
 
     /**
      * Parameter for Bootstrap: true|false (default false) activate 'verbose' mode
-     *
      */
     @Parameter(property = "verbose")
     private Boolean verbose = false;
     /**
      * Parameter for Bootstrap: true|false (default false) activate 'info log' mode
-     *
      */
     @Parameter(property = "info")
     private Boolean info = false;
     /**
      * Parameter for Bootstrap: log file of bootstrap (default is none)
-     *
      */
     @Parameter(property = "logFile")
     private String logFile = null;
@@ -168,14 +163,12 @@ public class BootStrapMojo extends AbstractMojo {
     /**
      * Parameter for Bootstrap: explode Directory for inner jar. Default is current path location or temp directory if path is not
      * writable.
-     *
      */
     @Parameter(property = "explodeDirectory")
     private String explodeDirectory = null;
 
     /**
      * Final name of keystone artifact.
-     *
      */
     @Parameter(property = "finalName")
     private String finalName = "";
@@ -187,28 +180,24 @@ public class BootStrapMojo extends AbstractMojo {
 
     /**
      * List of native libraries path to add on final artifact (path could be a directory).
-     *
      */
     @Parameter(alias = "natives")
     private PathSet natives = null;
 
     /**
      * List of libraries path to add on final artifact (path could be a directory).
-     *
      */
     @Parameter(alias = "libraries")
     private PathSet libraries = null;
 
     /**
      * If true then all dependencies will be exploded and packaged inside final archive (like "onejarplugin"). Per default is false.
-     *
      */
     @Parameter(property = "explodeDependencies")
     private Boolean explodeDependencies = false;
 
     /**
      * Regular expression of scope. By default we exclude only 'test' scope.
-
      */
     @Parameter(property = "scope")
     private String includedScope = SCOPE_DEFAULT_PATTERN;
@@ -217,7 +206,6 @@ public class BootStrapMojo extends AbstractMojo {
 
     /**
      * Minimal JVM Specification Version needed.
-     *
      */
     @Parameter(property = "minimalJvmVersion")
     private String minimalJvmVersion = null;
@@ -267,6 +255,7 @@ public class BootStrapMojo extends AbstractMojo {
 
     /**
      * @param scope
+     *
      * @return True if this scope is included.
      */
     protected boolean includedScope(final String scope) {
@@ -281,8 +270,10 @@ public class BootStrapMojo extends AbstractMojo {
      * Copy extra libraries to libFile.
      *
      * @param libFile
-     * @throws MojoExecutionException
+     *
      * @return library directory
+     *
+     * @throws MojoExecutionException
      */
     private void copyExtraLibraries(File libFile) throws MojoExecutionException {
         if (libraries != null) {
@@ -295,6 +286,7 @@ public class BootStrapMojo extends AbstractMojo {
      * Copy native libraries into "native folder"
      *
      * @param nativeLib root directory
+     *
      * @throws MojoExecutionException
      */
     private void copyNativeLibraries(File nativeLib) throws MojoExecutionException {
@@ -309,6 +301,7 @@ public class BootStrapMojo extends AbstractMojo {
      *
      * @param pathSet
      * @param destination
+     *
      * @throws MojoExecutionException
      */
     private void copyLibraries(PathSet pathSet, File destination) throws MojoExecutionException {
@@ -334,8 +327,10 @@ public class BootStrapMojo extends AbstractMojo {
      * Copy all runtimes dependencies of the project inside %root%/lib
      *
      * @param root root file
-     * @throws MojoExecutionException if some artifact can't be resolved
+     *
      * @return library directory
+     *
+     * @throws MojoExecutionException if some artifact can't be resolved
      */
     private File copyDependencies(final File root) throws MojoExecutionException {
         getLog().info("copy runtime dependencies");
@@ -388,7 +383,7 @@ public class BootStrapMojo extends AbstractMojo {
     /**
      * collect children dependency starting on specified node and add them in artifacts set.
      *
-     * @param root root point
+     * @param root      root point
      * @param artifacts artifact set to feed
      */
     private void collect(final DependencyNode root, final Set<Artifact> artifacts) {
@@ -414,8 +409,9 @@ public class BootStrapMojo extends AbstractMojo {
     /**
      * Copy project artifact in lib directory or explode it.
      *
-     * @param root folder root
+     * @param root         folder root
      * @param libDirectory
+     *
      * @throws MojoExecutionException
      */
     private void copyMainArtifact(final File root, final File libDirectory) throws MojoExecutionException {
@@ -493,6 +489,7 @@ public class BootStrapMojo extends AbstractMojo {
      * package application and add artifact into project.
      *
      * @param root folder root
+     *
      * @throws MojoExecutionException
      */
     private void packageApplication(final File root) throws MojoExecutionException {
@@ -546,6 +543,7 @@ public class BootStrapMojo extends AbstractMojo {
      * Copy bootstrap under specified root directory.
      *
      * @param root
+     *
      * @throws MojoExecutionException
      */
     private void copyBootStrap(final File root) throws MojoExecutionException {
@@ -568,8 +566,9 @@ public class BootStrapMojo extends AbstractMojo {
     /**
      * extract specified artifact.
      *
-     * @param destination destination folder
+     * @param destination  destination folder
      * @param artifactFile
+     *
      * @throws NoSuchArchiverException
      * @throws ArchiverException
      * @throws MojoExecutionException
@@ -593,6 +592,7 @@ public class BootStrapMojo extends AbstractMojo {
      * Utility to delete file (directory or single file)
      *
      * @param from
+     *
      * @return
      */
     private static boolean delete(final File from) {

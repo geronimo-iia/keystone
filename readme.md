@@ -142,7 +142,8 @@ Releases Notes
 3.4 Snapshot 
 ------------
 
-* switch to JDK 8
+* support JDK 8
+* update maven plugin (using 3.x api and keep 2.x compatibility) 
 * remove useless parameter "includeJavaHomeLib": always add to classpath application, archives from the JAVA_HOME / lib if it exists
 * remove useless parameter "replaceProjectArtifact": archive packaged artifact should never replaces the current project
 * remove useless parameter "includeSystemClassLoader": system classloader is parent of application classloader.
